@@ -1,0 +1,821 @@
+{% load humanize %}
+<style>
+    #laundry-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center;
+    }
+    body {
+      /* font-family: Arial, sans-serif; */
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    #top {
+      padding: 10px;
+    }
+
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+    }
+
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+      padding: 10px 20px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 8px;
+      width: 100%;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      font-weight: lighter;
+      margin-bottom: 10px;
+    }
+
+    .form-label-icon {
+      margin-right: 10px;
+      /* color: #3498db; */
+    }
+
+    .btn {
+      border-radius: 5px;
+      padding: 8px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #217dbb;
+    }
+
+    .btn-success {
+      background-color: #2ecc71;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #28b463;
+    }
+    .back-button {
+            /* padding: 10px 20px; */
+            float: right;
+        }
+
+    .back-button a {
+        /* color: #fff;
+        background-color: #3d464d; */
+        text-decoration: none;
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+        color: #3d464d;
+    }
+</style>
+<div id="top">
+<section class="py-4">
+    <div class="container">
+        <form action="" id="laundry-form">
+            <input type="hidden" name="id" value="{{laundry.id}}">
+            <input type="hidden" name="code" value="{% if laundry.code  %}{{laundry.code}}{% else %}generate{% endif %}">
+            <input type="hidden" name="status" value="{% if laundry.status  %}{{laundry.status}}{% else %}0{% endif %}">
+            <input type="hidden" name="payment" value="{% if laundry.payment  %}{{laundry.payment}}{% else %}0{% endif %}">
+            <input type="hidden" name="total_amount" value="{% if laundry.total_amount  %}{{laundry.total_amount}}{% else %}0{% endif %}">
+            <div class="card rounded-0 mb-3">
+                <div class="card-header">
+                    <div class="back-button">
+                        <a href="{% url 'laundry-page_franchise' %}"><i class="fa-solid fa-circle-left"></i></a>
+                    </div>
+                    <div class="card-title py-1" > <h3>Customer Details</h3></div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        {% if laundry.code %}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="" class="control-label">Transaction Code</label>
+                                <div class="h5"><b>{{laundry.code}}</b></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-4">
+                                <label for="franchise_details" class="control-label"><i class="fas fa-user form-label-icon"></i>Full Name</label>
+                                <select id="client_details" name="client" class="form-control form-control-sm  shadow p-3 mb-5 bg-white ">
+                                    <option value="" disabled selected></option>
+                                    {% for user in users %}
+                                    <option value="{{user.id}}" >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-4">
+                                <label for="contact" class="control-label"><i class="fas fa-phone form-label-icon"></i>Contact Number</label>
+                                <input type="text" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white " name="contact" id="contact" value="{{laundry.contact}}">
+                                <!-- <span id="contact-display"></span> Add this line -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mb-4">
+                                <label for="address" class="control-label"><i class="fas fa-home form-label-icon"></i>Address</label>
+                                <input type="text" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white " name="address" id="address" value="{{laundry.address}}" required>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mb-4">
+                                <label for="pincode" class="control-label"><i class="fas fa-map-marker form-label-icon"></i>Pincode</label>
+                                <input type="number" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white " name="pincode" id="pincode" value="{{laundry.pincode}}" required>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mb-4">
+                                <label for="franchise_details" class="control-label"><i class="fa-solid fa-shop form-label-icon"></i>Franchise Details</label>
+                                <select id=" " name="franchise_details" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white ">
+                                    <option value="" disabled selected></option>
+                                    {% for user in fusers %}
+                                    <option value="{{user.id}}" >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for=" pickup_date" class="control-label">Pickup Date</label>
+                                <input type="date" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white " name=" pickup_date" id=" pickup_date" value="{{laundry.pickup_date}}">
+                            </div> -->
+                            <!-- <input type="hidden" name="pickup_date" value="2023-09-01"> -->
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="delivery_date" class="control-label"><i class="fa-solid fa-calendar form-label-icon"></i>Delivery Date</label>
+                                <input type="date" class="form-control form-control-sm  shadow p-3 mb-5 bg-white " name="delivery_date" id="delivery_date" value="{{laundry.delivery_date}}" required>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="delivery_time" class="control-label"><i class="fa-solid fa-hourglass-end form-label-icon"></i>Delivery Timeslot</label>
+                                <select type="time" id="delivery_time" name="delivery_time" class="form-control form-control-sm   shadow p-3 mb-5 bg-white " required>
+                                    {% if laundry.delivery_time == '9 AM-10 AM' %}
+                                    <option value="1" selected>9 AM-10 AM</option>
+                                    {% else %}
+                                    <option value="1">9 AM-10 AM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '10 AM-11 AM' %}
+                                    <option value="2" selected>10 AM-11 AM</option>
+                                    {% else %}
+                                    <option value="2">10 AM-11 AM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '11 AM-12 PM' %}
+                                    <option value="3" selected>11 AM-12 PM</option>
+                                    {% else %}
+                                    <option value="3">11 AM-12 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '12 PM-1 PM' %}
+                                    <option value="4" selected>12 PM-1 PM</option>
+                                    {% else %}
+                                    <option value="4">12 PM-1 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '1 PM-2 PM' %}
+                                    <option value="5" selected>1 PM-2 PM</option>
+                                    {% else %}
+                                    <option value="5">1 PM-2 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '2 PM-3 PM' %}
+                                    <option value="6" selected>2 PM-3 PM</option>
+                                    {% else %}
+                                    <option value="6">2 PM-3 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '3 PM-4 PM' %}
+                                    <option value="7" selected>3 PM-4 PM</option>
+                                    {% else %}
+                                    <option value="7">3 PM-4 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '4 PM-5 PM' %}
+                                    <option value="8" selected>4 PM-5 PM</option>
+                                    {% else %}
+                                    <option value="8">4 PM-5 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '5 PM-6 PM' %}
+                                    <option value="9" selected>5 PM-6 PM</option>
+                                    {% else %}
+                                    <option value="9">5 PM-6 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '6 PM-7 PM' %}
+                                    <option value="10" selected>6 PM-7 PM</option>
+                                    {% else %}
+                                    <option value="10">6 PM-7 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '7 PM-8 PM' %}
+                                    <option value="11" selected>7 PM-8 PM</option>
+                                    {% else %}
+                                    <option value="11">7 PM-8 PM</option>
+                                    {% endif %}
+                                    {% if laundry.delivery_time == '8 PM-9 PM' %}
+                                    <option value="12" selected>8 PM-9 PM</option>
+                                    {% else %}
+                                    <option value="12">8 PM-9 PM</option>
+                                    {% endif %}
+                                </select>                                 
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for=" mode" class="control-label">Mode</label>
+                                <select type="text" id="mode" name="mode" class="form-select form-select-sm -0 shadow p-3 mb-5 bg-white " required>
+                                    {% if laundry.mode == '1' %}
+                                    <option value="1" selected>Walkin</option>
+                                    {% else %}
+                                    <option value="1">Walkin</option>
+                                    {% endif %}
+                                    {% if laundry.mode == '2' %}
+                                    <option value="2" selected>Pickup</option>
+                                    {% else %}
+                                    <option value="2">Pickup</option>
+                                    {% endif %}
+                                </select>
+                            </div> -->
+                            <input type="hidden" name="mode" value="1">
+                            
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="Coupon_code" class="control-label">Coupon code</label>
+                                <input type="text" class="form-control form-control-sm -0" name="Coupon_code" id="Coupon_code" value="{{laundry.Coupon_code}}" required>
+                            </div> -->
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="franchise_details" class="control-label">Coupon code</label>
+                                <select id=" " name="Coupon_code" class="form-control form-control-sm -0 shadow p-3 mb-5 bg-white ">
+                                    <option value="" disabled selected></option>
+                                    {% for user in coupons %}
+                                    <option value="{{user.code}}" >{{user.code}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div> -->
+                            
+                            
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="barcode" class="control-label">Barcode</label>
+                                <input type="text" class="form-control form-control-sm -0" name="barcode" id="barcode" value="{{laundry.barcode}}">
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded-0 mb-3">
+                <div class="card-header">
+                    <div class="card-title py-1"><h3>Laundries</h3></div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                <label for="prices" class="control-label">Laundry Type</label>
+                                <select id="prices" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for price in prices %}
+                                    <option value="{{price.pk}}" data-price = "{{price.price}}">{{price.laundry_type}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                <label for="prices" class="control-label">Category</label>
+                                <select id="prices1" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for price in prices %}
+                                    <option value="{{price.pk}}" data-price = "{{price.price}}">{{price.category}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                <label for="prices" class="control-label">Category Type</label>
+                                <select id="prices2" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for price in prices %}
+                                    <option value="{{price.pk}}" data-price = "{{price.price}}">{{price.category_type}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                <label for="prices" class="control-label">User Type</label>
+                                <select id="prices3" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for price in prices %}
+                                    <option value="{{price.pk}}" data-price = "{{price.price}}">{{price.user_type}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            </div>
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div> -->
+                            <div class="d-grid mt-4"> 
+                                <button class="btn btn-info btn-sm rounded-0 bg-gradient bg-info" type="button" id="add_laundry"><i class="fa fa-plus"></i> Add Laundry</button>
+                            </div>
+                        </div>
+                        <div class="clear-fix mt-2"></div>
+                        <table class="table table-bordered" id="laundry_list">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="10%">
+                                <col width="10%">
+                                <col width="10%">
+                            </colgroup>
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="p-1 text-center"></th>
+                                    <th class="p-1 text-center">Laundry Type</th>
+                                    <th class="p-1 text-center">Category</th>
+                                    <th class="p-1 text-center">Category Type</th>
+                                    <th class="p-1 text-center">User Type</th>
+                                    <th class="p-1 text-center">Price per kg.</th>
+                                    <th class="p-1 text-center">Weight (kg.)</th>
+                                    <th class="p-1 text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <td class="px-2 py-1 align-middle text-center">
+                                        <input type="hidden" name="price_id[]" value="{{item.laundry_type.id}}">
+                                        <input type="hidden" name="laundry_price[]" value="{{item.price}}">
+                                        <button class="btn btn-outline-danger btn-sm rounded-0 rem-laundry" type="button"><i class="fa fa-times"></i></button>
+                                    </td>
+                                    <td class="px-2 py-1 align-middle laundry_type">{{item.laundry_type.laundry_type}}</td>
+                                    <td class="px-2 py-1 align-middle laundry_category">{{item.category.category}}</td>
+                                    <td class="px-2 py-1 align-middle laundry_category_type">{{item.category_type.category_type}}</td>
+                                    <td class="px-2 py-1 align-middle laundry_user_type">{{item.user_type.user_type}}</td>
+                                    <td class="px-2 py-1 align-middle text-end laundry_price">{{item.price|floatformat}}</td>
+                                    <td class="px-2 py-1 align-middle">
+                                        <input type="number" min="1"  step="any" class="form-control form-control-sm rounded-0 text-center shadow p-3 mb-5 bg-white rounded" name="laundry_weight[]" value="{{item.weight|floatformat}}" required>
+                                    </td>
+                                    <td class="px-2 py-1 align-middle laundry_total text-end">{{item.total_amount|floatformat}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th class="text-center" colspan="5">Total</th>
+                                    <th class="text-end sub-total-laundry" colspan="3">0.00</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+            <div class="card rounded-0 mb-3">
+                <div class="card-header">
+                    <div class="card-title py-1">Coupon List</div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="coupons" class="control-label">Coupons</label>
+                                <select id="coupons" class="form-control form-control-sm ">
+                                    <option value="" disabled selected></option>
+                                    {% for coupon in coupons %}
+                                    
+                                    <option value="{{coupon.pk}}" data-code = "{{coupon.discount_type}}" data-code1 = "{{coupon.discount}}">{{coupon.code}}</option>
+                                    
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="d-grid mt-4"> 
+                                    <button class="btn btn-info btn-sm rounded-0 bg-gradient bg-info" type="button" id="add_coupon"><i class="fa fa-plus"></i> Add Coupon</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear-fix mt-2"></div>
+                        <table class="table table-bordered" id="coupon_list">
+                            <!-- <colgroup>
+                                <col width="5%">
+                                <col width="40%">
+                                <col width="20%">
+                                <col width="15%">
+                                <col width="20%">
+                            </colgroup> -->
+                            <thead>
+                                <tr>
+                                    <th class="p-1 text-center"></th>
+                                    <th class="p-1 text-center">coupon Name</th>
+                                    <th class="p-1 text-center">Dicount Type</th>
+                                    <th class="p-1 text-center">Dicount</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for citem in citems %}
+                                <tr>
+                                    <td class="px-2 py-1 align-middle text-center">
+                                        <input type="hidden" name="coupon_id[]" value="{{citem.coupon.id}}">
+                                        <input type="hidden" name="coupon_dicount_type[]" value="{{citem.dicount_type}}">
+                                        <input type="hidden" name="coupon_dicount[]" value="{{citem.dicount}}">
+                                        
+                                        <button class="btn btn-outline-danger btn-sm rounded-0 rem-coupon" type="button"><i class="fa fa-times"></i></button>
+                                    </td>
+                                    <td class="px-2 py-1 align-middle coupon_type">{{citem.coupon.name}}</td>
+                                    <td class="px-2 py-1 align-middle coupon_dicount_type">
+                                        {% if citem.dicount_type == '1' %}
+                                    <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Percentage</span> {% else %}
+                                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Fixed Amount</span> {% endif %}
+                                    </td>
+                                    <td class="px-2 py-1 align-middle text-end coupon_discount">{{citem.discount|floatformat}}</td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="text-center" colspan="3">Total</th>
+                                    <th class="text-end sub-total-coupon">0.00</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-0 mb-3">
+                <div class="card-body">
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Grand Total:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <h4 class="fw-bolder pe-2 gtotal">{% if laundry.total_amount %}{{laundry.total_amount|floatformat:2|intcomma}}{% else %}0.00{% endif %}</h4>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Grand Total With Discount:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <input type="number" step="any" class="form-control form-control-lg rounded-0 text-end" id="tendered_amount" name="tendered" value="{% if laundry.tendered %}{{laundry.tendered|floatformat:2}}{% else %}0{% endif %}" required>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Discount:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <h4 class="fw-bolder pe-2 " id="change">{% if laundry.change %}{{laundry.change|floatformat:2|intcomma}}{% else %}0.00{% endif %}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer py-1 text-center">
+                    <button class="btn btn-primary btn-sm rounded-0" type="button" id="pay_later">Pay Later</button>
+                    <button class="btn btn-success btn-sm rounded-0" id="laundry-submit-btn" form="laundry-form"><i class="fa fa-save"></i> Pay</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<noscript id="laundry-clone">
+    <tr>
+        <td class="px-2 py-1 align-middle text-center">
+            <input type="hidden" name="price_id[]" value="">
+            <input type="hidden" name="laundry_price[]" value="">
+            <button class="btn btn-outline-danger btn-sm rounded-0 rem-laundry" type="button"><i class="fa fa-times"></i></button>
+        </td>
+        <td class="px-2 py-1 align-middle laundry_type"></td>
+        <td class="px-2 py-1 align-middle laundry_category"></td>
+        <td class="px-2 py-1 align-middle laundry_category_type"></td>
+        <td class="px-2 py-1 align-middle laundry_user_type"></td>
+        <td class="px-2 py-1 align-middle text-end laundry_price">0.00</td>
+        <td class="px-2 py-1 align-middle">
+            <input type="number" step="any" min="1" value="1" class="form-control form-control-sm rounded-0 text-center shadow p-3 mb-5 bg-white rounded" name="laundry_weight[]" required>
+        </td>
+        <td class="px-2 py-1 align-middle laundry_total text-end">0.00</td>
+    </tr>
+</noscript>
+<noscript id="coupon-clone">
+    <tr>
+        <td class="px-2 py-1 align-middle text-center">
+            <input type="hidden" name="coupon_id[]" value="">
+            <input type="hidden" name="coupon_discount_type[]" value="">
+            <input type="hidden" name="coupon_discount[]" value="">
+            <input type="hidden" name="coupon_price[]" value="">
+            <button class="btn btn-outline-danger btn-sm rounded-0 rem-coupon" type="button"><i class="fa fa-times"></i></button>
+        </td>
+        <td class="px-2 py-1 align-middle coupon_type"></td>
+        <td class="px-2 py-1 align-middle text-end coupon_discount_type">0.00</td>
+        <td class="px-2 py-1 align-middle text-end coupon_discount">0.00</td>
+                <!-- <td class="px-2 py-1 align-middle text-end coupon_price">0.00</td>
+        <td class="px-2 py-1 align-middle">
+            <input type="number" min="1" value="1" class="form-control form-control-sm rounded-0 text-center" name="coupon_quantity[]" required>
+        </td>
+        <td class="px-2 py-1 align-middle coupon_total text-end">0.00</td> -->
+    </tr>
+</noscript>
+</div>
+<script>
+    function calc_total() {
+        var sub_laundry = 0
+        var sub_coupon = 0
+        var gtotal = 0
+        var gtotal1 = 0
+        $('#laundry_list tbody tr').each(function() {
+            var price = $(this).find('[name="laundry_price[]"]').val()
+            var weight = $(this).find('[name="laundry_weight[]"]').val()
+            weight = weight > 0 ? weight : 0;
+            price = price > 0 ? price : 0;
+            sub_laundry += parseFloat(parseFloat(weight) * parseFloat(price))
+            gtotal += parseFloat(parseFloat(weight) * parseFloat(price))
+            $(this).find('.laundry_total').text(parseFloat(parseFloat(weight) * parseFloat(price)).toLocaleString('en-US'))
+        })
+        $('.sub-total-laundry').text(parseFloat(sub_laundry).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('#coupon_list tbody tr').each(function() {
+            var discount_type = $(this).find('[name="coupon_discount_type[]"]').val()
+            var discount = $(this).find('[name="coupon_discount[]"]').val()
+            var price = $(this).find('[name="coupon_price[]"]').val()
+            var qty = $(this).find('[name="coupon_quantity[]"]').val()
+            qty = qty > 0 ? qty : 0;
+            price = price > 0 ? price : 0;
+            // var percentageDiscount = parseFloat(discount) / 100;
+            // var discountAmount = (discount_type === 1) ? parseFloat(gtotal * percentageDiscount) : parseFloat(discount);
+
+            var percentageDiscount = parseFloat(discount) / 100;
+            discountamount = (discount_type == 1) ? (parseFloat(parseFloat(gtotal * percentageDiscount))) : discount;
+            sub_coupon += parseFloat(parseFloat(gtotal) - parseFloat(discountamount))
+            gtotal1 += parseFloat(parseFloat(gtotal) - parseFloat(discountamount))
+            gtotal = parseFloat(gtotal1)
+            $(this).find('.coupon_total').text(parseFloat(parseFloat(gtotal) - parseFloat(discountamount)).toLocaleString('en-US'))
+        })
+        $('.sub-total-coupon').text(parseFloat(sub_coupon).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('.gtotal1').text(parseFloat(gtotal1).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('[name="total_amount"]').val(gtotal)
+        $('.gtotal').text(parseFloat(gtotal).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        
+        $
+    }
+    $(function() {
+        $('#client_details').change(function() {
+            var selectedUsername = $(this).val();
+            
+            // Make an AJAX request to fetch the contact number based on selectedUsername
+            $.ajax({
+                url: "{% url 'fetch-contact_franchise' %}",
+                type: "GET",
+                data: { username: selectedUsername },
+                dataType: "json",
+                success: function(response) {
+                    if (response && response.contact) {
+                        $('#contact').val(response.contact);
+                        $('#contact-display').text('Contact Number: ' + response.contact);
+                    } else {
+                        $('#contact').val('');
+                        $('#contact-display').text('');
+                    }
+                },
+                error: function() {
+                    $('#contact').val('');
+                    $('#contact-display').text('');
+                }
+            });
+        });
+        calc_total()
+        $('#prices').select2({
+            placeholder: "Please Select Laundry Type Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#prices1').select2({
+            placeholder: "Please Select Laundry Type Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#prices2').select2({
+            placeholder: "Please Select Category Type Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#prices3').select2({
+            placeholder: "Please Select User Type Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#coupons').select2({
+            placeholder: "Please Select coupons Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#tendered_amount').on('change input', function() {
+            var tender = $(this).val()
+            var total = $('[name="total_amount"]').val()
+            tender = tender > 0 ? tender : 0;
+            total = total > 0 ? total : 0;
+            change = parseFloat(tender) - parseFloat(total)
+            $('#change').text(parseFloat(change).toLocaleString('en-US', {
+                style: 'decimal',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2
+            }))
+
+        })
+        $('#pay_later').click(function() {
+            $('#tendered_amount').val(0).attr('required', false)
+            $('#laundry-form').submit()
+        })
+        $('#laundry-submit-btn').click(function() {
+            $('#tendered_amount').attr('required', true)
+        })
+        $('#laundry_list tbody').find('[name="laundry_weight[]"]').on('input change', function() {
+            calc_total()
+        })
+        $('#laundry_list tbody').find('.rem-laundry').click(function() {
+            if (confirm("Are you sure to remove this item?") == true) {
+                $(this).closest('tr').remove()
+                calc_total()
+            }
+        })
+        $('#coupon_list tbody').find('[name="coupon_quantity[]"]').on('input change', function() {
+            calc_total()
+        })
+        $('#coupon_list tbody').find('.rem-coupon').click(function() {
+            if (confirm("Are you sure to remove this item?") == true) {
+                $(this).closest('tr').remove()
+                calc_total()
+            }
+        })
+        $('#add_laundry').click(function () {
+            var pid = $('#prices').val();
+            var pid1 = $('#prices1').val();
+            var pid2 = $('#prices2').val();
+            var pid3 = $('#prices3').val();
+
+            if (pid < '1' || pid1 < '1' || pid2 < '1' || pid3 < '1') {
+                return false;
+            }
+
+            var price = $('#prices option[value="' + pid + '"]').attr('data-price');
+            var laundry_type = $('#prices option[value="' + pid + '"]').text();
+            var category = $('#prices1 option[value="' + pid1 + '"]').text();
+            var category_type = $('#prices2 option[value="' + pid2 + '"]').text();
+            var user_type = $('#prices3 option[value="' + pid3 + '"]').text();
+            var tr = $($('noscript#laundry-clone').html()).clone()
+            tr.find('.laundry_type').text(laundry_type)
+            tr.find('.laundry_category').text(category)
+            tr.find('.laundry_category_type').text(category_type)
+            tr.find('.laundry_user_type').text(user_type)
+            tr.find('.laundry_price').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('.laundry_total').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('[name="price_id[]"]').val(pid)
+            tr.find('[name="price_id[]"]').val(pid1)
+            tr.find('[name="price_id[]"]').val(pid2)
+            tr.find('[name="price_id[]"]').val(pid3)
+            tr.find('[name="laundry_price[]"]').val(price)
+            $('#laundry_list tbody').append(tr)
+            calc_total()
+            $('#prices').val('').trigger('change')
+            $('#prices1').val('').trigger('change')
+            $('#prices2').val('').trigger('change')
+            $('#prices3').val('').trigger('change')
+            tr.find('[name="laundry_weight[]"]').on('input change', function() {
+                calc_total()
+            })
+            tr.find('.rem-laundry').click(function() {
+                if (confirm("Are you sure to remove this item?") == true) {
+                    tr.remove()
+                    calc_total()
+                }
+            })
+        })
+
+        $('#add_coupon').click(function() {
+            var pid = $('#coupons').val()
+            if (pid < '1') {
+                return false
+            }
+            var discount_type = $('#coupons option[value="' + pid + '"]').attr('data-code')
+            var discount = $('#coupons option[value="' + pid + '"]').attr('data-code1')
+            var price = $('#coupons option[value="' + pid + '"]').attr('data-price')
+            var max = $('#coupons option[value="' + pid + '"]').attr('data-available')
+            var coupon_name = $('#coupons option[value="' + pid + '"]').text()
+            var tr = $($('noscript#coupon-clone').html()).clone()
+            tr.find('.coupon_type').text(coupon_name)
+            tr.find('.coupon_discount_type').text(discount_type)
+            tr.find('.coupon_discount').text(parseFloat(discount).toLocaleString('en-US'))
+            tr.find('.coupon_price').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('.coupon_total').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('[name="coupon_id[]"]').val(pid)
+            tr.find('[name="coupon_discount_type[]"]').val(discount_type)
+            tr.find('[name="coupon_discount[]"]').val(discount)
+            tr.find('[name="coupon_price[]"]').val(price)
+            tr.find('[name="coupon_quantity[]"]').attr('max', max)
+            $('#coupon_list tbody').append(tr)
+            calc_total()
+            $('#coupons').val('').trigger('change')
+            tr.find('[name="coupon_quantity[]"]').on('input change', function() {
+                calc_total()
+            })
+            tr.find('.rem-coupon').click(function() {
+                if (confirm("Are you sure to remove this item?") == true) {
+                    tr.remove()
+                    calc_total()
+                }
+            })
+        })
+        
+        $('#laundry-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            if ($('#tendered_amount').prop('required') == true) {
+                var change = $('#change').text()
+                change = change.replace(/,/gi, '')
+                change = (change > 0) ? change : 0
+                if (change < 0) {
+                    alert("Tendered amount is invalid.")
+                    return false
+                }
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-laundry_franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.replace('{% url "view-laundry_franchise" %}/' + resp.id)
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

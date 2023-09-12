@@ -1,0 +1,275 @@
+{% include "Super_admin_templates/admin_dashboard.html" %}
+{% load static %}
+{% block dash %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Super Admin Panel</title>
+   <style media="screen">
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: "Poppins", sans-serif;
+}
+
+body{
+ min-height: 100vh;
+ background: white;
+ color: white;
+ background-size: cover;
+ background-position: center;
+}
+
+.side-bar{
+ background: #393a33;
+ backdrop-filter: blur(15px);
+ width: 250px;
+ height: 100vh;
+ position: fixed;
+ top: 0;
+ left: -250px;
+ overflow-y: auto;
+ transition: 0.6s ease;
+ transition-property: left;
+}
+.side-bar::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+
+.side-bar.active{
+ left: 0;
+}
+h1{
+
+  text-align: center;
+  font-weight: 500;
+  font-size: 25px;
+  padding-bottom: 13px;
+  font-family: sans-serif;
+  letter-spacing: 2px;
+}
+
+.side-bar .menu{
+ width: 100%;
+ margin-top: 30px;
+}
+
+.side-bar .menu .item{
+ position: relative;
+ cursor: pointer;
+}
+
+.side-bar .menu .item a{
+ color: #fff;
+ font-size: 16px;
+ text-decoration: none;
+ display: block;
+ padding: 5px 30px;
+ line-height: 60px;
+}
+
+.side-bar .menu .item a:hover{
+ background: #33363a;
+ transition: 0.3s ease;
+}
+
+.side-bar .menu .item i{
+ margin-right: 15px;
+}
+
+.side-bar .menu .item a .dropdown{
+ position: absolute;
+ right: 0;
+ margin: 20px;
+ transition: 0.3s ease;
+}
+
+.side-bar .menu .item .sub-menu{
+ background: #393a33;
+ display: none;
+
+}
+
+.side-bar .menu .item .sub-menu a{
+ padding-left: 0px;
+ 
+}
+
+.rotate{
+ transform: rotate(90deg);
+}
+
+.close-btn{
+ position: absolute;
+ color: #fff;
+
+ font-size: 23px;
+ right:  0px;
+ margin: 15px;
+ cursor: pointer;
+}
+
+.menu-btn{
+ position: absolute;
+ color:  rgb(202, 192, 192);
+ font-size: 35px;
+ /* margin: 25px; */
+ margin-left: 120px;
+ margin-bottom: 65px;
+ cursor: pointer;
+}
+
+.main{
+ /* height: 100vh; */
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 10px;
+ margin-left: 150px;
+}
+
+.main h1{
+ color: rgba(255, 255, 255, 0.8);
+ font-size: 60px;
+ text-align: center;
+ line-height: 80px;
+}
+
+@media (max-width: 900px){
+ .main h1{
+   font-size: 40px;
+   line-height: 60px;
+ }
+}
+img{
+  width: 250px;
+  /* margin: 15px; */
+  /* border-radius: 10%; */
+  /* margin-left: 10px; */
+  /* border: 3px solid #b4b8b9; */
+  
+
+}
+header{
+  background: #393a33;
+  /* height: 100px; */
+}
+
+
+   </style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+   <script src="https://kit.fontawesome.com/a2eb797991.js" crossorigin="anonymous"></script>
+ </head>
+ 
+ <body>
+
+    <nav class="navbar">
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+          </div>
+        <div class="navbar-menu">
+          <!-- <ul class="navbar-nav">
+          
+          </ul>
+        </div> -->
+      </nav>
+  
+
+
+   <div class="side-bar">
+
+     <header>
+
+        
+
+     <div class="close-btn">
+
+        <i class="fas fa-bars"></i>
+    </div>
+     <img src="{% static 'images/smiley.jpg' %}" alt="">
+          
+        </header>
+     <div class="menu">
+       <div class="item"><a href="#"><i class="fas fa-desktop"></i>Dashboard</a></div>
+       <div class="item">
+         <a class="sub-btn"><i class="fa-solid fa-store"></i>Franchise<i class="fas fa-angle-right dropdown"></i></a>
+         <div class="sub-menu">
+           <a href="#" class="sub-item">Create Franchise</a>
+           <a href="#" class="sub-item">View Franchise</a>
+           <a href="#" class="sub-item">Reports</a>
+           <a href="#" class="sub-item">Royalty</a>
+         </div>
+       </div>
+       <div class="item">
+         <a class="sub-btn"><i class="fa-solid fa-users"></i></i>Users<i class="fas fa-angle-right dropdown"></i></a>
+         <div class="sub-menu">
+           <a href="#" class="sub-item">Add new user</a>
+           <a href="#" class="sub-item">All users</a>
+         </div>
+       </div>
+       <div class="item">
+        <a class="sub-btn"><i class="fa-solid fa-people-roof"></i>Vendors<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="#" class="sub-item">Create Vendors</a>
+          <a href="#" class="sub-item">All Vendors</a>
+        </div>
+      </div>
+      <div class="item">
+        <a class="sub-btn"><i class="fa-solid fa-person-biking"></i>Rider<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="#" class="sub-item">Create Rider</a>
+          <a href="#" class="sub-item">All Rider</a>
+        </div>
+      </div>
+       <div class="item"><a href="#"><i class="fa-solid fa-box-open"></i>Products</a></div>
+       <div class="item"><a href="#"><i class="fa-solid fa-layer-group"></i>Categories</a></div>
+       <div class="item"><a href="#"><i class="fa-solid fa-ticket"></i>Tickets</a></div>
+       <div class="item"><a href="#"><i class="fa-solid fa-user-lock"></i>Accounts</a></div>
+
+     </div>
+   </div>
+   <section class="main">
+    {% include "dashboard_card.html" %}
+   </section>
+
+   <script type="text/javascript">
+   $(document).ready(function(){
+     //jquery for toggle sub menus
+     $('.sub-btn').click(function(){
+       $(this).next('.sub-menu').slideToggle();
+       $(this).find('.dropdown').toggleClass('rotate');
+     });
+
+     //jquery for expand and collapse the sidebar
+     $(document).ready(function(){
+      $('.side-bar').addClass('active');
+      $('.menu-btn').css("visibility", "hidden");
+      
+      $('.close-btn').click(function(){
+        $('.side-bar').toggleClass('active');
+        $('.menu-btn').css("visibility", function(_, currentVisibility) {
+          return currentVisibility === "hidden" ? "visible" : "hidden";
+        });
+      });
+
+      $('.menu-btn').click(function(){
+        $('.side-bar').toggleClass('active');
+        $('.menu-btn').css("visibility", function(_, currentVisibility) {
+          return currentVisibility === "hidden" ? "visible" : "hidden";
+        });
+      });
+    });
+  });
+   </script>
+
+ </body>
+</html>
+{% endblock %}

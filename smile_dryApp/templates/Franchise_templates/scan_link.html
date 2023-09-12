@@ -1,0 +1,96 @@
+<!-- Franchise_templates/scan.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcode Scanner</title>
+</head>
+<body>
+    <div id="top">
+        <h1>Barcode Scanner</h1>
+        <video id="video" width="640" height="480" autoplay style="display: none;"></video>
+        <!-- Remove the button that triggers scanning -->
+        <div class="d-grid mt-4"> 
+        <button class="btn btn-primary btn-sm rounded-0 bg-gradient bg-primary" type="button" onclick="scanBarcode()">Click Here To Scan Barcode</button>
+    </div>
+        <audio id="beep" src="{% static 'audio/beep-02.wav' %}" preload="auto" style="display: none;"></audio>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            let video = document.getElementById("video");
+            let stream = null;
+
+            function scanBarcode() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(function (mediaStream) {
+                            stream = mediaStream;
+                            video.srcObject = mediaStream;
+                            video.play();
+                            video.style.display = "block";
+                        })
+                        .catch(function (error) {
+                            console.error('Error accessing the camera: ', error);
+                        });
+                }
+
+                setTimeout(function () {
+                    let canvas = document.createElement("canvas");
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    let dataUri = canvas.toDataURL("image/png");
+                    let csrfToken = getCookie("csrftoken"); // Fetch the CSRF token
+                    $.ajaxSetup({
+                        beforeSend: function (xhr, settings) {
+                            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                                // Only send the token to relative URLs i.e. locally.
+                                xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                            }
+                        }
+                    });
+                    $.post("/process_barcode/", { data_uri: dataUri }, function (data, status) {
+                        if (data.success) {
+                            playBeepSound(); // Play beep sound on successful scan
+                            setTimeout(function () {
+                                alert(data.message);
+                            }, 100); // Show alert after 100ms
+                            // Redirect back to the form page with the barcode data in the session
+                            window.location.href = "{% url 'laundry-page_franchise' %}";
+                        } else {
+                            alert(data.message);
+                        }
+                        video.style.display = "none";
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                    });
+
+                }, 5000); // Scan for 5 seconds, adjust as needed
+            }
+
+            function playBeepSound() {
+                let beep = document.getElementById("beep");
+                beep.play();
+            }
+
+            // Function to fetch CSRF token from cookie
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== "") {
+                    const cookies = document.cookie.split(";");
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === name + "=") {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
+    </div>
+</body>
+</html>

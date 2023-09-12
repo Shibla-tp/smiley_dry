@@ -1,0 +1,538 @@
+{% load static %}{% load humanize %}{% block pageContent %}
+<style>
+    #laundry-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center;
+    }
+    .back-button {
+            /* padding: 10px 20px; */
+            float: right;
+        }
+
+    .back-button a {
+        /* color: #fff;
+        background-color: #3d464d; */
+        text-decoration: none;
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+        color: #3d464d;
+    }
+</style>
+<section class="py-4">
+    <div class="container">
+        <form action="" id="productpurchase-form">
+            <input type="hidden" name="id" value="{{productpurchase.id}}">
+            <input type="hidden" name="code" value="{% if productpurchase.code  %}{{productpurchase.code}}{% else %}generate{% endif %}">
+            <input type="hidden" name="status" value="{% if productpurchase.status  %}{{productpurchase.status}}{% else %}0{% endif %}">
+            <input type="hidden" name="payment" value="{% if productpurchase.payment  %}{{productpurchase.payment}}{% else %}0{% endif %}">
+            <input type="hidden" name="total_amount" value="{% if productpurchase.total_amount  %}{{productpurchase.total_amount}}{% else %}0{% endif %}">
+            <input type="hidden" name="total_amount_wgst" value="{% if productpurchase.total_amount_wgst  %}{{productpurchase.total_amount_wgst}}{% else %}0{% endif %}">
+            <input type="hidden" name="total_amount_cgst" value="{% if productpurchase.total_amount_cgst  %}{{productpurchase.total_amount_cgst}}{% else %}0{% endif %}">
+            <input type="hidden" name="GST" value="{% if productpurchase.GST  %}{{productpurchase.GST}}{% else %}0{% endif %}">
+            <div class="card rounded-0 mb-3">
+
+                <div class="card-header">
+                    <div class="back-button">
+                        <a href="{% url 'product-page' %}"><i class="fa-solid fa-circle-left"></i></a>
+                    </div>
+                    <div class="card-title py-1">Client Details</div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        {% if productpurchase.code %}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="" class="control-label">Transaction Code</label>
+                                <div class="h5"><b>{{productpurchase.code}}</b></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="client" class="control-label">Franchise Details</label>
+                                <input type="text" class="form-control form-control-sm rounded-0" name="client" id="client" value="{{productpurchase.client}}" required>
+                            </div> -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="franchise_details" class="control-label">Franchise Details</label>
+                                <select id="franchise_details" name="client" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for user in fusers %}
+                                    <option value="{{user.id}}" >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="contact" class="control-label">Contact Number</label>
+                                <input type="text" class="form-control form-control-sm rounded-0" name="contact" id="contact" value="{{productpurchase.contact}}">
+                                <!-- <span id="contact-display"></span> Add this line -->
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="card rounded-0 mb-3">
+                <div class="card-header">
+                    <div class="card-title py-1">Item List</div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row align-items-end">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="products" class="control-label">Products</label>
+                                <select id="products" class="form-control form-control-sm rounded-0">
+                                    <option value="" disabled selected></option>
+                                    {% for product in products %}
+                                    {% if product.available > 0 %}
+                                    <option value="{{product.pk}}" data-price = "{{product.price}}" data-price1 = "{{product.sale_price}}" data-price2= "{{product.GST}}" data-available = "{{product.available}}">{{product.name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <button class="btn btn-primary btn-sm rounded-0 bg-gradient bg-primary" type="button" id="add_product"><i class="fa fa-plus"></i> Add Product</button>
+                            </div>
+                        </div>
+                        <div class="clear-fix mt-2"></div>
+                        <table class="table table-bordered" id="product_list">
+                            <!-- <colgroup>
+                                <col width="5%">
+                                <col width="40%">
+                                <col width="20%">
+                                <col width="15%">
+                                <col width="20%">
+                            </colgroup> -->
+                            <thead>
+                                <tr>
+                                    <th class="p-1 text-center"></th>
+                                    <th class="p-1 text-center">Product Name</th>
+                                    <th class="p-1 text-center">Unit Price</th>
+                                    <th class="p-1 text-center">Tax (%)</th>
+                                    <th class="p-1 text-center">Quantity</th>
+                                    <th class="p-1 text-center">Price Per Quantity</th>
+                                    <th class="p-1 text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pitem in pitems %}
+                                <tr>
+                                    <td class="px-2 py-1 align-middle text-center">
+                                        <input type="hidden" name="product_id[]" value="{{pitem.product.id}}">
+                                        <input type="hidden" name="product_sale_price[]" value="{{pitem.sale_price}}">
+                                        <input type="hidden" name="product_GST[]" value="{{pitem.GST}}">
+                                        <input type="hidden" name="product_price[]" value="{{pitem.price}}">
+                                        
+                                        <button class="btn btn-outline-danger btn-sm rounded-0 rem-product" type="button"><i class="fa fa-times"></i></button>
+                                    </td>
+                                    <td class="px-2 py-1 align-middle product_type">{{pitem.product.name}}</td>
+                                    <td class="px-2 py-1 align-middle text-end product_sale_price">{{pitem.sale_price|floatformat}}</td>
+                                    <td class="px-2 py-1 align-middle text-end product_GST">{{pitem.GST|floatformat}}</td>
+                                    <td class="px-2 py-1 align-middle">
+                                        <input type="number" min="1" value="{{pitem.quantity|floatformat}}" class="form-control form-control-sm rounded-0 text-center" name="product_quantity[]" required>
+                                    </td>
+                                    <td class="px-2 py-1 align-middle text-end product_price">{{pitem.price|floatformat}}</td>
+                                    
+                                    <td class="px-2 py-1 align-middle product_total text-end">{{pitem.total_amount|floatformat}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="text-end" colspan="6">CGST</th>
+                                    <th class="text-end sub-total-product_cgst">0.00</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-end" colspan="6">SGST</th>
+                                    <th class="text-end sub-total-product_cgst">0.00</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-end" colspan="6">Total</th>
+                                    <th class="text-end sub-total-product_wgst">0.00</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-end" colspan="6">Grand Total</th>
+                                    <th class="text-end sub-total-product">0.00</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded-0 mb-3">
+                <div class="card-body">
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Grand Total:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <h4 class="fw-bolder pe-2 gtotal">{% if productpurchase.total_amount %}{{productpurchase.total_amount|floatformat:2|intcomma}}{% else %}0.00{% endif %}</h4>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Grand Total with Discount:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <input type="number" step="any" class="form-control form-control-lg rounded-0 text-end" id="tendered_amount" name="tendered" value="{% if productpurchase.tendered %}{{productpurchase.tendered|floatformat:2}}{% else %}0{% endif %}" required>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="col-auto">
+                            <h4 class="fw-bolder text-muted pe-2">Discount:</h4>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-end">
+                            <h4 class="fw-bolder pe-2 " id="change">{% if productpurchase.change %}{{productpurchase.change|floatformat:2|intcomma}}{% else %}0.00{% endif %}</h4>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="card-footer py-1 text-center">
+                    <button class="btn btn-primary btn-sm rounded-0" type="button" id="pay_later">Pay Later</button>
+                    <button class="btn btn-success btn-sm rounded-0" id="productpurchase-submit-btn" form="productpurchase-form"><i class="fa fa-save"></i> Pay</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<noscript id="productpurchase-clone">
+    <tr>
+        <td class="px-2 py-1 align-middle text-center">
+            <input type="hidden" name="price_id[]" value="">
+            <input type="hidden" name="productpurchase_price[]" value="">
+            <input type="hidden" name="productpurchase_sale_price[]" value="">
+            <input type="hidden" name="productpurchase_GST[]" value="">
+            <input type="hidden" name="productpurchase_price_wgst[]" value="">
+            <input type="hidden" name="productpurchase_price_cgst[]" value="">
+            <button class="btn btn-outline-danger btn-sm rounded-0 rem-productpurchase" type="button"><i class="fa fa-times"></i></button>
+        </td>
+        <td class="px-2 py-1 align-middle productpurchase_type"></td>
+        <td class="px-2 py-1 align-middle text-end productpurchaseprice">0.00</td>
+        <td class="px-2 py-1 align-middle">
+            <input type="number" step="any" min="1" value="1" class="form-control form-control-sm rounded-0 text-center" name="productpurchase_weight[]" required>
+        </td>
+        <td class="px-2 py-1 align-middle productpurchase_total text-end">0.00</td>
+        <td class="px-2 py-1 align-middle productpurchase_total_wgst text-end">0.00</td>
+        <td class="px-2 py-1 align-middle productpurchase_total_cgst text-end">0.00</td>
+    </tr>
+</noscript>
+<noscript id="product-clone">
+    <tr>
+        <td class="px-2 py-1 align-middle text-center">
+            <input type="hidden" name="product_id[]" value="">
+            <input type="hidden" name="product_price[]" value="">
+            <input type="hidden" name="product_sale_price[]" value="">
+            <input type="hidden" name="product_GST[]" value="">
+            <button class="btn btn-outline-danger btn-sm rounded-0 rem-product" type="button"><i class="fa fa-times"></i></button>
+        </td>
+        <td class="px-2 py-1 align-middle product_type"></td>
+        <td class="px-2 py-1 align-middle product_sale_price"></td>
+        <td class="px-2 py-1 align-middle product_GST"></td>
+        <td class="px-2 py-1 align-middle">
+            <input type="number" min="1" value="1" class="form-control form-control-sm rounded-0 text-center" name="product_quantity[]" required>
+        </td>
+        <td class="px-2 py-1 align-middle text-end product_price">0.00</td>
+        
+        <td class="px-2 py-1 align-middle product_total text-end">0.00</td>
+    </tr>
+</noscript> {% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    function calc_total() {
+        var sub_productpurchase = 0
+        var sub_product = 0
+        var sub_productpurchase_wgst = 0
+        var sub_product_wgst = 0
+        var sub_productpurchase_cgst = 0
+        var sub_product_cgst = 0
+        var gtotal = 0
+        var gtotal_wgst = 0
+        var gtotal_cgst = 0
+        $('#productpurchase_list tbody tr').each(function() {
+            var price = $(this).find('[name="productpurchase_price[]"]').val()
+            var sale_price = $(this).find('[name="productpurchase_sale_price[]"]').val()
+            var sale_price = $(this).find('[name="productpurchase_GST[]"]').val()
+            var weight = $(this).find('[name="productpurchase_weight[]"]').val()
+            weight = weight > 0 ? weight : 0;
+            price = price > 0 ? price : 0;
+            sale_price = sale_price > 0 ? sale_price : 0;
+            GST = GST > 0 ? GST : 0;
+            sub_productpurchase += parseFloat(parseFloat(weight) * parseFloat(price))
+            sub_productpurchase_wgst += parseFloat(parseFloat(weight) * parseFloat(sale_price))
+            sub_productpurchase_cgst += parseFloat(parseFloat(weight) * parseFloat(sale_price) * parseFloat(GST) / 100)
+            gtotal += parseFloat(parseFloat(weight) * parseFloat(price))
+            gtotal_wgst += parseFloat(parseFloat(weight) * parseFloat(sale_price))
+            gtotal_cgst += parseFloat(parseFloat(weight) * parseFloat(sale_price) * parseFloat(GST) / 100)
+            $(this).find('.productpurchase_total').text(parseFloat(parseFloat(weight) * parseFloat(price)).toLocaleString('en-US'))
+            $(this).find('.productpurchase_total_wgst').text(parseFloat(parseFloat(weight) * parseFloat(sale_price)).toLocaleString('en-US'))
+            $(this).find('.productpurchase_total_cgst').text(parseFloat(parseFloat(weight) * parseFloat(sale_price) * parseFloat(GST) / 100).toLocaleString('en-US'))
+        })
+        $('.sub-total-productpurchase').text(parseFloat(sub_productpurchase).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('.sub-total-productpurchase_wgst').text(parseFloat(sub_productpurchase_wgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('.sub-total-productpurchase_cgst').text(parseFloat(sub_productpurchase_cgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('#product_list tbody tr').each(function() {
+            var price = $(this).find('[name="product_price[]"]').val()
+            var sale_price = $(this).find('[name="product_sale_price[]"]').val()
+            var GST = $(this).find('[name="product_GST[]"]').val()
+            var qty = $(this).find('[name="product_quantity[]"]').val()
+            qty = qty > 0 ? qty : 0;
+            price = price > 0 ? price : 0;
+            sale_price = sale_price > 0 ? sale_price : 0;
+            GST = GST > 0 ? GST : 0;
+            sub_product += parseFloat(parseFloat(qty) * parseFloat(price))
+            sub_product_wgst += parseFloat(parseFloat(qty) * parseFloat(sale_price) )
+            sub_product_cgst += parseFloat(parseFloat(qty) * parseFloat(sale_price) * parseFloat(GST) / 200)
+            gtotal += parseFloat(parseFloat(qty) * parseFloat(price))
+            gtotal_wgst += parseFloat(parseFloat(qty) * parseFloat(sale_price))
+            gtotal_cgst += parseFloat(parseFloat(qty) * parseFloat(sale_price) * parseFloat(GST) / 200)
+            $(this).find('.product_total').text(parseFloat(parseFloat(qty) * parseFloat(price)).toLocaleString('en-US'))
+            $(this).find('.product_total_wgst').text(parseFloat(parseFloat(qty) * parseFloat(sale_price)).toLocaleString('en-US'))
+            $(this).find('.product_total_cgst').text(parseFloat(parseFloat(qty) * parseFloat(sale_price) * parseFloat(GST) / 200).toLocaleString('en-US'))
+        })
+        $('.sub-total-product').text(parseFloat(sub_product).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('.sub-total-product_wgst').text(parseFloat(sub_product_wgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('.sub-total-product_cgst').text(parseFloat(sub_product_cgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('[name="total_amount"]').val(gtotal)
+        $('.gtotal').text(parseFloat(gtotal).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('[name="total_amount_wgst"]').val(gtotal_wgst)
+        $('.gtotal_wgst').text(parseFloat(gtotal_wgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $('[name="total_amount_cgst"]').val(gtotal_cgst)
+        $('.gtotal_cgst').text(parseFloat(gtotal_cgst).toLocaleString('en-US', {
+            style: 'decimal',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2
+        }))
+        $
+    }
+   
+        // ... The rest of your existing code ...
+   
+    $(function() {
+
+        calc_total()
+        // $('#prices').select2({
+        //     placeholder: "Please Select Laundry Type Here",
+        //     width: "100%",
+        //     selectionCssClass: "form-control form-control-sm rounded-0"
+        // })
+        $('#franchise_details').change(function() {
+            var selectedUsername = $(this).val();
+            
+            // Make an AJAX request to fetch the contact number based on selectedUsername
+            $.ajax({
+                url: "{% url 'fetch-contact' %}",
+                type: "GET",
+                data: { username: selectedUsername },
+                dataType: "json",
+                success: function(response) {
+                    if (response && response.contact) {
+                        $('#contact').val(response.contact);
+                        $('#contact-display').text('Contact Number: ' + response.contact);
+                    } else {
+                        $('#contact').val('');
+                        $('#contact-display').text('');
+                    }
+                },
+                error: function() {
+                    $('#contact').val('');
+                    $('#contact-display').text('');
+                }
+            });
+        });
+
+        $('#products').select2({
+            placeholder: "Please Select Products Here",
+            width: "100%",
+            selectionCssClass: "form-control form-control-sm rounded-0"
+        })
+        $('#tendered_amount').on('change input', function() {
+            var tender = $(this).val()
+            var total = $('[name="total_amount"]').val()
+            tender = tender > 0 ? tender : 0;
+            total = total > 0 ? total : 0;
+            change = parseFloat(tender) - parseFloat(total)
+            $('#change').text(parseFloat(change).toLocaleString('en-US', {
+                style: 'decimal',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2
+            }))
+
+        })
+        $('#pay_later').click(function() {
+            $('#tendered_amount').val(0).attr('required', false)
+            $('#productpurchase-form').submit()
+        })
+        $('#productpurchase-submit-btn').click(function() {
+            $('#tendered_amount').attr('required', true)
+        })
+        $('#productpurchase_list tbody').find('[name="productpurchase_weight[]"]').on('input change', function() {
+            calc_total()
+        })
+        $('#productpurchase_list tbody').find('.rem-productpurchase').click(function() {
+            if (confirm("Are you sure to remove this item?") == true) {
+                $(this).closest('tr').remove()
+                calc_total()
+            }
+        })
+        $('#product_list tbody').find('[name="product_quantity[]"]').on('input change', function() {
+            calc_total()
+        })
+        $('#product_list tbody').find('.rem-product').click(function() {
+            if (confirm("Are you sure to remove this item?") == true) {
+                $(this).closest('tr').remove()
+                calc_total()
+            }
+        })
+        // $('#add_laundry').click(function() {
+        //     var pid = $('#prices').val()
+        //     if (pid < '1') {
+        //         return false
+        //     }
+        //     var price = $('#prices option[value="' + pid + '"]').attr('data-price')
+        //     var laundry_type = $('#prices option[value="' + pid + '"]').text()
+        //     var tr = $($('noscript#laundry-clone').html()).clone()
+        //     tr.find('.laundry_type').text(laundry_type)
+        //     tr.find('.laundry_price').text(parseFloat(price).toLocaleString('en-US'))
+        //     tr.find('.laundry_total').text(parseFloat(price).toLocaleString('en-US'))
+        //     tr.find('[name="price_id[]"]').val(pid)
+        //     tr.find('[name="laundry_price[]"]').val(price)
+        //     $('#laundry_list tbody').append(tr)
+        //     calc_total()
+        //     $('#prices').val('').trigger('change')
+        //     tr.find('[name="laundry_weight[]"]').on('input change', function() {
+        //         calc_total()
+        //     })
+        //     tr.find('.rem-laundry').click(function() {
+        //         if (confirm("Are you sure to remove this item?") == true) {
+        //             tr.remove()
+        //             calc_total()
+        //         }
+        //     })
+        // })
+
+        $('#add_product').click(function() {
+            var pid = $('#products').val()
+            if (pid < '1') {
+                return false
+            }
+            var price = $('#products option[value="' + pid + '"]').attr('data-price')
+            var sale_price = $('#products option[value="' + pid + '"]').attr('data-price1')
+            var GST = $('#products option[value="' + pid + '"]').attr('data-price2')
+            var max = $('#products option[value="' + pid + '"]').attr('data-available')
+            var product_name = $('#products option[value="' + pid + '"]').text()
+            var tr = $($('noscript#product-clone').html()).clone()
+            tr.find('.product_type').text(product_name)
+            tr.find('.product_sale_price').text(parseFloat(sale_price).toLocaleString('en-US'))
+            tr.find('.product_price').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('.product_GST').text(parseFloat(GST).toLocaleString('en-US'))
+            tr.find('.product_total').text(parseFloat(price).toLocaleString('en-US'))
+            tr.find('[name="product_id[]"]').val(pid)
+            tr.find('[name="product_price[]"]').val(price)
+            tr.find('[name="product_sale_price[]"]').val(sale_price)
+            tr.find('[name="product_GST[]"]').val(GST)
+            tr.find('[name="product_quantity[]"]').attr('max', max)
+            $('#product_list tbody').append(tr)
+            calc_total()
+            $('#products').val('').trigger('change')
+            tr.find('[name="product_quantity[]"]').on('input change', function() {
+                calc_total()
+            })
+            tr.find('.rem-product').click(function() {
+                if (confirm("Are you sure to remove this item?") == true) {
+                    tr.remove()
+                    calc_total()
+                }
+            })
+        })
+        $('#productpurchase-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            
+            if ($('#tendered_amount').prop('required') == true) {
+                var change = $('#change').text()
+                change = change.replace(/,/gi, '')
+                change = !isNaN(change) ? change : 0
+                if (change < 0) {
+                    alert("Tendered amount is invalid.")
+                    return false
+                }
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-productpurchase' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.replace('{% url "view-productpurchase" %}/' + resp.id)
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>
+{% endblock ScriptBlock %}

@@ -1,0 +1,77 @@
+{% load static %}
+<div class="container-fluid">
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div>
+    <form action="" id="stockin-form">
+        <input type="hidden" name="id" value="{{franchisestockout.id}}">
+        <input type="hidden" name="franchiseproduct" value="{{pid}}">
+        <div class="mb-3">
+            <label for="quantity" class="control-label">Quantity</label>
+            <input type="text" id="quantity" min="1" name="quantity" class="form-control form-control-sm rounded-0 text-end" value="{{franchisestockin.quantity|floatformat}}" required>
+        </div>
+        <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <label for="franchise_details" class="control-label">Franchise Detail</label>
+            <input type="text" class="form-control form-control-sm rounded-0" name="franchise_details" id="franchise_details" value="{{franchisestockin.franchise_details}}" required>
+        </div> -->
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <label for="franchise_details" class="control-label">Franchise Details</label>
+            <select id=" " name="franchise_details" class="form-control form-control-sm rounded-0">
+                <option value="" disabled selected></option>
+                {% for user in fusers %}
+                <option value="{{user.id}}" >{{user.username}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        $('#stockin-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-stockout_franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

@@ -1,0 +1,390 @@
+ {% load static %} {% load humanize %} 
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="{% static 'assets/css/style9.css' %}"> -->
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<style>
+
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    
+    body {
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    
+    .table__header {
+        width: 100%;
+        height: 10%;
+        background-color: #fff4;
+        padding: .8rem 1rem;
+      
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .table__header .input-group {
+        width: 35%;
+        height: 100%;
+        background-color: #fff5;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+       
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+    }
+    
+    .table__header .input-group:hover {
+        width: 45%;
+        background-color: #fff8;
+        box-shadow: 0 .1rem .4rem #0002;
+    }
+    
+    .table__header .input-group img {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    
+    .table__header .input-group input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    .table__body {
+        width: 95%;
+        max-height: calc(89% - 1.6rem);
+        background-color: #fff;   
+        margin: .8rem auto;
+        border-radius: .6rem;    
+        overflow: auto;
+        overflow: overlay;
+    }
+    
+    .table__body::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+    
+    .table__body::-webkit-scrollbar-thumb{
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+    
+    .table__body:hover::-webkit-scrollbar-thumb{ 
+        visibility: visible;
+    }
+    
+    table {
+        width: 100%;
+    }
+    
+    td img {
+        width: 36px;
+        height: 36px;
+        margin-right: .5rem;
+        border-radius: 50%;
+    
+        vertical-align: middle;
+    }
+    
+    table, th, td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d5d1defe;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+    
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+    
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+    
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td img {
+        transition: .2s ease-in-out;
+    }
+    
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    tbody tr.hide td img {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+    
+    thead th.active span.icon-arrow{
+        background-color: #6c00bd;
+        color: #fff;
+    }
+    
+    thead th.asc span.icon-arrow{
+        transform: rotate(180deg);
+    }
+    
+    thead th.active,tbody td.active {
+        color: #6c00bd;
+    }
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+      bottom: .5em;
+    }
+    
+        .button {
+            background-color:yellow; /* Green */
+            border-color:yellow;
+            border-radius:10px;
+            color: black;
+            height:30px;
+            width:80px;
+            text-align: center;
+            font-size: 14px;
+          }
+        
+
+
+    
+</style> 
+<body>
+<section class="py-4">
+    <div class="container">
+       
+        <div class="card rounded-0 mb-3">
+            <div class="card-header py-1">
+                <div class="card-title mb-0"><h3><strong>Daily Transaction Report</strong></h3></div>
+            </div>
+            <div class="card-body">
+                <form action="" id="filter-form">
+                    <div class="row align-items-end">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="mb-3">
+                                <label for="date" class="control-label">Choose Date</label>
+                                <input type="date" class="form-control form-control-sm rounded-0" id="date" value="{{date|date:'Y-m-d'}}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="mb-3">
+                                <button class="btn btn-sm btn-primary bg-gradient bg-primary rounded-0"><i class="fa fa-filter"></i> Submit</button>
+                                <button class="btn btn-sm btn-success bg-gradient bg-success rounded-0" type="button" id="print"><i class="fa fa-print"></i> Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card rounded-0 shadow">
+            <div class="card-body">
+                <div class="container-fluid">
+                    <table class="table table-bordered table-striped" id="laundry-tbl">
+                        <main class="table">
+                            
+                            <section class="table__body">
+                                <table id="selectedColumn">
+                        <thead>
+                            <tr>
+                                <th >#</th>
+                                <th >Date Added</th>
+                                <th >Code</th>
+                                <th >Client</th>
+                                <th >Franchise Details</th>
+                                <th >Total</th>
+                            </tr>
+                        </thead>
+                        {% comment %} <tbody>
+                            {% for laundry in laundries %}
+                            <tr>
+                                <td >{{ forloop.counter }}</td>
+                                <td>{{ laundry.date_added|date:"Y-m-d h:i A"}}</td>
+                                <td>
+                                    <div>
+                                        <div>{{ laundry.code}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="lh-1">
+                                        <div>{{ laundry.client}}</div>
+                                        <div>{{ laundry.contact}}</div>
+                                        
+                                    </div>
+                                </td>
+                                <td>{{ laundry.franchise_details}}</td>
+                                <td class="text-end">{{laundry.total_amount|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %} {% if not laundries %}
+                            <tr>
+                                <th class="text-center" colspan="5">No records found.</th>
+                            </tr>
+                            {% endif %}
+                        </tbody> {% endcomment %}
+                        <tbody>
+                            {% for laundry in laundries %}
+                            <tr>
+                                <td >{{ forloop.counter }}</td>
+                                <td>{{ laundry.date_added|date:"Y-m-d h:i A"}}</td>
+                                <td>
+                                    <div>
+                                        <div>{{ laundry.code}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="lh-1">
+                                        <div>{{ laundry.client}}</div>
+                                        <div>{{ laundry.contact}}</div>
+                                        
+                                    </div>
+                                </td>
+                                <td>{{ laundry.franchise_details}}</td>
+                                <td class="text-end">{{laundry.total_amount|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %} {% if not laundries %}
+                            {% comment %} <tr>
+                                <th class="text-center" colspan="5">No records found.</th>
+                            </tr> {% endcomment %}
+                            
+                            <!--tablesnewstart-->
+                            {% endif %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" class="text-center">Total Sales</th>
+                                <th class="text-end fw-bolder">{{grand_total|floatformat:2|intcomma}}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<noscript id="print-header">
+    <div>
+        <style>
+            html{
+                min-height: unset !important;
+            }
+        </style>
+        <div class="d-flex w-100">
+            <div class="col-2 text-center">
+                <img src="{{system_host}}{% static 'assets/default/img/logo.jpg' %}" style="width:4em;height:4em;object-fit:cover;object-position:center center" alt="" class="rounded-circle p-0 img-thumbnail">
+            </div>
+            <div class="col-8">
+                <div class="lh-1">
+                    <h4 class="text-center mb-0 fw-bolder">{{system_name}}</h4>
+                    <h5 class="text-center mb-0 fw-bolder">Daily Transaction Report</h5>
+                    <div class="text-center mb-0 fw-bolder">as of</div>
+                    <h5 class="text-center mb-0 fw-bolder">{{date|date:"F d, Y"}}</h5>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</noscript> 
+<script>
+    $(function() {
+        $('#laundry-tbl').find('td, th').addClass('px-2 py-1 align-middle')
+        $('#filter-form').submit(function(e) {
+            e.preventDefault()
+            location.href = '{% url "daily-report" %}/' + $('#date').val()
+        })
+        $('#print').click(function() {
+            console.log('print')
+            var h = $('head').clone()
+            h.find('title').text("Daily Transaction Report - Print Details")
+            h.find('link').each(function() {
+                if ($(this).is('[href]')) {
+                    $(this).attr('href', "{{system_host}}" + $(this).attr('href'))
+                }
+            })
+            h.find('script').each(function() {
+                if ($(this).is('[src]')) {
+                    $(this).attr('src', "{{system_host}}" + $(this).attr('src'))
+                }
+            })
+            var ph = $($('noscript#print-header').html()).clone()
+            var el = "";
+            el += $('#laundry-tbl').clone()[0].outerHTML
+
+
+            var nw = window.open("", "_blank", "width=" + ($(window).width() * .8) + ", left=" + ($(window).width() * .1) + "height=" + ($(window).height() * .8) + ", top=" + ($(window).height() * .1) + "")
+            nw.document.querySelector('head').innerHTML = h.html()
+            nw.document.querySelector('body').innerHTML = ph[0].outerHTML
+            nw.document.querySelector('body').innerHTML += el
+            nw.document.close()
+            start_loader()
+            setTimeout(() => {
+                nw.print()
+                setTimeout(() => {
+                    nw.close()
+                    end_loader()
+                }, 200)
+            }, 300)
+        })
+    })
+</script>
+</body>
+</html>
+

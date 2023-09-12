@@ -1,0 +1,633 @@
+{% load static %}
+<style>
+
+    section .popup-box{ 
+        padding:30px;
+        max-width:380px;
+        width:100%;
+        background:#fff;
+        border-radius:12px; 
+    }
+
+    .hello{
+        {% comment %} margin-left:500px;{% endcomment %}
+        margin: auto;
+        padding:30px;
+        max-width:900px;
+        width:100%;
+        background:#fff;
+        border-radius:12px; 
+        align-item:center;
+        justify-content:center;
+        
+    
+    }
+    btn-close{
+        border-radius:50px;
+        background: rgba(0,0,0,4);
+    }
+
+    .card--container{
+        background: #f0f0f0;
+        padding:2rem;
+        border-radius:10px;
+        }
+        .card--wrapper{
+        display: flex;
+        flex-wrap:wrap;
+        gap:1rem;
+        }
+        .main--title{
+        color: rgba(113,99,186,225);
+        padding-bottom:10px;
+        font-size:15px;
+        
+        }
+        .payment--card{
+        background: rgb(229,223,223);
+        border-radius:10px;
+        padding: 1.2rem;
+        width:290px;
+        height:150px;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        transition: all 0.5s ease-in-out;
+        }
+        .payment--card:hover{
+        tansform:translateY(-5px);
+        }
+        .card--header{
+        display:flex;
+        justify-content: space-between;
+        align-item:center;
+        margin-bottom:20px;
+        }
+        .mount{
+        display:flex;
+        flex-direction:column;
+        }
+        .title{
+        font-size:22px;
+        font-weight:200;
+        }
+        .amount--value {
+        font-size:24px;
+        font-family:"sans",sans,
+        monospace;
+        font-weight:600;
+        }
+        .icon{
+        color:#fff;
+        padding:3rem;
+        height:20px;
+        width:20px;
+        text-align:center;
+        border-radius:50%;
+        font-size:1.5rem;
+        background:#FFCCCB;
+        }
+        .card-detail{
+        font-size:18px;
+        color:#77777;
+        letter-spacing:2px;
+        font-family:"sans",sans,
+        monospace;
+        }
+        .light-red{
+        background:rgb(254,226,254);
+        }
+        
+</style>
+
+
+<div id="top">
+    <div class="container">
+        <div class="">
+            <div class="row g-4 align-items-center">
+                <div class="col">
+                    <h1 class="h3 m-0 mb-4"><b>Dashboard</b></h1>
+                </div>
+             <!-- <div class="col-auto d-flex"><select class="form-select me-3"><option selected="">7 October, 2021</option></select><a href="#" class="btn btn-primary">Export</a></div> -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #ffa757;
+
+                background: linear-gradient(180deg, #ffddbd 0%, #ffa757 100%);
+                
+                background: -moz-linear-gradient(180deg, #ffddbd 0%, #ffa757 100%);
+                
+                background: -webkit-linear-gradient(180deg, #ffddbd 0%, #ffa757 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFCAA6", endColorstr="#F86594", GradientType=1 ); ">
+                    <div class="card-header">Total Customer</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{customer_count}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #50d3c3;
+
+                background: linear-gradient(180deg, #c2f3ed 0%, #50d3c3 100%);
+                
+                background: -moz-linear-gradient(180deg, #c2f3ed 0%, #50d3c3 100%);
+                
+                background: -webkit-linear-gradient(180deg, #c2f3ed 0%, #50d3c3 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F4E900", endColorstr="#60B6F1", GradientType=1 );">
+                    <div class="card-header">Total Revenue</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{todays_sales}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #ffee31;
+
+                background: linear-gradient(180deg, #fff9b4 0%, #ffee31 100%);
+                
+                background: -moz-linear-gradient(180deg, #fff9b4  0%, #ffee31 100%);
+                
+                background: -webkit-linear-gradient(180deg, #fff9b4  0%, #ffee31 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFD78A", endColorstr="#F4762D", GradientType=1 );">
+                    <div class="card-header">Today Orders</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{today_orders}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #4BCBEB;
+
+                background: linear-gradient(180deg, #b8f1ff 0%, #4BCBEB 100%);
+                
+                background: -moz-linear-gradient(180deg, #b8f1ff 0%, #4BCBEB 100%);
+                
+                background: -webkit-linear-gradient(180deg, #b8f1ff  0%, #4BCBEB 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#87F4B5", endColorstr="#93CBF1", GradientType=1 );">
+                    <div class="card-header">Pending Orders</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{pending_orders}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #ff5faf;
+
+                background: linear-gradient(180deg, #ffbedf 0%, #ff5faf 100%);
+                
+                background: -moz-linear-gradient(180deg, #ffbedf 0%, #ff5faf 100%);
+                
+                background: -webkit-linear-gradient(180deg, #ffbedf 0%, #ff5faf 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFD78A", endColorstr="#F4762D", GradientType=1 );">
+                    <div class="card-header">Delivered Orders</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{delivered_orders}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;background: #72ceff;
+
+                background: linear-gradient(180deg, #ceeaff 0%, #96d1ff 100%);
+                
+                background: -moz-linear-gradient(180deg, #ceeaff 0%, #96d1ff 100%);
+                
+                background: -webkit-linear-gradient(180deg, #ceeaff 0%, #96d1ff 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#87F4B5", endColorstr="#93CBF1", GradientType=1 );">
+                    <div class="card-header">Processing Orders</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{processing_orders}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card #ededed" style="border-radius: 10px;ackground: #A2FF86;
+
+                background: linear-gradient(180deg, #d5fcca 0%, #A2FF86 100%);
+                
+                background: -moz-linear-gradient(180deg, #d5fcca 0%, #A2FF86 100%);
+                
+                background: -webkit-linear-gradient(180deg, #d5fcca 0%, #A2FF86 100%);
+                
+                filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFCAA6", endColorstr="#F86594", GradientType=1 );">
+                    <div class="card-header">Complaints</div>
+                    <div class="card-body">
+                        <div class="saw-indicator__body">
+                            <div class="saw-indicator__value">{{tickets_count}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+        {% comment %} <div class="card--container">
+            <div class="card--wrapper">
+            <div class="payment--card">
+            <div class="card--header">
+            <div class="amount">
+            <span class ="title">
+           Total Customer</span>
+            </div>
+            <i class="fas fa=dollar-sign icon">{{customer_count}}</i>
+            </div>
+            
+            </div>
+            
+                
+                <div class="payment--card">
+                <div class="card--header">
+                <div class="amount">
+                <span class ="title">
+              Total  Revenue</span>
+                </div>
+                <i class="fas fa=dollar-sign icon"></i>
+                </div>
+                </div>
+                
+                <div class="payment--card">
+                    <div class="card--header">
+                    <div class="amount">
+                    <span class ="title">
+                    Today Orders</span>
+                    </div>
+                    <i class="fas fa=dollar-sign icon">{{today_orders}}</i>
+                    </div>
+                    
+                    </div>
+                    <div class="payment--card">
+                        <div class="card--header">
+                        <div class="amount">
+                        <span class ="title">
+                        Pending Orders</span>
+                        </div>
+                        <i class="fas fa=dollar-sign icon">{{pending_orders}}</i>
+                        </div>
+                        
+                        </div>
+                         <div class="payment--card">
+                <div class="card--header">
+                <div class="amount">
+                <span class ="title">
+                Delivered orders</span>
+                </div>
+                <i class="fas fa=dollar-sign icon">{{delivered_orders}}</i>
+                </div>
+                
+                </div>
+                <div class="payment--card">
+                    <div class="card--header">
+                    <div class="amount">
+                    <span class ="title">
+                    Processing Orders</span>
+                    </div>
+                    <i class="fas fa=dollar-sign icon">{{processing_orders}}</i>
+                    </div>
+                    
+                    </div>
+                    
+                    <div class="payment--card">
+                        <div class="card--header">
+                        <div class="amount">
+                        <span class ="title">
+                        Complaints Found</span>
+                        </div>
+                        <div>
+                        <i class="fas fa=dollar-sign icon">{{tickets_count}}</i>
+                        </div>
+                        
+                        </div> {% endcomment %}
+                        
+
+
+  
+  <!-- <div class="col-12 col-lg-12 col-xxl-12 d-flex">
+    <div class="card flex-grow-1 saw-chart" data-sa-data="[{&quot;label&quot;:&quot;Jan&quot;,&quot;value&quot;:50},{&quot;label&quot;:&quot;Feb&quot;,&quot;value&quot;:130},{&quot;label&quot;:&quot;Mar&quot;,&quot;value&quot;:525},{&quot;label&quot;:&quot;Apr&quot;,&quot;value&quot;:285},{&quot;label&quot;:&quot;May&quot;,&quot;value&quot;:470},{&quot;label&quot;:&quot;Jun&quot;,&quot;value&quot;:130},{&quot;label&quot;:&quot;Jul&quot;,&quot;value&quot;:285},{&quot;label&quot;:&quot;Aug&quot;,&quot;value&quot;:240},{&quot;label&quot;:&quot;Sep&quot;,&quot;value&quot;:710},{&quot;label&quot;:&quot;Oct&quot;,&quot;value&quot;:470},{&quot;label&quot;:&quot;Nov&quot;,&quot;value&quot;:640},{&quot;label&quot;:&quot;Dec&quot;,&quot;value&quot;:1110}]">
+        <div class="sa-widget-header saw-chart__header">
+            <h2 class="sa-widget-header__title">Sales & Marketing</h2>
+            <div class="sa-widget-header__actions">
+                <div class="dropdown"><button type="button" class="btn btn-sm btn-sa-muted d-block" id="widget-context-menu-5" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More"><svg xmlns="http://www.w3.org/2000/svg" width="3" height="13" fill="currentColor"><path d="M1.5,8C0.7,8,0,7.3,0,6.5S0.7,5,1.5,5S3,5.7,3,6.5S2.3,8,1.5,8z M1.5,3C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0 S3,0.7,3,1.5S2.3,3,1.5,3z M1.5,10C2.3,10,3,10.7,3,11.5S2.3,13,1.5,13S0,12.3,0,11.5S0.7,10,1.5,10z"></path></svg></button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body"><canvas id="example-chart-js-vertical-bar"></canvas></div>
+        </div>
+    </div>
+  </div> -->
+  <!-- <div class="card">
+    <div class="card-body"><canvas id="chart-js-vertical-bar"></canvas></div>
+</div> -->
+<div class="card mb-4" style="border-radius: 10px;">
+    <div class="card-body " >
+        <canvas id="example-chart-js-doughnut" class="col-12 col-xxl-2 d-flex"></canvas>
+    </div>
+</div>
+<div class="card mb-4" style="border-radius: 10px;">
+<div class="saw-table__body sa-widget-table text-nowrap">
+    <table>
+        <thead>
+            <tr>
+                <th class="text-center">No.</th>
+                <th class="text-center">Date Added</th>
+                <th class="text-center">Code</th>
+                <th class="text-center">Client</th>
+                <th class="text-center">Phone Number</th>
+                <th class="text-center">Franchise Details</th>
+                <th class="text-center">Mode</th>
+                <th class="text-center">Pickup Date</th>
+                <th class="text-center">Delivery Date</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Bar code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for laundry in laundries %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="" class="text-reset">{{ laundry.date_added|date:"Y-m-d h:i A"}} </a></td>
+                <td>
+                    <div class="d-flex fs-6">
+                        <div class="badge badge-sa-primary">{{ laundry.code}}</div>
+                    </div>
+                </td>
+                <td>{{ laundry.client}}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <!-- <a href="" class="sa-symbol sa-symbol--shape--circle sa-symbol--size--md me-3"> -->
+                            <!-- <div class="sa-symbol__text"></div> -->
+                        <!-- </a> -->
+                        <div><a href="" class="text-reset">{{ laundry.contact}}</a></div>
+                    </div>
+                </td>
+                <td>{{ laundry.franchise_details}}</td>
+                <td>
+                    {% if laundry.mode == '1' %}
+                    <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Walkin</span> {% else %}
+                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Pickup</span> {% endif %}
+                </td>
+
+                <td>{{ laundry.pickup_date}}</td>
+                <td>{{ laundry.delivery_date}}</td>
+                <td>
+                    {% if laundry.status == '0' %}
+                    <span class="badge badge-dark bg-gradient bg-dark px-3 rounded-pill bg-opacity-75 text-sm py-1">Pending</span> 
+                    {% elif laundry.status == '1' %}
+                    <span class="badge badge-info bg-gradient bg-info px-3 rounded-pill bg-opacity-90 text-sm py-1">In-Progress</span> 
+                    {% elif laundry.status == '2' %}
+                    <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Done</span> 
+                    {% elif laundry.status == '3' %}
+                    <span class="badge badge-warning bg-gradient bg-warning px-3 rounded-pill bg-opacity-75 text-sm py-1">Picked Up</span>
+                    {% elif laundry.status == '4' %}
+                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Cancelled</span> 
+                    {% else %}
+                    <span class="badge badge-light bg-gradient bg-light px-3 border rounded-pill bg-opacity-75 text-sm py-1">N/A</span> 
+                    {% endif %}
+                </td>
+                <td>{{ laundry.barcode}}</td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+  <!-- <section class="table__body">
+    <table id="selectedColumn">
+      
+        <thead>
+            <tr>
+                <th class="text-center">#</th>
+                <th class="text-center">Date Added</th>
+                <th class="text-center">Code</th>
+                <th class="text-center">Client</th>
+                <th class="text-center">Phone Number</th>
+                <th class="text-center">Franchise Details</th>
+                <th class="text-center">Mode</th>
+                <th class="text-center">Pickup Date</th>
+                <th class="text-center">Delivery Date</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Bar code</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for laundry in laundries %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td>{{ laundry.date_added|date:"Y-m-d h:i A"}}</td>
+                <td>
+                    
+                    <div class="lh-1">
+                        <div>{{ laundry.code}}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="lh-1">
+                        <div>{{ laundry.client}}</div>
+                       
+                    </div>
+                </td>
+                <td>
+                    <div class="lh-1">
+                        
+                        <div>{{ laundry.contact}}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="lh-1">
+                        
+                        <div>{{ laundry.franchise_details}}</div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    {% if laundry.mode == '1' %}
+                    <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Walkin</span> {% else %}
+                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Pickup</span> {% endif %}
+                </td>
+                <td>
+                    <div class="lh-1">
+                        
+                        <div>{{ laundry.pickup_date}}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="lh-1">
+                        
+                        <div>{{ laundry.delivery_date}}</div>
+                    </div>
+                </td>
+
+                <td class="text-center">
+                    {% if laundry.status == '0' %}
+                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Pending</span> 
+                    {% elif laundry.status == '1' %}
+                    <span class="badge badge-info bg-gradient bg-info px-3 rounded-pill bg-opacity-90 text-sm py-1">In-Progress</span> 
+                    {% elif laundry.status == '2' %}
+                    <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Done</span> 
+                    {% elif laundry.status == '3' %}
+                    <span class="badge badge-warning bg-gradient bg-warning px-3 rounded-pill bg-opacity-75 text-sm py-1">Picked Up</span>
+                    {% elif laundry.status == '4' %}
+                    <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Cancelled</span> 
+                    {% else %}
+                    <span class="badge badge-light bg-gradient bg-light px-3 border rounded-pill bg-opacity-75 text-sm py-1">N/A</span> 
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="lh-1">
+                        <div>{{ laundry.barcode}}</div>
+                       
+                    </div>
+                </td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+</section> -->
+<script src="{% static 'assets/js/Chart.min.js' %}"></script>
+
+  <script>
+    "use strict";
+
+// /* global Chart */
+
+// const salesData = [
+//     (10 / 240) * 1200,
+//     (26 / 240) * 1200,
+//     (105 / 240) * 1200,
+//     (57 / 240) * 1200,
+//     (94 / 240) * 1200,
+//     (26 / 240) * 1200,
+//     (57 / 240) * 1200,
+//     (48 / 240) * 1200,
+//     (142 / 240) * 1200,
+//     (94 / 240) * 1200,
+//     (128 / 240) * 1200,
+//     (222 / 240) * 1200,
+// ];
+const browsersData = {
+    // labels: ['Chrome', 'Firefox', 'Opera', 'Edge', 'Safari'],
+    labels:  {{ labels|safe }},
+    datasets: [{
+        backgroundColor: [
+            '#ffd333',
+            '#eb5252',
+            '#51ad23',
+            '#4cb8bf',
+            '#498ff2',
+        ],
+        data: {{ data|safe }},
+    }, ],
+};
+    (function() {
+    const chartCanvas = document.getElementById('chart-js-vertical-bar');
+
+    if (!chartCanvas || !(chartCanvas instanceof HTMLCanvasElement)) {
+        return;
+    }
+
+    new Chart(chartCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels:  {{ labels|safe }},
+            datasets: [{
+                backgroundColor: '#ffd333',
+                borderColor: 'transparent',
+                borderWidth: 0,
+                fill: 'origin',
+                data: {{ data|safe }},
+            }, ],
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+
+            scales: {
+                y: {
+                    ticks: {
+                        fontFamily: 'Roboto',
+                        fontSize: 13,
+                        fontColor: '#828f99',
+                        // Include a dollar sign in the ticks
+                        callback: function(value) {
+                            return '$' + value;
+                        },
+                    },
+                    gridLines: {
+                        lineWidth: 1,
+                        color: 'rgba(0, 0, 0, 0.1)',
+                        zeroLineWidth: 1,
+                        zeroLineColor: 'rgba(0, 0, 0, 0.1)',
+                        drawBorder: false,
+                    },
+                },
+                x: {
+                    ticks: {
+                        fontFamily: 'Roboto',
+                        fontSize: 13,
+                        fontColor: '#828f99',
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                },
+            },
+        },
+    });
+}());
+
+
+/ // // // Doughnut
+// */
+(function() {
+    const chartCanvas = document.getElementById('example-chart-js-doughnut');
+
+    if (!chartCanvas || !(chartCanvas instanceof HTMLCanvasElement)) {
+        return;
+    }
+
+    new Chart(chartCanvas.getContext('2d'), {
+        type: 'doughnut',
+        data: browsersData,
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+        },
+    });
+}());
+  </script>

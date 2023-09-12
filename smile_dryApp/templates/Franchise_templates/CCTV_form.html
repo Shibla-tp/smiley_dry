@@ -1,0 +1,33 @@
+{% extends 'Franchise_templates/franchise_dashboard_list.html' %}{% load static %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <h4 class="card-title text-center">Franchise CCTV Live</h4>
+                <div class="card-body">
+                    <div class="card-header">
+                </div>
+                    <form method="POST" action="{% url 'CCTV_form' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name"><i class="fa-solid fa-shop" style="padding-right:0.5rem;"></i>Franchise Name:</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="live_stream_url"><i class="fa-solid fa-link" style="padding-right:0.5rem;" ></i>Live Stream URL:</label>
+                            <input type="text" name="live_stream_url" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">OK</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

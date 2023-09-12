@@ -1,0 +1,140 @@
+{% extends "Super_admin_templates/admin_dashboard.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>All Complaints</title>
+   
+  <!-- Bootstrap core CSS -->
+  <link href= "{% static 'ComplaintMS/extra/bootstrap/css/bootstrap.min.css' %}"rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'ComplaintMS/css/simple-sidebar.css' %}" rel="stylesheet">
+
+ <style>
+    .btn-warning{
+    background-color: #3d464d;
+            border: none;
+            color: #fff;
+}
+.back-button {
+            /* padding: 10px 20px; */
+            float: right;
+        }
+
+        .back-button a {
+            /* color: #fff;
+            background-color: #3d464d; */
+            text-decoration: none;
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            color: #3d464d;
+        }
+  .card-title{
+    /* background-color:#4BCBEB; */
+    padding: 0.5rem 1rem;
+    vertical-align: middle;
+  }
+  #top{
+    margin-right:-15%;
+  }
+  .card{
+    display: flex;
+    width: fit-content;
+  }
+ </style>
+</head>
+
+<div id="top" class="d-flex justify-content-center align-items-center ">
+  <div class="container">
+      <div class="col-md-8">
+          <div class="card">
+              <h3 class="card-title"><strong>Add Tickets </strong>
+                  <div class="back-button">
+                      <a href="/allcomplaints"><i class="fa-solid fa-circle-left"></i></a>
+                  </div>
+              </h3>
+              <div class="card-body">
+                  <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="row mb-3">
+                          
+                          <div class="col-md-6">
+                            {{ tickets_form.Franchise_branch.label_tag }}
+                            <!-- {{ tickets_form.Franchise_branch|as_crispy_field }} -->
+                            <select id="Franchise_branch" name="Franchise_branch" class="form-control form-control-sm rounded-0">
+                                <option value="" disabled selected></option>
+                                {% for user in fusers %}
+                                    <option value="{{ user.id}}" class="your-custom-class">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        </div>
+                      
+                          <div class="col-md-6">
+                              {{ tickets_form.Customer_ID.label_tag }}
+                              {{ tickets_form.Customer_ID|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="row mb-3">
+                          <div class="col-md-6">
+                              {{ tickets_form.Title.label_tag }}
+                              {{ tickets_form.Title|as_crispy_field }}
+                          </div>
+                          <div class="col-md-6">
+                              {{ tickets_form.image.label_tag }}
+                              {{ tickets_form.image|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="row mb-3">
+                          <div class="col-md-12">
+                              {{ tickets_form.Type_of_Tickets.label_tag }}
+                              {{ tickets_form.Type_of_Tickets|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="row mb-3">
+                          <div class="col-md-12">
+                              {{ tickets_form.Description.label_tag }}
+                              {{ tickets_form.Description|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="d-grid">
+                          <button type="submit" class="btn btn-info m-1">Submit</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+		
+{% endblock content %}
+
+
+
+		
+	    
+                
+				
+				
+           
+		            
+		
+

@@ -1,0 +1,162 @@
+<style>
+    /* Card styles */
+    .hello{
+        {% comment %} margin-left:500px;{% endcomment %}
+        margin: auto;
+        padding:0px;
+        max-width:4000px;
+        width:auto;
+        background:#fff;
+        border-radius:12px; 
+        align-item:center;
+        justify-content:center;
+        
+    
+    }
+    .card {
+        border-radius: 0;
+        display: block;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+     /* List styles */
+     dl {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    dt {
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+
+    dd {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        white-space: nowrap;
+    }
+
+    .ps-4 {
+        padding-top: 0.5rem;
+        margin-right: 3rem;
+    }
+
+    /* Button styles */
+    .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    }
+
+    .btn-primary {
+        background-color: #ffd333;
+        border: none;
+        color: #000;
+    }
+
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+    }
+
+    /* Container styles */
+    .container {
+        padding: 1rem;
+    }
+
+    /* Additional styles for small screens */
+    @media (max-width: 576px) {
+        dl {
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+
+        dd {
+            white-space: nowrap;
+        }
+    }
+</style>
+
+<div id="top">
+    <div class="hello">
+        <div class="row justify-content-center">
+            
+                <div class="card shadow rounded-0">
+                    <div class="card-header">
+                 
+                        <div class="h5 card-title fw-bold">Franchise Info</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <dl>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Coupon Code</dt>
+                                        <dd class="ps-4">{{ coupon.code }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-envelope" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Discount Type</dt>
+                                        <dd class="ps-4">
+                                            {% if coupon.discount_type == '1' %}
+                                                <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Percentage</span>
+                                            {% elif coupon.discount_type == '2' %}
+                                                <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Fixed Amount</span>
+                                            {% elif coupon.discount_type == '3' %}
+                                                <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Free Shipping</span>
+                                            {% endif %}
+                                            
+                                        </dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Discount</dt>
+                                        <dd class="ps-4">{{ coupon.discount }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Status</dt>
+                                        <dd class="ps-4">{% if coupon.status == '1' %}
+                                            <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Enabled</span> {% else %}
+                                            <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Disabled</span> {% endif %}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Start Date</dt>
+                                        <dd class="ps-4">{{ coupon.valid_from }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>End Date</dt>
+                                        <dd class="ps-4">{{ coupon.valid_to}}</dd>
+                                        
+                                        
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <div class="d-flex w-100 text-end justify-content-end">
+                            <a href="{% url 'update-password' %}" class="btn btn btn-light border btn-sm bg-gradient rounded-0 me-2">Update Password</a>
+                            <a href="{% url 'update-profile' %}" class="btn btn btn-primary btn-sm bg-gradient rounded-0">Update Profile</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

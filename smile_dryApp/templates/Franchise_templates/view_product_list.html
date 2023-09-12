@@ -1,0 +1,151 @@
+{% load static %} {% load humanize %} {% block pageContent %}
+<div class="container-fluid">
+        <div class="card rounded-0 shadow">
+            <div class="card-header py -1">
+                <div class="d-flex w-100 align-items-center">
+                    <div class="card-title mb-0 col-auto flex-shrink-1 flex-grow-1">Product Details</div>
+                    <!-- <div class="col-auto">
+                        <button class="btn btn-primary btn-sm rounded-0 bg-gradient bg-primary" type="button" id="manage-product"><i class="fa fa-edit"></i> Edit Details</button>
+                        <button class="btn btn-danger btn-sm rounded-0 bg-gradient bg-danger" type="button" id="delete-product"><i class="fa fa-trash"></i> Delete Product</button>
+                    </div> -->
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid" id="e-details">
+                    <div class="lh-1">
+                        <table class="table table-bordered table-striped" id="product-tbl">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="30%">
+                                <col width="15%">
+                                <col width="15%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">DateTime</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Status</th>
+                                    <!-- <th class="text-center">Available Stock</th> -->
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td>{{ product.date_added|date:"Y-m-d H:i" }}</td>
+                                    <td>{{ product.name}}</td>
+                                    </td>
+                                    <td>{{ product.description }}</td>
+                                    <td>{{ product.price }}</td>
+                                    <td class="text-center">
+                                        {% if product.status == '1' %}
+                                        <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span> {% else %}
+                                        <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span> {% endif %}
+                                    </td>
+                                    <!-- <td>{{product.available|floatformat}}</td>  -->
+                                    
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+
+{% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    $(function() {
+        $('#manage-product').click(function() {
+            uni_modal("<i class='fa fa-edit'></i> Edit Product Details", "{% url 'manage-product-pk' product.pk %}")
+        })
+        
+        $('#delete-product').click(function() {
+            _conf("Are you sure to delete this Product?", 'delete_product', ["'" + '{% url "delete-product" product.pk %}' + "'"])
+        })
+    })
+
+    function delete_stockin_franchise(url) {
+
+        var _this = $('#confirm_modal .modal-body')
+        $('.err-msg').remove();
+        var el = $('<div>')
+        el.addClass("alert alert-danger err-msg")
+        el.hide()
+        start_loader()
+        $.ajax({
+            headers: {
+                "X-CSRFToken": "{{csrf_token}}"
+            },
+            url: url,
+            dataType: 'JSON',
+            error: err => {
+                console.log(err)
+                alert("an error occurred.")
+                end_loader()
+            },
+            success: function(resp) {
+                if (resp.status == 'success') {
+                    location.reload()
+                } else if (!!resp.msg) {
+                    el.html(resp.msg)
+                    _this.prepend(el)
+                    el.show()
+                } else {
+                    el.html("An error occurred")
+                    _this.prepend(el)
+                    el.show()
+                }
+                end_loader()
+            }
+
+        })
+    }
+
+    function delete_product(url) {
+        var _this = $('#confirm_modal .modal-body')
+        $('.err-msg').remove();
+        var el = $('<div>')
+        el.addClass("alert alert-danger err-msg")
+        el.hide()
+        start_loader()
+        $.ajax({
+            headers: {
+                "X-CSRFToken": "{{csrf_token}}"
+            },
+            url: url,
+            dataType: 'JSON',
+            error: err => {
+                console.log(err)
+                alert("an error occurred.")
+                end_loader()
+            },
+            success: function(resp) {
+                if (resp.status == 'success') {
+                    location.replace("{% url 'product-page' %}")
+                } else if (!!resp.msg) {
+                    el.html(resp.msg)
+                    _this.prepend(el)
+                    el.show()
+                } else {
+                    el.html("An error occurred")
+                    _this.prepend(el)
+                    el.show()
+                }
+                end_loader()
+            }
+
+        })
+    }
+</script>
+{% endblock ScriptBlock %}

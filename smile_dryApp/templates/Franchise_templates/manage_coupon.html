@@ -1,0 +1,196 @@
+{% load static %}
+<style>
+    .errorlist {
+        color: var(--bs-danger);
+    }
+
+    .mdc-text-field {
+        width: 100%;
+    }
+
+    .mdc-text-field--outlined {
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .card {
+        border-radius: 0;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+
+</style>
+<div id="top" >
+<div class="container-fluid">
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div> 
+    <form action="" id="user-form">
+        <input type="hidden" name="id" value="{{coupon.id}}">
+        <input type="hidden" name="manage_coupon" value="1">
+        <div class="form-group mb-4">
+            <label for="code" class="control-label"><i class="fa-solid fa-user-tie "style="padding-right:0.5rem;" ></i>Code</label>
+            <input type="text" class="form-control rounded-0" name="code" id="code" value="{% if form.data.code %}{{ form.data.code }}{% else %}{{ coupon.code}}{% endif %}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="discount_type" class="control-label"><i class="fa-solid fa-chart-simple" style="padding-right:0.5rem;"></i>Discount_type</label>
+            <select type="text" id="discount_type" name="discount_type" class="form-select form-select-sm rounded-0" required>
+                {% if coupon.discount_type == '1' %}
+                <option value="1" selected>Percentage</option>
+                {% else %}
+                <option value="1">Percentage</option>
+                {% endif %}
+                {% if coupon.discount_type == '2' %}
+                <option value="2" selected>Fixed Amount</option>
+                {% else %}
+                <option value="2">Fixed Amount</option>
+                {% endif %}
+                {% if coupon.discount_type == '3' %}
+                <option value="3" selected>Free Shipping</option>
+                {% else %}
+                <option value="3">Free Shipping</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="discount" class="control-label"><i class="fa-solid fa-scale-unbalanced-flip" style="padding-right:0.5rem;"></i>Discount </label>
+            <input type="number" id="discount" name="discount" class="form-control form-control-sm rounded-0 text-end" value="{{coupon.discount}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="user_limit" class="control-label"><i class="fa-solid fa-user-tie" style="padding-right:0.5rem;"></i>User_limit </label>
+            <input type="number" id="user_limit" name="user_limit" class="form-control form-control-sm rounded-0 text-end" value="{{coupon.user_limit}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="control-label"><i class="fa-solid fa-chart-simple" style="padding-right:0.5rem;"></i>Status</label>
+            <select type="text" id="status" name="status" class="form-select form-select-sm rounded-0" required>
+                {% if coupon.status == '1' %}
+                <option value="1" selected>Enabled</option>
+                {% else %}
+                <option value="1">Enabled</option>
+                {% endif %}
+                {% if coupon.status == '2' %}
+                <option value="2" selected>Disabled</option>
+                {% else %}
+                <option value="2">Disabled</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <label for="valid_from" class="control-label">Start From</label>
+                <input type="date" class="form-control form-control-sm rounded-0" name="valid_from" id="valid_from" value="{% if form.data.code %}{{ form.data.code }}{% else %}{{coupon.valid_from}}{% endif %}" required>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <label for="valid_to" class="control-label">End Date</label>
+                <input type="date" class="form-control form-control-sm rounded-0" name="valid_to" id="valid_to" value="{{coupon.valid_to}}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <label for="franchise_details" class="control-label"><i class="fa-solid fa-map-location-dot" style="padding-right:0.5rem;"></i>Franchise Details</label>
+            <select id="franchise_details" name="franchise_details" class="form-control form-control-sm rounded-0">
+                <option value="" disabled selected></option>
+                {% for user in fusers %}
+                <option value="{{user.id}}" name="franchise_details">{{user.username}}</option>
+
+                {% endfor %}
+            </select>
+        </div> 
+        
+    </form>
+</div>
+</div>
+<script>
+    $(function() {
+        $('#pay_later').click(function() {
+            $('#user-form').submit()
+        })
+        $('#user-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-coupon_franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

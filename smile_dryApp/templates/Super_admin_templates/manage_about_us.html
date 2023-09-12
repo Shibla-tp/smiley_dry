@@ -1,0 +1,114 @@
+{% load static %}
+
+<style>
+     /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+</style>
+
+<body>
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div> 
+    <form action="" id="about_us-form">
+        <input type="hidden" name="id" value="{{about_us.id}}">
+           
+       
+        <div class="mb-3">
+            <label for="description" class="control-label"><i class="fa-solid fa-clipboard" style="padding-right:0.5rem;"></i>Description</label>
+            <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{{about_us.description}}</textarea>
+        </div>
+        
+    </form>
+</div>
+<script>
+    $(function() {
+        tinymce.init({
+            selector: "#description",
+            plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table paste codesample"
+                ],
+            toolbar:
+                    "undo redo | fontselect styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | codesample action section button | custom_dialog",
+            font_formats:"Segoe UI=Segoe UI;",
+            fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
+            // plugins: "autolink lists link image charmap print preview hr anchor",
+            // toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            height: 300,
+        });
+
+        $('#about_us-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            $('.err-msg').empty();
+            var el = $('<div>');
+            el.addClass("alert alert-danger err-msg");
+            el.hide();
+
+            var formData = new FormData(_this[0]);
+            formData.append('description', tinymce.activeEditor.getContent());
+
+            start_loader();
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-about_us' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                error: function(err) {
+                    console.log(err);
+                    alert("An error occurred");
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (resp.status === 'success') {
+                        location.reload();
+                    } else if (resp.status === 'failed' && resp.msg) {
+                        el.text(resp.msg);
+                    } else {
+                        el.text("An error occurred");
+                        console.error(resp);
+                        end_loader();
+                    }
+                    el.show('slow');
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader();
+                }
+            });
+
+        });
+    });
+</script>

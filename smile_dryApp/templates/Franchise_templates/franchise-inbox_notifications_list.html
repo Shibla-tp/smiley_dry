@@ -1,0 +1,126 @@
+<!-- notifications.html -->
+{% extends 'Franchise_templates/franchise_dashboard_list.html' %}
+{% block content %}
+{% load static %}
+<style>
+    .sa-inbox-list__item.highlight {
+    background-color: #f5f5f5; /* Change to your desired highlight color */
+    font-weight: bold;
+}
+</style>
+<div id="top">
+    <div class="sa-inbox flex-grow-1">
+        <div class="sa-inbox__backdrop"></div>
+        <!-- <div class="sa-inbox__sidebar" data-simplebar=""><button type="button" class="btn btn-primary sa-inbox__compose-button" data-bs-toggle="modal" data-bs-target="#composeModal">Compose</button>
+            <ul class="sa-nav sa-nav--card">
+                <li class="sa-nav__section">
+                    <ul class="sa-nav__menu">
+                        <li class="sa-nav__menu-item sa-nav__menu-item--active sa-nav__menu-item--has-icon"><a href="#" class="sa-nav__link"><span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></span>
+                            <span class="sa-nav__title">Inbox</span><span class="sa-nav__badge badge badge-sa-pill badge-sa-primary">{{notification_count}}</span></a></li>
+                        <li
+                            class="sa-nav__menu-item sa-nav__menu-item--has-icon"><a href="#" class="sa-nav__link"><span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span><span class="sa-nav__title">Snoozed</span></a></li>
+                <li
+                    class="sa-nav__menu-item sa-nav__menu-item--has-icon"><a href="#" class="sa-nav__link"><span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></span><span class="sa-nav__title">Collaboration</span><span class="sa-nav__badge badge badge-sa-pill badge-sa-primary">2</span></a></li>
+                    <li
+                        class="sa-nav__menu-item sa-nav__menu-item--has-icon"><a href="#" class="sa-nav__link"><span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span><span class="sa-nav__title">RedParts</span></a></li>
+                        </ul>
+                        </li>
+            </ul>
+        </div> -->
+        <div class="sa-inbox__body">
+            <div class="sa-inbox-toolbar"><label class="sa-inbox-toolbar__checkbox"><input type="checkbox" class="form-check-input" aria-label="..."/>All Inbox</label><button type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20 sa-inbox-toolbar__menu"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M1,11V9h18v2H1z M1,3h18v2H1V3z M15,17H1v-2h14V17z"></path></svg></button>
+                <!-- <div
+                    class="flex-grow-1"></div>
+            <div class="sa-inbox-toolbar__text">1–32 of 512</div><button type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <button
+                type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                <button
+                    type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20 me-n3"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg></button>
+                    <div
+                        class="me-n2"></div> -->
+    </div>
+    <div class="sa-inbox-list">
+        {% for notification in notifications_franchise %}
+        <div class="sa-inbox-list__item {% if not notification.is_read %} highlight{% endif %}"><label class="sa-inbox-list__checkbox"><input type="checkbox" class="form-check-input m-0 d-block" aria-label="..."/>
+            <input type="hidden" name="id" value="{{notification.id}}">
+        </label>
+            <div class="sa-inbox-list__star"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+            <div
+                class="sa-inbox-list__author">
+                <div class="sa-symbol sa-symbol--shape--circle">
+                    <div class="sa-symbol__text"><img src="{% static 'assets/images/useracct.png' %}" width="64" height="64" alt="" /></div>
+                </div>{{ notification.sender.first_name }}{{ notification.sender.last_name }}</div>
+        <div class="sa-inbox-list__summary">
+            <div class="sa-inbox-list__content"><span class="sa-inbox-list__subject"><a href="{% url 'franchise-inbox_convo' notification.id %}">{{ notification.heading | safe }}</a></span> – <span class="sa-inbox-list__title">{{ notification.message }}</span></div>
+        </div>
+        <div class="sa-inbox-list__date">{{ notification.created_at }}</div>
+    </div>
+    {% endfor %}
+    
+
+    </div>
+    </div>
+    </div>
+    <!-- <div class="modal fade" id="composeModal" tabindex="-1" aria-labelledby="composeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <form class="modal-content">
+                <div class="modal-header px-5">
+                    <h5 class="modal-title" id="composeModalLabel">New message</h5><button type="button" class="sa-close sa-close--modal" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                <div class="modal-body p-5">
+                    <div class="mb-4"><label for="form-compose/email" class="visually-hidden">Email address</label><input type="email" class="form-control" id="form-compose/email" placeholder="stroyka@example.com" readonly="" /></div>
+                    <div class="mb-4 d-flex align-items-center"><label for="form-compose/to" class="visually-hidden">To</label><input type="email" class="form-control" id="form-compose/to" placeholder="To" />
+                        <div class="ms-4"><a href="#" class="text-muted fs-exact-13">CC</a></div>
+                        <div class="ms-4"><a href="#" class="text-muted fs-exact-13">BCC</a></div>
+                    </div>
+                    <div class="mb-4"><label for="form-compose/subject" class="visually-hidden">Subject</label><input type="text" class="form-control" id="form-compose/subject" placeholder="Subject" /></div>
+                    <div class="mb-4"><textarea class="sa-quill-control form-control" rows="8" placeholder="Message"></textarea></div>
+                    <div class="row g-3">
+                        <div class="col-sm-auto col-12"><button type="submit" class="btn btn-primary w-100">Send</button></div>
+                        <div class="col d-flex flex-wrap"><button type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="Attache File"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></button>
+                            <button
+                                type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="Insert Image"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></button>
+                                <button
+                                    type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="Insert Link"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+                                    <button
+                                        type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="Insert Emotion"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smile"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></button>
+                                        <div
+                                            class="flex-grow-1"></div><button type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="More"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg></button>
+                        <button
+                            type="button" class="btn btn-sa-muted btn-sa-icon fs-exact-20" data-bs-toggle="tooltip" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                    </div>
+                </div>
+        </div>
+        </form>
+    </div>
+    </div> -->
+    </div>
+    <script>
+        $('.sa-inbox-list__item').click(function() {
+            var notification = $(this);
+            if (!notification.hasClass('highlight')) {
+                return;
+            }
+    
+            var notificationId = notification.find('input[name="id"]').val();
+    
+            $.ajax({
+                type: 'POST',
+                url: '{% url "franchise-mark-notification-read" %}',
+                data: { 'notification_id': notificationId },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        console.log('Notification marked as read:', notificationId);
+                        notification.removeClass('highlight');
+                    } else {
+                        console.log('Failed to mark notification as read:', notificationId);
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log('Error marking notification as read:', errorThrown);
+                }
+            });
+        });
+    </script>
+    
+    
+    {% endblock content %}

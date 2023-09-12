@@ -1,0 +1,94 @@
+{% extends "Super_admin_templates/admin_dashboard.html" %}
+{% block content %}
+<script src="https://kit.fontawesome.com/a2eb797991.js" crossorigin="anonymous"></script>
+<style>
+/* .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+} */
+
+/* .card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+td,
+th {
+    text-align: center;
+    height: 50px;
+    border: 1px solid #8c8f8fcd;
+}
+
+th {
+    background-color: #ffd333;
+}
+
+ i {
+    text-decoration: none;
+    color: #3d464d;
+}
+
+</style>
+<div id="top">
+<div class="container">
+    {% comment %} <h3 class="fw-bolder text-center">List of Franchisees CCTV live link</h3>
+    <center>
+        <hr class="bg-primary opacity-100" style="height:3px" width="5%">
+    </center> {% endcomment %}
+    <div class="card rounded-0 shadow">
+        <div class="card-body">
+           <div class="container-fluid">
+                {% comment %} <div class="text-end mb-3">
+                     <button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" type="button" id="create_new" ><i class="fa fa-plus"></i> Add New</button></div> {% endcomment %}
+                {% comment %}    <a class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" href="{% url 'manage-user' %}" id="create_new"><i class="fa fa-plus"></i> Add New</a> {% endcomment %}
+              
+                
+             
+            </div>
+<main class="table">
+<section class="table__header">
+    <h3><Strong>List of Franchisees CCTV live link</Strong></h3>
+</section>
+<section class="table__body">
+    <table id="selectedColumn">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Franchise Name</th>
+                <th>Franchise Live Link</th>
+                <th>Franchise Live View</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for CCTV in CCTVs %}
+            <tr>
+                <td>{{ CCTV.id}}</td>
+                <td>{{ CCTV.Franchise_name }}</td>
+                <td>{{ CCTV.Live_stream_url }}</td>
+                <td><a href=""><iframe width="560" height="315" src="https://www.youtube.com/embed/{{ CCTV.Live_stream_url }}"
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></a></td>
+                <td><a href="/CCTV_delete/{{CCTV.Franchise_name}}"><i class="fa-solid fa-trash" style="color: #3d464d;"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+   
+</section>
+</main>
+     
+        </div>
+    </div>
+</div>
+</section>
+{% endblock content %}
+</div>

@@ -1,0 +1,336 @@
+{% extends 'Franchise_templates/franchise_dashboard_list.html' %}{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>b2c Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+box-sizing: border-box;
+}
+
+a {
+text-decoration: none;
+color: #379937;
+}
+
+
+
+.dropdown {
+position: relative;
+font-size: 14px;
+color: #333;
+
+.dropdown-list {
+  padding: 12px;
+  background: #fff;
+  position: absolute;
+  top: 30px;
+  left: 2px;
+  right: 2px;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+  transform-origin: 50% 0;
+  transform: scale(1, 0);
+  transition: transform .15s ease-in-out .15s;
+  max-height: 66vh;
+  overflow-y: scroll;
+  width: 497px;
+}
+
+.dropdown-option {
+  display: block;
+  padding: 8px 12px;
+  opacity: 0;
+  transition: opacity .15s ease-in-out;
+}
+
+.dropdown-label {
+  display: block;
+  height: 30px;
+  width: 500px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  line-height: 1;
+  cursor: pointer;
+  
+  &:before {
+    content: '▼';
+    float: right;
+  }
+}
+
+&.on {
+ .dropdown-list {
+    transform: scale(1, 1);
+    transition-delay: 0s;
+    
+    .dropdown-option {
+      opacity: 1;
+      transition-delay: .2s;
+    }
+  }
+  
+  .dropdown-label:before {
+    content: '▲';
+  }
+}
+
+[type="checkbox"] {
+  position: relative;
+  top: -1px;
+  margin-right: 4px;
+}
+}
+  </style>
+</head>
+<body>
+  <div id="top">
+  <h2>New Orders</h2>
+
+  <div class="form-group">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="options" id="walkin" value="walkin" {% if selected == 'walkin' or not selected %}checked{% endif %}>
+      <label class="form-check-label" for="walkin">Walkin</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="options" id="pickup" value="pickup" {% if selected == 'pickup' %}checked{% endif %}>
+      <label class="form-check-label" for="pickup">Pickup</label>
+    </div>
+  </div>
+    <form  method="POST">
+        
+            
+            {% csrf_token %}
+            Name<input type="text" name="name" value="{{em1.customer_name}}"><br>
+
+
+            contact number<input type="number" name="contact" value="{{em1.contact_number}}"><br>
+
+
+            <div class="dropdown" data-control="checkbox-dropdown">
+              <label class="dropdown-label" name="service" value="{{em1.service}}">Select Services</label>
+              
+              <div class="dropdown-list">
+                <!-- <a href="#" data-toggle="check-all" class="dropdown-option">
+                  Check All  
+                </a> -->
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="{{em1.service}}" />
+                  Dry Clean
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Wash & Fold" />
+                  Wash & Fold
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Wash & Iron" />
+                  Wash & Iron
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Premium Laundry" />
+                  Premium Laundry
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Shoe Cleaning" />
+                  Shoe Cleaning
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Stream Press" />
+                  Stream Press
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Starching" />
+                  Starching
+                </label>       
+              </div>
+            </div>
+
+
+            Delivery Date<input type="date" name="delivery-date" value="{{em1.delivery_date}}"><br>
+            <div class="dropdown" data-control="checkbox-dropdown">
+              <label class="dropdown-label" name="delivery-time" value="{{em1.delivery_time}}">Delivery Time</label>
+              
+              <div class="dropdown-list">
+                
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="9 AM-10 AM" />
+                  9 AM-10 AM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="ddelivery-time" value="10 AM-11 AM" />
+                  10 AM-11 AM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="11 AM-12 PM" />
+                 11 AM-12 PM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="12 PM-1 PM" />
+                  12 PM-1 PM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="1 PM-2 PM" />
+                  1 PM-2 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="2 PM-3 PM" />
+                  2 PM-3 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="3 PM-4 PM" />
+                  3 PM-4 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="4 PM-5 PM" />
+                  4 PM-5 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="5 PM-6 PM" />
+                  5 PM-6 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="6 PM-7 PM" />
+                  6 PM-7 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="7 PM-8 PM" />
+                  7 PM-8 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="8 PM-9 PM" />
+                  8 PM-9 PM
+                </label>     
+              </div>
+            </div>
+            Coupon code<input type="text" name="coupon" value="{{em1.Coupon_code}}"><br>
+            Address<input type="text" name="address" value="{{em1.address}}"><br>
+
+            <input type="submit" value="Update">
+
+        
+        </form>
+      </div>
+        <script>
+          (function($) {
+        var CheckboxDropdown = function(el) {
+          var _this = this;
+          this.isOpen = false;
+          this.areAllChecked = false;
+          this.$el = $(el);
+          this.$label = this.$el.find('.dropdown-label');
+          this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
+          this.$inputs = this.$el.find('[type="checkbox"]');
+          
+          this.onCheckBox();
+          
+          this.$label.on('click', function(e) {
+            e.preventDefault();
+            _this.toggleOpen();
+          });
+          
+          this.$checkAll.on('click', function(e) {
+            e.preventDefault();
+            _this.onCheckAll();
+          });
+          
+          this.$inputs.on('change', function(e) {
+            _this.onCheckBox();
+          });
+        };
+        
+        CheckboxDropdown.prototype.onCheckBox = function() {
+          this.updateStatus();
+        };
+        
+        CheckboxDropdown.prototype.updateStatus = function() {
+          var checked = this.$el.find(':checked');
+          
+          this.areAllChecked = false;
+          this.$checkAll.html('Check All');
+          
+          if(checked.length <= 0) {
+            this.$label.html('Select Options');
+          }
+          else if(checked.length === 1) {
+            this.$label.html(checked.parent('label').text());
+          }
+          else if(checked.length === this.$inputs.length) {
+            this.$label.html('All Selected');
+            this.areAllChecked = true;
+            this.$checkAll.html('Uncheck All');
+          }
+          else {
+            this.$label.html(checked.length + ' Selected');
+          }
+        };
+        
+        CheckboxDropdown.prototype.onCheckAll = function(checkAll) {
+          if(!this.areAllChecked || checkAll) {
+            this.areAllChecked = true;
+            this.$checkAll.html('Uncheck All');
+            this.$inputs.prop('checked', true);
+          }
+          else {
+            this.areAllChecked = false;
+            this.$checkAll.html('Check All');
+            this.$inputs.prop('checked', false);
+          }
+          
+          this.updateStatus();
+        };
+        
+        CheckboxDropdown.prototype.toggleOpen = function(forceOpen) {
+          var _this = this;
+          
+          if(!this.isOpen || forceOpen) {
+             this.isOpen = true;
+             this.$el.addClass('on');
+            $(document).on('click', function(e) {
+              if(!$(e.target).closest('[data-control]').length) {
+               _this.toggleOpen();
+              }
+            });
+          }
+          else {
+            this.isOpen = false;
+            this.$el.removeClass('on');
+            $(document).off('click');
+          }
+        };
+        
+        var checkboxesDropdowns = document.querySelectorAll('[data-control="checkbox-dropdown"]');
+        for(var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
+          new CheckboxDropdown(checkboxesDropdowns[i]);
+        }
+      })(jQuery);
+      </script>
+      <script>
+        const walkinRadio = document.getElementById('walkin');
+        const pickupRadio = document.getElementById('pickup');
+    
+        walkinRadio.addEventListener('click', function() {
+          window.location.href = '{% url "b2c_form" %}';
+        });
+        pickupRadio.addEventListener('click', function() {
+      window.location.href = '{% url "pickup_form" %}';
+    });
+      
+    
+      
+      </script>
+</body>
+</html>
+{% endblock content %}

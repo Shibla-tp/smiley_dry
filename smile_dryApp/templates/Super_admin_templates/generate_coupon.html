@@ -1,0 +1,9 @@
+<!-- Similar structure to the provided template -->
+<form action="{% url 'generate_coupon' %}" method="post" id="coupon-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Generate Coupon</button>
+  </form>
+  
+  <!-- Similar JavaScript code for form submission -->
+  

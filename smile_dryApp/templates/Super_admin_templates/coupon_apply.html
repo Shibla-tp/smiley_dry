@@ -1,0 +1,55 @@
+<!-- {% extends "Super_admin_templates/admin_dashboard.html" %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Application</title>
+</head>
+<body>
+    <h1>Coupon Application</h1>
+    
+    <form id="coupon-form">
+        {% csrf_token %}
+        <label for="price">Amount:</label>
+        <input type="number" id="price" name="price" required>
+        <label for="coupon_code">Coupon Code:</label>
+        <input type="text" id="coupon_code" name="coupon_code" required>
+        <button type="submit">Apply Coupon</button>
+    </form>
+    
+    <div id="response-message"></div>
+    
+    <script>
+        const form = document.getElementById("coupon-form");
+        const responseMessage = document.getElementById("response-message");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            try {
+                const response = await fetch("{% url 'apply-coupon' %}", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (data.status === "success") {
+                    responseMessage.textContent = data.message;
+
+                    // Update the displayed price with the calculated discount
+                    const priceInput = document.getElementById("price");
+                    const updatedPrice = parseFloat(priceInput.value) - parseFloat(data.discount_amount);
+                    priceInput.value = updatedPrice.toFixed(2);  // Update to your required decimal places
+                } else {
+                    responseMessage.textContent = data.message;
+                }
+            } catch (error) {
+                console.error("Error applying coupon:", error);
+                responseMessage.textContent = "An error occurred while applying the coupon.";
+            }
+        });
+    </script>
+</body>
+</html>

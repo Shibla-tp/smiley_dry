@@ -1,0 +1,217 @@
+{% load static %}
+<style>
+    .errorlist {
+        color: var(--bs-danger);
+    }
+
+    .mdc-text-field {
+        width: 100%;
+    }
+
+    .mdc-text-field--outlined {
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .card {
+        border-radius: x;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+    .form-control{
+        margin:10px;
+        padding:10px;
+        border-radius:10px;
+        
+
+    }
+
+    
+</style>
+
+<body>
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div> 
+    <form  class="from"action="" id="user-form" padding="10px">
+                                           
+        <input type="hidden" name="id" value="{{users.id}}">
+        <input type="hidden" name="manage_user" value="1">
+         <div class="row">
+            <div class="col">
+                <label for="first_name" class="control-label"><i class="fa-solid fa-user-tie "style="padding-right:0.5rem;" ></i>First Name</label>
+                <input type="text" class="form-control " name="first_name" id="first_name" value="{% if form.data.first_name %}{{ form.data.first_name }}{% else %}{{ users.first_name }}{% endif %}" required="required">
+            </div>
+            <div class="col">
+                <label for="last_name" class="control-label"><i class="fa-solid fa-user-tie" style="padding-right:0.5rem;"></i>Last Name</label>
+                <input type="text" class="form-control " name="last_name" id="last_name" value="{% if form.data.last_name %}{{ form.data.last_name }}{% else %}{{ users.last_name }}{% endif %}" required="required">
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col">
+                  <label for="email" class="control-label"><i class="fa-solid fa-envelope"style="padding-right:0.5rem;"></i>Email</label>
+                  <input type="email" class="form-control " name="email" id="email" value="{% if form.data.email %}{{ form.data.email }}{% else %}{{ users.email }}{% endif %}" required="required">
+                </div>
+                <div class="col">
+                    <label for="phone" class="control-label"><i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>Contact Number</label>
+                    <input type="phone" class="form-control " name="phone" id="phone" value="{% if form.data.phone %}{{ form.data.phone }}{% else %}{{ users.phone }}{% endif %}" required="required">
+                </div>
+          </div>
+
+          <div class="row">
+            
+            <div class="col">
+                <label for="pincode" class="control-label"><i class="fa-regular fa-user"style="padding-right:0.5rem;"></i>Pincode</label>
+                    <input type="pincode" class="form-control " name="pincode" id="pincode" value="{% if form.data.pincode %}{{ form.data.pincode }}{% else %}{{ users.pincode }}{% endif %}" required="required">
+            </div>
+
+            <div class="col">
+                <label for="location" class="control-label"><i class="fa-solid fa-location-dot" style="padding-right:0.5rem;"></i>Location</label>
+                <input type="location" class="form-control " name="location" id="location" value="{% if form.data.location %}{{ form.data.location }}{% else %}{{ users.location }}{% endif %}" required="required">
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col">
+                <label for="district" class="control-label"><i class="fa-solid fa-map-location-dot" style="padding-right:0.5rem;"></i>District</label>
+                <input type="district" class="form-control " name="district" id="district" value="{% if form.data.district %}{{ form.data.district }}{% else %}{{ users.district }}{% endif %}" required="required">
+            </div> 
+            <!-- <div class="col">
+                <label for="franchise_city" class="control-label"><i class="fa-solid fa-map-location-dot" style="padding-right:0.5rem;"></i>Franchise Details</label>
+                <input type="franchise_city" class="form-control " name="franchise_city" id="franchise_city" value="{% if form.data.franchise_city %}{{ form.data.franchise_city }}{% else %}{{ user.franchise_city }}{% endif %}" required="required">
+            </div>  -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <label for="franchise_details" class="control-label">Franchise Details</label>
+                <select id="franchise_details" name="franchise_city" class="form-control form-control-sm ">
+                    <option value="" disabled selected></option>
+                    {% for users in fusers %}
+                    <option value="{{users.id}}" name="franchise_details">{{users.username}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <!-- <div class="form-group mb-4">
+            <label for="franchise_city" class="control-label"><i class="fa-solid fa-city" style="padding-right:0.5rem;"></i>City</label>
+            <input type="franchise_city" class="form-control " name="franchise_city" id="franchise_city" value="{% if form.data.franchise_city %}{{ form.data.franchise_city }}{% else %}{{ user.franchise_city }}{% endif %}" required="required">
+        </div>  -->
+        
+       
+        
+        
+        <div class="row">
+            <div class="col">
+                <label for="username" class="control-label"><i class="fa-regular fa-user"style="padding-right:0.5rem;"></i>Username</label>
+                <input type="text" class="form-control " name="username" id="username" value="{% if form.data.username %}{{ form.data.username }}{% else %}{{ users.username }}{% endif %}" required="required">
+            </div>
+        </div>
+        {% if not users.id %}
+        
+        <div class="row">
+            <div class="col">
+            <label for="password1" class="control-label"><i class="fa-solid fa-lock" style="padding-right:0.5rem;"></i>Enter Password</label>
+            <input type="password" class="form-control" id="password1" required="required"  name="password1" >
+            </div>
+            <div class="col">
+            <label for="password2" class="control-label"><i class="fa-solid fa-lock" style="padding-right:0.5rem;"></i>Confirm Password</label>
+            <input type="password" class="form-control" id="password2" required="required"  name="password2" >
+        </div>
+    </div>
+        <!-- <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="is_customer" id="is_customer" value="1" >
+            <label class="form-check-label" for="is_customer"><i class="fa-solid fa-user-check" style="padding-right:0.5rem;"></i>Customer</label>
+        </div> -->
+        <input type="hidden" name="is_customer" value="1">
+        {% endif %}
+</body>
+<script>
+    $(function() {
+        $('#user-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-user_franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

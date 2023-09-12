@@ -1,0 +1,436 @@
+{% extends 'Franchise_templates/franchise_dashboard_list.html' %}{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>b2c Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a2eb797991.js" crossorigin="anonymous"></script>
+
+    <style>
+      * {
+box-sizing: border-box;
+}
+
+a {
+text-decoration: none;
+color: #379937;
+}
+
+
+
+.dropdown {
+position: relative;
+font-size: 14px;
+color: #333;
+
+.dropdown-list {
+  padding: 12px;
+  background: #fff;
+  position: absolute;
+  top: 30px;
+  left: 2px;
+  right: 2px;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+  transform-origin: 50% 0;
+  transform: scale(1, 0);
+  transition: transform .15s ease-in-out .15s;
+  max-height: 66vh;
+  overflow-y: scroll;
+  width: 497px;
+  z-index: 999;
+}
+
+.dropdown-option {
+  display: block;
+  padding: 8px 12px;
+  opacity: 0;
+  transition: opacity .15s ease-in-out;
+}
+
+.dropdown-label {
+  display: block;
+  height: 30px;
+  width: 500px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  line-height: 1;
+  cursor: pointer;
+  
+  &:before {
+    content: '▼';
+    float: right;
+  }
+}
+
+&.on {
+ .dropdown-list {
+    transform: scale(1, 1);
+    transition-delay: 0s;
+    
+    .dropdown-option {
+      opacity: 1;
+      transition-delay: .2s;
+    }
+  }
+  
+  .dropdown-label:before {
+    content: '▲';
+  }
+}
+
+[type="checkbox"] {
+  position: relative;
+  top: -1px;
+  margin-right: 4px;
+}
+}
+.container{
+  padding-top: 2rem;
+}
+.btn-primary{
+background-color:  #3d464d;
+border: #3d464d;
+color: #fff;
+}
+.btn-primary:hover{
+background-color:   #ffd333;
+border:  #ffd333;
+}
+.card-title{
+  background-color: #ffd333;
+}
+.form-group {
+    margin-bottom: 3rem; /* Adjust the value as needed */
+  }
+
+    /* Style input fields */
+    input[type="text"],
+  input[type="number"]
+   {
+    /* padding: 0.5rem 10.5rem 0.5rem 10.5rem; */
+    padding-right: 21rem;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    
+  }
+  input[type="date"]{
+    padding-right: 23.9rem;
+    border: 1px solid #ccc;
+    font-size: 14px;
+
+  }
+
+  /* Customize the appearance of focused input fields */
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus {
+    outline: none;
+    border-color: #3d464d;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+  </style>
+</head>
+<body>
+  <div id="top">
+    <div class="container">
+      <div class="card">
+        <h2 class="card-title">New Orders</h2>
+
+        <div class="card-body">
+
+  <div class="form-group">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="options" id="walkin" value="walkin" {% if selected == 'walkin' or not selected %}checked{% endif %}>
+      <label class="form-check-label" for="walkin"><i class="fa-solid fa-person-walking" style="padding-right:0.5rem;"></i>Walkin</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="options" id="pickup" value="pickup" {% if selected == 'pickup' %}checked{% endif %}>
+      <label class="form-check-label" for="pickup"><i class="fa-solid fa-person-biking"  style="padding-right:0.5rem;"></i>Pickup</label>
+    </div>
+  </div>
+    <form action="b2c_form" method="POST">
+        
+            
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col-md-6 col-xl-6">
+                <div class="form-group">
+                  <i class="fa-solid fa-user-tie" style="padding-right:0.5rem;"></i>Name <br>
+            <input type="text" name="name"><br>
+</div>
+</div>
+            <div class="col-md-6 col-xl-6">
+              <div class="form-group">
+                <i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>contact number <br>
+            <input type="number" name="contact"><br>
+</div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-xl-6">
+    <div class="form-group">
+      <i class="fa-solid fa-jug-detergent" style="padding-right:0.5rem;"></i>Service <br>
+            <div class="dropdown" data-control="checkbox-dropdown">
+              <label class="dropdown-label" name="service">Select Services</label>
+              
+              <div class="dropdown-list">
+                <!-- <a href="#" data-toggle="check-all" class="dropdown-option">
+                  Check All  
+                </a> -->
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Dry Clean" />
+                  Dry Clean
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Wash & Fold" />
+                  Wash & Fold
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Wash & Iron" />
+                  Wash & Iron
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Premium Laundry" />
+                  Premium Laundry
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Shoe Cleaning" />
+                  Shoe Cleaning
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Stream Press" />
+                  Stream Press
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="service" value="Starching" />
+                  Starching
+                </label>       
+              </div>
+            </div>
+</div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-xl-6">
+    <div class="form-group">
+
+      <i class="fa-solid fa-calendar-days" style="padding-right:0.5rem;"></i>Delivery Date <br>
+            <input type="date" name="delivery-date"><br>
+            </div>
+            </div>
+           
+            <div class="col-md-6 col-xl-6">
+              <i class="fa-solid fa-clock" style="padding-right:0.5rem;"></i>Delivery Timeslot <br>
+              <div class="form-group">
+            <div class="dropdown" data-control="checkbox-dropdown">
+              <label class="dropdown-label" name="delivery-time">Delivery Timeslot</label>
+              
+              <div class="dropdown-list">
+                
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="9 AM-10 AM" />
+                  9 AM-10 AM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="ddelivery-time" value="10 AM-11 AM" />
+                  10 AM-11 AM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="11 AM-12 PM" />
+                 11 AM-12 PM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="12 PM-1 PM" />
+                  12 PM-1 PM
+                </label>
+                
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="1 PM-2 PM" />
+                  1 PM-2 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="2 PM-3 PM" />
+                  2 PM-3 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="3 PM-4 PM" />
+                  3 PM-4 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="4 PM-5 PM" />
+                  4 PM-5 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="5 PM-6 PM" />
+                  5 PM-6 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="6 PM-7 PM" />
+                  6 PM-7 PM
+                </label> 
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="7 PM-8 PM" />
+                  7 PM-8 PM
+                </label>
+                <label class="dropdown-option">
+                  <input type="checkbox" name="delivery-time" value="8 PM-9 PM" />
+                  8 PM-9 PM
+                </label>     
+              </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-xl-6">
+                <div class="form-group">
+                  <i class="fa-solid fa-tag" style="padding-right:0.5rem;"></i>Coupon code <br>
+            <input type="text" name="coupon"><br>
+</div>
+</div>
+            <div class="col-md-6 col-xl-6">
+              <div class="form-group">
+                <i class="fa-solid fa-map-location-dot"  style="padding-right:0.5rem;"></i>Address <br>
+            <input type="text" name="address"><br>
+</div>
+</div>
+</div>
+<div class="row mt-4">
+  <div class="col-md-12 col-xl-12">
+<div class="d-grid" >
+<input type="submit" value="Submit" class="btn btn-primary">
+</div>
+</div>
+</div>
+        
+        </form>
+      </div>
+      </div>
+      </div>
+      </div>
+      
+        <script>
+          (function($) {
+        var CheckboxDropdown = function(el) {
+          var _this = this;
+          this.isOpen = false;
+          this.areAllChecked = false;
+          this.$el = $(el);
+          this.$label = this.$el.find('.dropdown-label');
+          this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
+          this.$inputs = this.$el.find('[type="checkbox"]');
+          
+          this.onCheckBox();
+          
+          this.$label.on('click', function(e) {
+            e.preventDefault();
+            _this.toggleOpen();
+          });
+          
+          this.$checkAll.on('click', function(e) {
+            e.preventDefault();
+            _this.onCheckAll();
+          });
+          
+          this.$inputs.on('change', function(e) {
+            _this.onCheckBox();
+          });
+        };
+        
+        CheckboxDropdown.prototype.onCheckBox = function() {
+          this.updateStatus();
+        };
+        
+        CheckboxDropdown.prototype.updateStatus = function() {
+          var checked = this.$el.find(':checked');
+          
+          this.areAllChecked = false;
+          this.$checkAll.html('Check All');
+          
+          if(checked.length <= 0) {
+            this.$label.html('Select Options');
+          }
+          else if(checked.length === 1) {
+            this.$label.html(checked.parent('label').text());
+          }
+          else if(checked.length === this.$inputs.length) {
+            this.$label.html('All Selected');
+            this.areAllChecked = true;
+            this.$checkAll.html('Uncheck All');
+          }
+          else {
+            this.$label.html(checked.length + ' Selected');
+          }
+        };
+        
+        CheckboxDropdown.prototype.onCheckAll = function(checkAll) {
+          if(!this.areAllChecked || checkAll) {
+            this.areAllChecked = true;
+            this.$checkAll.html('Uncheck All');
+            this.$inputs.prop('checked', true);
+          }
+          else {
+            this.areAllChecked = false;
+            this.$checkAll.html('Check All');
+            this.$inputs.prop('checked', false);
+          }
+          
+          this.updateStatus();
+        };
+        
+        CheckboxDropdown.prototype.toggleOpen = function(forceOpen) {
+          var _this = this;
+          
+          if(!this.isOpen || forceOpen) {
+             this.isOpen = true;
+             this.$el.addClass('on');
+            $(document).on('click', function(e) {
+              if(!$(e.target).closest('[data-control]').length) {
+               _this.toggleOpen();
+              }
+            });
+          }
+          else {
+            this.isOpen = false;
+            this.$el.removeClass('on');
+            $(document).off('click');
+          }
+        };
+        
+        var checkboxesDropdowns = document.querySelectorAll('[data-control="checkbox-dropdown"]');
+        for(var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
+          new CheckboxDropdown(checkboxesDropdowns[i]);
+        }
+      })(jQuery);
+      </script>
+      <script>
+        const walkinRadio = document.getElementById('walkin');
+        const pickupRadio = document.getElementById('pickup');
+    
+        walkinRadio.addEventListener('click', function() {
+          window.location.href = '{% url "b2c_form" %}';
+        });
+        pickupRadio.addEventListener('click', function() {
+      window.location.href = '{% url "pickup_form" %}';
+    });
+      
+    
+      
+      </script>
+</body>
+</html>
+{% endblock content %}

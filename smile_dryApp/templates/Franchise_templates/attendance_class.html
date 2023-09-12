@@ -1,0 +1,218 @@
+<div id="top">
+    <section class="py-4">
+        <div class="container">
+            <h3 class="fw-bolder text-center">List of Staffs</h3>
+            <center>
+                <hr class="bg-primary opacity-100" style="height:3px" width="5%">
+            </center>
+            <form action="" id="user-form">
+                {% csrf_token %}
+            <fieldset>
+                <legend>Date of Class</legend>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <input type="date" name="attendance_date" value="{% if date %}{{ date }}{% endif %}" class="form-control form-control-lg rounded-0" required>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="card rounded-0 shadow">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <table class="table table-bordered table-striped" id="user-tbl">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="20%">
+                                <col width="30%">
+                                <col width="30%">
+                                <col width="15%">
+                                
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Staff Name</th>
+                                    <!-- <th class="text-center">Username</th>
+                                    <th class="text-center">Email Id</th>
+                                    <th class="text-center">Location</th>
+                                    <th class="text-center">City</th>
+                                    <th class="text-center">District</th>
+                                    <th class="text-center">Franchise Details</th> -->
+                                    <!-- <th class="text-center">Vendor Details</th> -->
+                                    <th class="text-center">Contact Number</th>
+                                    <th class="text-center" >Attendance</th>
+                                    <th class="text-center" >Check</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td>{{ user.first_name}} {{ user.last_name}}</td>
+                                    <!-- <td>{{ user.username}}</td>
+                                    <td>{{ user.email}}</td>
+                                    <td>{{ user.location}}</td>
+                                    <td>{{ user.city}}</td>
+                                    <td>{{ user.district}}</td>
+                                    <td>{{ user.franchise_details}}</td> -->
+                                    <!-- <td>{{ user.vendor_details}}</td> -->
+                                    <td>{{ user.phone}}</td>
+                                    
+                                    <td><select type="text" id="status" name="type[{{ user.id }}]" class="form-select form-select-sm rounded-0" required>
+                                        {% if attendance.type == '1' %}
+                                        <option value="1" selected>Present</option>
+                                        {% else %}
+                                        <option value="1">Present</option>
+                                        {% endif %}
+                                        {% if attendance.type == '2' %}
+                                        <option value="2" selected>Absent</option>
+                                        {% else %}
+                                        <option value="2">Absent</option>
+                                        {% endif %}
+                                    </select></td>
+                                    <td>
+                                        <input type="checkbox" name="staff[]" value="{{ user.id }}">
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="abtn{{user.pk}}" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Action
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="abtn{{user.pk}}">
+                                                <li><a class="dropdown-item edit-data" href="javascript:void(0)" data-url="{% url 'manage-attendance_franchise-pk' user.pk %}"><i class="fa fa-edit text-primary"></i> Edit</a></li>
+                                                <li><a class="dropdown-item delete-data" href="javascript:void(0)"  data-url="{% url 'delete-attendance_franchise' user.pk %}"><i class="fa fa-trash text-danger"></i> Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>             
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    
+    <script>
+        $(function() {
+            $('#create_new').click(function() {
+                uni_modal("<i class='fa fa-plus'></i> Add New Staff", "{% url 'manage-staffs_franchise' %}")
+            })
+            $('#create_attendance').click(function() {
+                uni_modal("<i class='fa fa-plus'></i> Add Attendance", "{% url 'attendance-class' %}")
+            })
+            $('.edit-data').click(function() {
+                uni_modal("<i class='fa fa-edit'></i> Edit Staff Details", $(this).attr('data-url'))
+            })
+            $('.view_image').click(function() {
+                var img = $(this).attr('data-img-url')
+                $('#viewer_modal #img-viewer-field').attr('src', img)
+                $('#viewer_modal').modal('show')
+            })
+                                
+            $('.delete-data').click(function() {
+                _conf("Are you sure to delete this User?", 'delete_staffs_franchise', ["'" + $(this).attr('data-url') + "'"])
+            })
+            $('#user-tbl').find('td, th').addClass('px-2 py-1 align-middle')
+            $('#user-tbl').DataTable({
+                columnDefs: [{
+                    orderable: false,
+                    targets: [3]
+                }],
+                lengthMenu: [
+                    [25, 50, 100, -1],
+                    [25, 50, 100, "All"]
+                ]
+            })
+        })
+    
+        function delete_staffs_franchise(url) {
+    
+            var _this = $('#confirm_modal .modal-body')
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            start_loader()
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": "{{csrf_token}}"
+                },
+                url: url,
+                dataType: 'JSON',
+                error: err => {
+                    console.log(err)
+                    alert("an error occurred.")
+                    end_loader()
+                },
+                success: function(resp) {
+                    if (resp.status == 'success') {
+                        location.reload()
+                    } else if (!!resp.msg) {
+                        el.html(resp.msg)
+                        _this.prepend(el)
+                        el.show()
+                    } else {
+                        el.html("An error occurred")
+                        _this.prepend(el)
+                        el.show()
+                    }
+                    end_loader()
+        }
+
+    })
+}
+</script>
+<script>
+    $(function() {
+        $('#user-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-attendance' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

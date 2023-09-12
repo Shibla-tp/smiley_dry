@@ -1,0 +1,1097 @@
+{% load static %}{% load customfilter %}{% load humanize %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-scompiler-id="0">
+
+<head>
+    <meta charSet="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Smiley Dry</title>
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="{% static 'assets/images/favicon.png' %}" />
+    <!-- fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i" />
+    <!-- css -->
+    <!-- <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.ltr.css' %}" /> -->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/DataTables/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/default/css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.ltr.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/simplebar/simplebar.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/nouislider/nouislider.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/fullcalendar/main.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="{% static 'assets/default/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/datatables.min.js' %}"></script>
+    <script src="{% static 'assets/select2/dist/js/select2.min.js' %}"></script>
+
+    
+    
+</head>
+<style>
+    body{
+
+
+    }
+    table{
+
+    }
+    
+section .popup-outer{
+    position:center;
+    align-item:center;
+    justify-content:center;
+    height:100%;
+    width:100%;
+    background: rgba(0,0,0,4);
+   
+     
+}   
+section .popup-box .profile-text{
+   
+    align-item:center;
+
+}
+section .popup-box{ 
+    padding:30px;
+    max-width:380px;
+    width:100%;
+    background:#fff;
+    border-radius:12px; 
+}
+
+section .popup-box img {
+    height:60px;
+    width:60px;
+    object-fit:cover;
+    border-radius:50%;
+}
+.profile-text .text{
+   
+    flex-direction: column;
+}
+profile-text .text .name{
+    font-size: 14px;
+    font-weight: 500;
+
+}
+.hello{
+    {% comment %} margin-left:500px;{% endcomment %}
+    margin: auto;
+    padding:30px;
+    max-width:900px;
+    width:100%;
+    background:#fff;
+    border-radius:12px; 
+    align-item:center;
+    justify-content:center;
+    
+
+}
+btn-close{
+    border-radius:50px;
+    background: rgba(0,0,0,4);
+}
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    
+    body {
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    
+    .table__header {
+        width: 10%;
+        height: 10%;
+        background-color: #fff4;
+        padding: .8rem 1rem;
+      
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .table__header .input-group {
+        width: 35%;
+        height: 100%;
+        background-color: #fff5;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+       
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+    }
+    
+    .table__header .input-group:hover {
+        width: 45%;
+        background-color: #fff8;
+        box-shadow: 0 .1rem .4rem #0002;
+    }
+    
+    .table__header .input-group img {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    
+    .table__header .input-group input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    .table__body {
+        width: 95%;
+        max-height: calc(89% - 1.6rem);
+        background-color: #fff;   
+        margin: .8rem auto;
+        border-radius: .6rem;    
+        overflow: auto;
+        overflow: overlay;
+    }
+    
+    .table__body::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+    
+    .table__body::-webkit-scrollbar-thumb{
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+    
+    .table__body:hover::-webkit-scrollbar-thumb{ 
+        visibility: visible;
+    }
+    
+    table {
+        width: 100%;
+    }
+    
+    td img {
+        width: 36px;
+        height: 36px;
+        margin-right: .5rem;
+        border-radius: 50%;
+    
+        vertical-align: middle;
+    }
+    
+    table, th, td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d5d1defe;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+    
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+    
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+    
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td img {
+        transition: .2s ease-in-out;
+    }
+    
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    tbody tr.hide td img {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+    
+    thead th.active span.icon-arrow{
+        background-color: #6c00bd;
+        color: #fff;
+    }
+    
+    thead th.asc span.icon-arrow{
+        transform: rotate(180deg);
+    }
+    
+    thead th.active,tbody td.active {
+        color: #6c00bd;
+    }
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+      bottom: .5em;
+    }
+   
+        /* Add your custom styles here */
+        /* .table-container {
+          padding-top: 20px;
+        } */
+      
+        .nav-pills {
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 20px;
+        }
+      
+        .nav-pills .nav-item {
+          margin-right: 10px;
+        }
+      
+        th {
+          font-size: 16px;
+          /* font-family: Arial; */
+        }
+      
+      td.color_1{ background-color: #4caf50; }
+      td.color_2{ background-color: yellow; }
+      td.color_3{ background-color: red; }
+      
+        table {
+          counter-reset: tableCount;
+        }
+      
+        .counterCell:before {
+          content: counter(tableCount);
+          counter-increment: tableCount;
+        }
+      
+        .form-required {
+          display: none;
+        }
+      
+        .requiredField {
+          display: none;
+        }
+      
+        .alert {
+          width: 400px;
+        }
+        .btn-warning{
+          background-color: #3d464d;
+                  border: none;
+                  color: #fff;
+      }
+      .container-fluid
+      {
+      
+      }
+          * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: sans-serif;
+          }
+          
+          body {
+              min-height: 100vh;
+              justify-content: center;
+              align-items: center;
+          }
+          
+          
+          
+          .table__header {
+              width: 100%;
+              height: 10%;
+              background-color: #fff4;
+              padding: .8rem 1rem;
+            
+              justify-content: space-between;
+              align-items: center;
+          }
+          
+          .table__header .input-group {
+              width: 35%;
+              height: 100%;
+              background-color: #fff5;
+              padding: 0 .8rem;
+              border-radius: 2rem;
+             
+              justify-content: center;
+              align-items: center;
+              transition: .2s;
+          }
+          
+          .table__header .input-group:hover {
+              width: 45%;
+              background-color: #fff8;
+              box-shadow: 0 .1rem .4rem #0002;
+          }
+          
+          .table__header .input-group img {
+              width: 1.2rem;
+              height: 1.2rem;
+          }
+          
+          .table__header .input-group input {
+              width: 100%;
+              padding: 0 .5rem 0 .3rem;
+              background-color: transparent;
+              border: none;
+              outline: none;
+          }
+          
+          .table__body {
+              width: 95%;
+              max-height: calc(89% - 1.6rem);
+              background-color: #fff;   
+              margin: .8rem auto;
+              border-radius: .6rem;    
+              overflow: auto;
+              overflow: overlay;
+          }
+          
+          .table__body::-webkit-scrollbar{
+              width: 0.5rem;
+              height: 0.5rem;
+          }
+          
+          .table__body::-webkit-scrollbar-thumb{
+              border-radius: .5rem;
+              background-color: #0004;
+              visibility: hidden;
+          }
+          
+          .table__body:hover::-webkit-scrollbar-thumb{ 
+              visibility: visible;
+          }
+          
+          table {
+              width: 100%;
+          }
+          
+          td img {
+              width: 36px;
+              height: 36px;
+              margin-right: .5rem;
+              border-radius: 50%;
+          
+              vertical-align: middle;
+          }
+          
+          table, th, td {
+              border-collapse: collapse;
+              padding: 1rem;
+              text-align: left;
+          }
+          
+          thead th {
+              position: sticky;
+              top: 0;
+              left: 0;
+              background-color: #d5d1defe;
+              cursor: pointer;
+              text-transform: capitalize;
+          }
+          
+          tbody tr:nth-child(even) {
+              background-color: #0000000b;
+          }
+          
+          tbody tr {
+              --delay: .1s;
+              transition: .5s ease-in-out var(--delay), background-color 0s;
+          }
+          
+          tbody tr.hide {
+              opacity: 0;
+              transform: translateX(100%);
+          }
+          
+          tbody tr:hover {
+              background-color: #fff6 !important;
+          }
+          
+          tbody tr td,
+          tbody tr td p,
+          tbody tr td img {
+              transition: .2s ease-in-out;
+          }
+          
+          tbody tr.hide td,
+          tbody tr.hide td p {
+              padding: 0;
+              font: 0 / 0 sans-serif;
+              transition: .2s ease-in-out .5s;
+          }
+          
+          tbody tr.hide td img {
+              width: 0;
+              height: 0;
+              transition: .2s ease-in-out .5s;
+          }
+          
+          @media (max-width: 1000px) {
+              td:not(:first-of-type) {
+                  min-width: 12.1rem;
+              }
+          }
+      
+          thead th:hover {
+              color: #6c00bd;
+          }
+          
+          thead th.active span.icon-arrow{
+              background-color: #6c00bd;
+              color: #fff;
+          }
+          
+          thead th.asc span.icon-arrow{
+              transform: rotate(180deg);
+          }
+          
+          thead th.active,tbody td.active {
+              color: #6c00bd;
+          }
+          table.dataTable thead .sorting:after,
+          table.dataTable thead .sorting:before,
+          table.dataTable thead .sorting_asc:after,
+          table.dataTable thead .sorting_asc:before,
+          table.dataTable thead .sorting_asc_disabled:after,
+          table.dataTable thead .sorting_asc_disabled:before,
+          table.dataTable thead .sorting_desc:after,
+          table.dataTable thead .sorting_desc:before,
+          table.dataTable thead .sorting_desc_disabled:after,
+          table.dataTable thead .sorting_desc_disabled:before {
+            bottom: .5em;
+          }
+          .btnc{
+            border-radius:8px;
+            background:yellow;
+            padding:8px;
+          }
+
+
+          .scroll-buttons {
+    position: fixed;
+    bottom: 20px; /* Adjust the distance from the bottom as needed */
+    right: 20px; /* Adjust the distance from the right as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 999; /* Ensure the buttons are on top of other content */
+}
+
+.btn-scroll {
+    margin-bottom: 10px; /* Add some spacing between the buttons */
+}
+
+.active {
+    background-color: #4BCBEB; /* Change to your desired active color */
+    color: #fff; /* Change to your desired active text color */
+}
+
+</style>
+<body>
+    
+    <!-- sa-app -->
+    <div class="sa-app sa-app--desktop-sidebar-shown sa-app--mobile-sidebar-hidden sa-app--toolbar-fixed">
+        <!-- sa-app__sidebar -->
+        <div class="sa-app__sidebar">
+            <div class="sa-sidebar">
+                <div class="sa-sidebar__header">
+                    <a class="sa-sidebar__logo" href="">
+                        <!-- logo -->
+                        <div class="sa-sidebar-logo"><img src="{% static 'assets/images/smiley-removebg-preview.png' %}" height="100px">
+                        
+                </div>
+                <!-- logo / end -->
+                </a>
+            </div>
+           
+            <div class="sa-sidebar__body" data-simplebar="">
+                <ul class="sa-nav sa-nav--sidebar" data-sa-collapse="">
+                    <li class="sa-nav__section">
+                       
+                        
+                        <ul class="sa-nav__menu sa-nav__menu--root">
+                            <!-- dashboard -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'franchise' %}active{% endif %}">
+                                <a href="{% url 'franchise' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M8,13.1c-4.4,0-8,3.4-8-3C0,5.6,3.6,2,8,2s8,3.6,8,8.1C16,16.5,12.4,13.1,8,13.1zM8,4c-3.3,0-6,2.7-6,6c0,4,2.4,0.9,5,0.2C7,9.9,7.1,9.5,7.4,9.2l3-2.3c0.4-0.3,1-0.2,1.3,0.3c0.3,0.5,0.2,1.1-0.2,1.4l-2.2,1.7c2.5,0.9,4.8,3.6,4.8-0.2C14,6.7,11.3,4,8,4z"></path></svg></span>
+                                    <span class="sa-nav__title">Dashboard</span></a></li>
+
+                           <!-- users -->
+  <!-- users -->
+  <li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg></span><span class="sa-nav__title">Users</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+  <ul
+      class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+      <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'user-page_franchise' %}active{% endif %}"><a href="{% url 'user-page_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-user-check"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Customers</span></a></li>
+      <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'vendor-page_franchise' %}active{% endif %}"><a href="{% url 'vendor-page_franchise' %}"  class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-users"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Vendors</span></a></li>
+      <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'rider-page_franchise' %}active{% endif %}"><a href="{% url 'rider-page_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-motorcycle"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Riders</span></a></li>
+         
+  </ul>
+</li>
+
+
+<li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon">          
+    <i class="fa-solid fa-cube"></i>
+       </span><span class="sa-nav__title">Orders</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+    <ul
+        class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'manage-laundry_franchise' %}active{% endif %}"><a href="{% url 'manage-laundry_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Create Walkin Orders</span></a></li>
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'manage-laundry_franchise_pickup' %}active{% endif %}"><a href="{% url 'manage-laundry_franchise_pickup' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Create Pickup Orders</span></a></li>
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'laundry-page_franchise' %}active{% endif %}"><a href="{% url 'laundry-page_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Orders</span></a></li>
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'reciepts_franchise' %}active{% endif %}"><a href="{% url 'reciepts_franchise' %}"  class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-receipt"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Receipts</span></a></li>
+
+    </ul>
+  </li>
+    <!-- vendors order -->
+    
+<!-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon">          
+    <span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M14.2,10.3c-0.1,0.4-0.5,0.7-0.9,0.7H4.8c-0.5,0-0.9-0.3-1-0.8L2.2,4C2.1,3.4,1.6,3,1,3H0.4C0.2,3,0,2.8,0,2.6V1.4C0,1.2,0.2,1,0.4,1h1.4c1,0,1.9,0.7,2.1,1.7l1.5,6.1C5.5,8.9,5.7,9,5.8,9h6.5c0.1,0,0.2-0.1,0.3-0.2l1.1-3.4C13.8,5.2,13.7,5,13.5,5H7.4C7.2,5,7,4.8,7,4.6V3.4C7,3.2,7.2,3,7.4,3H15c0.6,0,1,0.4,1,1v1L14.2,10.3z M4.5,13C5.3,13,6,13.7,6,14.5C6,15.3,5.3,16,4.5,16S3,15.3,3,14.5C3,13.7,3.7,13,4.5,13z M11.5,13c0.8,0,1.5,0.7,1.5,1.5c0,0.8-0.7,1.5-1.5,1.5S10,15.3,10,14.5C10,13.7,10.7,13,11.5,13z"></path></svg></span>
+
+       </span><span class="sa-nav__title">Vendor Orders</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+    <ul
+        class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'manage-laundry_franchise_vendor' %}active{% endif %}"><a href="{% url 'manage-laundry_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Create Walkin Orders</span></a></li>
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'manage-laundry_franchise_pickup_vendo4' %}active{% endif %}"><a href="{% url 'manage-laundry_franchise_pickup' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Create Pickup Orders</span></a></li>
+        <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'laundry-page_franchise_vendor' %}active{% endif %}"><a href="{% url 'laundry-page_franchise_vendor' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cart-arrow-down"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">vendor orders</span></a></li>
+
+    </ul>
+  </li> -->
+    <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'laundry-page_franchise_vendor' %}active{% endif %}" >
+        <a href=" {% url 'laundry-page_franchise_vendor' %}" class="sa-nav__link" >
+            <span class="sa-nav__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M14.2,10.3c-0.1,0.4-0.5,0.7-0.9,0.7H4.8c-0.5,0-0.9-0.3-1-0.8L2.2,4C2.1,3.4,1.6,3,1,3H0.4C0.2,3,0,2.8,0,2.6V1.4C0,1.2,0.2,1,0.4,1h1.4c1,0,1.9,0.7,2.1,1.7l1.5,6.1C5.5,8.9,5.7,9,5.8,9h6.5c0.1,0,0.2-0.1,0.3-0.2l1.1-3.4C13.8,5.2,13.7,5,13.5,5H7.4C7.2,5,7,4.8,7,4.6V3.4C7,3.2,7.2,3,7.4,3H15c0.6,0,1,0.4,1,1v1L14.2,10.3z M4.5,13C5.3,13,6,13.7,6,14.5C6,15.3,5.3,16,4.5,16S3,15.3,3,14.5C3,13.7,3.7,13,4.5,13z M11.5,13c0.8,0,1.5,0.7,1.5,1.5c0,0.8-0.7,1.5-1.5,1.5S10,15.3,10,14.5C10,13.7,10.7,13,11.5,13z"></path></svg></span>
+            <span class="sa-nav__title">Vendors Order</span></a></li>
+                            
+                            <!-- Categories -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'price-page_franchise' %}active{% endif %}">
+                                <a href="{% url 'price-page_franchise' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fas fa-bars"></i></span>
+                                    <span class="sa-nav__title">Categories</span></a></li></li>
+
+
+                                    <li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon">          
+                                        <i class="fa-solid fa-cube"></i>
+                                           </span><span class="sa-nav__title">Products</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+                                        <ul
+                                            class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                            <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'products-page_all' %}active{% endif %}"><a href="{% url 'products-page_all' %}" class="sa-nav__link"><span class="sa-nav__icon">  <i class="fa-solid fa-cube"></i>  </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Products</span></a></li>
+                                            <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'product-page_franchise' %}active{% endif %}"><a href="{% url 'product-page_franchise' %}"  class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-cube"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Inventory</span></a></li>
+                                               
+                                        </ul>
+                                      </li>
+                                    
+                            <!-- Products -->
+                           
+                            
+                            
+
+
+                            <!-- report -->
+                            <!-- <li class="sa-nav__menu-item sa-nav__menu-item--has-icon">
+                                <a href=" " class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fas fa-file-alt"></i></span>
+                                    <span class="sa-nav__title">Report</span></a></li> -->
+                            <!-- Report and Statistic -->
+
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon">          
+                                <i class="fa-solid fa-clipboard"></i>
+                                   </span><span class="sa-nav__title">Reports</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+                                <ul
+                                    class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                    <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'report_view_franchise' %}active{% endif %}"><a href="{% url 'report_view_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-chart-pie"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Statistic & Report</span></a></li>
+                                    <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'daily-report_franchise' %}active{% endif %}"><a href="{% url 'daily-report_franchise' %}"  class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-clipboard"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Daily Report  </span></a></li>
+                                       
+                                </ul>
+                              </li>
+
+
+                              <li class="sa-nav__menu-item sa-nav__menu-item--has-icon" data-sa-collapse-item="sa-nav__menu-item--open"><a href="" class="sa-nav__link" data-sa-collapse-trigger=""><span class="sa-nav__icon">          
+                                <i class="fa-solid fa-clipboard"></i>
+                                   </span><span class="sa-nav__title">Staffs & Attendence</span><span class="sa-nav__arrow"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="currentColor"><path d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z"></path></svg></span></a>
+                                <ul
+                                    class="sa-nav__menu sa-nav__menu--sub" data-sa-collapse-content="">
+                                    <li class="sa-nav__menu-item {% if request.resolver_match.view_name == 'staffs-page_franchise' %}active{% endif %}"><a href="{% url 'staffs-page_franchise' %}" class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-chart-pie"></i>   </span><span class="sa-nav__menu-item-padding"></span>    <span class="sa-nav__title">Staffs</span></a></li>
+                                    <li class="sa-nav__menu-item {% if request.resolver_match.view_name == '' %}active{% endif %}"><a href=" "  class="sa-nav__link"><span class="sa-nav__icon"><i class="fa-solid fa-clipboard"></i></span><span class="sa-nav__menu-item-padding"></span><span class="sa-nav__title">Attendence  </span></a></li>
+                                       
+                                </ul>
+                              </li>
+                
+
+
+
+
+
+
+
+                            <!--tickets  -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'allcomplaints_franchise' %}active{% endif %}">
+                                <a href="{% url 'allcomplaints_franchise' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fa-solid fa-ticket"></i></span>                            
+                                    <span class="sa-nav__title">Tickets</span></a></li>
+
+                           
+
+                            <!-- chat -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'chat-franchise' %}active{% endif %}">
+                                <a href="{% url 'chat-franchise' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fas fa-comment"></i></span><span class="sa-nav__title">Chat</span>
+                                    <!-- <span class="sa-nav__menu-item-badge badge badge-sa-pill badge-sa-theme">8</span> -->
+                                </a></li>
+
+                                    <!-- cctv -->
+                       <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'CCTV_form' %}active{% endif %}">
+                        <a href="{% url 'CCTV_form' %}" class="sa-nav__link">
+                            <span class="sa-nav__icon"><i class="fa-solid fa-camera"></i></span><span class="sa-nav__title">CCTV</span>
+
+                            </a></li>
+                              <!-- inbox -->
+
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'franchise-notifications' %}active{% endif %}" >
+                                <a href="{% url 'franchise-notifications' %}" class="sa-nav__link" >
+                                    <span class="sa-nav__icon"><i class="fas fa-envelope"></i></span>
+                                    <span class="sa-nav__title">Inbox</span>
+                                    <span class="sa-nav__menu-item-badge badge badge-sa-pill badge-sa-theme">{{notification_count_franchise}}</span></a></li>       
+                                   
+                            <!-- coupon -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'coupon_franchise-page' %}active{% endif %}">
+                                <a href="{% url 'coupon_franchise-page' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fa-solid fa-tags"></i></span>
+                                    <span class="sa-nav__title">Coupon</span></a></li>
+                                     <!-- payment -->
+                            <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == '' %}active{% endif %}">
+                                <a href="" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fas fa-dollar-sign"></i></span>
+                                    <span class="sa-nav__title">Online payment</span></a></li>
+                             <!-- timeslot -->
+                             <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == 'timeslot_franchise' %}active{% endif %}">
+                                <a href="{% url 'timeslot_franchise' %}" class="sa-nav__link">
+                                    <span class="sa-nav__icon"><i class="fas fa-calendar-alt"></i></span>
+                                    <span class="sa-nav__title">Timeslot</span></a></li>
+
+                    <!-- Wallets-->
+                    <li class="sa-nav__menu-item sa-nav__menu-item--has-icon {% if request.resolver_match.view_name == '' %}active{% endif %}">
+                        <a href=" " class="sa-nav__link">
+                            <span class="sa-nav__icon"><i class="fa-solid fa-wallet"></i></span><span class="sa-nav__title">Wallets</span>
+                            </a></li>
+                </ul>
+            </li>
+                            
+                           
+                </ul>
+    </div>
+</div>
+        <div class="sa-app__sidebar-shadow"></div>
+        <div class="sa-app__sidebar-backdrop" data-sa-close-sidebar=""></div>
+    </div>
+    <!-- sa-app__sidebar / end -->
+    <!-- sa-app__content -->
+    <div class="sa-app__content">
+        <!-- sa-app__toolbar -->
+        <div class="sa-toolbar sa-toolbar--search-hidden sa-app__toolbar">
+            <div class="sa-toolbar__body">
+                <div class="sa-toolbar__item"><button class="sa-toolbar__button" type="button" aria-label="Menu" data-sa-toggle-sidebar=""><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M1,11V9h18v2H1z M1,3h18v2H1V3z M15,17H1v-2h14V17z"></path></svg></button></div>
+                <div
+                    class="sa-toolbar__item sa-toolbar__item--search">
+                    <form class="sa-search sa-search--state--pending">
+                        <div class="sa-search__body"><label class="visually-hidden" for="input-search">Search for:</label>
+                            <div class="sa-search__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M16.243 14.828C16.243 14.828 16.047 15.308 15.701 15.654C15.34 16.015 14.828 16.242 14.828 16.242L10.321 11.736C9.247 12.522 7.933 13 6.5 13C2.91 13 0 10.09 0 6.5C0 2.91 2.91 0 6.5 0C10.09 0 13 2.91 13 6.5C13 7.933 12.522 9.247 11.736 10.321L16.243 14.828ZM6.5 2C4.015 2 2 4.015 2 6.5C2 8.985 4.015 11 6.5 11C8.985 11 11 8.985 11 6.5C11 4.015 8.985 2 6.5 2Z"></path></svg></div><input
+                                type="text" id="input-search" class="sa-search__input" placeholder="Search for the truth" autoComplete="off" /><button class="sa-search__cancel d-sm-none" type="button" aria-label="Close search"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M10.8,10.8L10.8,10.8c-0.4,0.4-1,0.4-1.4,0L6,7.4l-3.4,3.4c-0.4,0.4-1,0.4-1.4,0l0,0c-0.4-0.4-0.4-1,0-1.4L4.6,6L1.2,2.6 c-0.4-0.4-0.4-1,0-1.4l0,0c0.4-0.4,1-0.4,1.4,0L6,4.6l3.4-3.4c0.4-0.4,1-0.4,1.4,0l0,0c0.4,0.4,0.4,1,0,1.4L7.4,6l3.4,3.4 C11.2,9.8,11.2,10.4,10.8,10.8z"></path></svg></button>
+                            <div
+                                class="sa-search__field"></div>
+            </div>
+            <div class="sa-search__dropdown">
+                <div class="sa-search__dropdown-loader"></div>
+                <div class="sa-search__dropdown-wrapper">
+                    <div class="sa-search__suggestions sa-suggestions"></div>
+                    <div class="sa-search__help sa-search__help--type--no-results">
+                        <div class="sa-search__help-title">No results for &quot;<span class="sa-search__query"></span>&quot;</div>
+                        <div class="sa-search__help-subtitle">Make sure that all words are spelled correctly.</div>
+                    </div>
+                    <div class="sa-search__help sa-search__help--type--greeting">
+                        <div class="sa-search__help-title">Start typing to search for</div>
+                        <div class="sa-search__help-subtitle">Products, orders, customers, actions, etc.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sa-search__backdrop"></div>
+            </form>
+        </div>
+        <div class="mx-auto"></div>
+        <div class="sa-toolbar__item d-sm-none"><button class="sa-toolbar__button" type="button" aria-label="Show search" data-sa-action="show-search"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M16.243 14.828C16.243 14.828 16.047 15.308 15.701 15.654C15.34 16.015 14.828 16.242 14.828 16.242L10.321 11.736C9.247 12.522 7.933 13 6.5 13C2.91 13 0 10.09 0 6.5C0 2.91 2.91 0 6.5 0C10.09 0 13 2.91 13 6.5C13 7.933 12.522 9.247 11.736 10.321L16.243 14.828ZM6.5 2C4.015 2 2 4.015 2 6.5C2 8.985 4.015 11 6.5 11C8.985 11 11 8.985 11 6.5C11 4.015 8.985 2 6.5 2Z"></path></svg></button></div>
+        
+    <div class="sa-toolbar__item dropdown"><button class="sa-toolbar__button" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-reference="parent" data-bs-offset="0,1" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8,13c0,0-5.2,0-7,0c0-1-0.1-1.9,1-1.9C2,5,4,2,6,2c0-1.1,0-2,2-2c1.9,0,2,0.9,2,2c2,0,4,3,4,9c1,0,1,1,1,2C12.7,13,8,13,8,13z M6,14h4c0,1.1,0,2-2,2C6,16,6,15.1,6,14L6,14L6,14z"></path></svg>
+            <span class="sa-toolbar__button-indicator">{{notification_count_franchise}}</span></button>
+        <div
+            class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="dropdownMenuButton2">
+            <div class="sa-notifications">
+                <div class="sa-notifications__header">
+                    <div class="sa-notifications__header-title">Notifications</div>
+                    <!-- <a class="sa-notifications__header-action" href="">Mark All as Read</a> -->
+                </div>
+                <ul class="sa-notifications__list">
+                    {% for notification in admin_notifications %}
+                    <li class="sa-notifications__item {% if not notification.is_read %} highlight{% endif %}">
+                        <a href="{% url 'franchise-inbox_convo' notification.id %}" class="sa-notifications__item-button">
+                            <div class="sa-notifications__item-icon">
+                                <div class="sa-symbol sa-symbol--shape--rounded sa-symbol--style--primary">
+                                    <div class="sa-symbol__icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
+                                            <path d="M14.2,10.3c-0.1,0.4-0.5,0.7-0.9,0.7H4.8c-0.5,0-0.9-0.3-1-0.8L2.2,4C2.1,3.4,1.6,3,1,3H0.4C0.2,3,0,2.8,0,2.6V1.4C0,1.2,0.2,1,0.4,1h1.4c1,0,1.9,0.7,2.1,1.7l1.5,6.1C5.5,8.9,5.7,9,5.8,9h6.5c0.1,0,0.2-0.1,0.3-0.2l1.1-3.4C13.8,5.2,13.7,5,13.5,5H7.4C7.2,5,7,4.8,7,4.6V3.4C7,3.2,7.2,3,7.4,3H15c0.6,0,1,0.4,1,1v1L14.2,10.3z M4.5,13C5.3,13,6,13.7,6,14.5C6,15.3,5.3,16,4.5,16S3,15.3,3,14.5C3,13.7,3.7,13,4.5,13z M11.5,13c0.8,0,1.5,0.7,1.5,1.5c0,0.8-0.7,1.5-1.5,1.5S10,15.3,10,14.5C10,13.7,10.7,13,11.5,13z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sa-notifications__item-body">
+                                <div class="sa-notifications__item-title sa-notifications__item-title--nowrap">
+                                    <strong>Sender:</strong> {{ notification.sender.username }}<br>
+                                    <strong>{{ notification.heading }}</strong> <br>
+                                    <strong>Message:</strong> {{ notification.message }}
+                                </div>
+                                <div class="sa-notifications__item-subtitle sa-notifications__item-subtitle--nowrap">
+                                    <strong>Date:</strong> {{ notification.created_at }}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="sa-notifications__item">
+                        <!-- <a href="#" class="sa-notifications__item-button">
+                            <div class="sa-notifications__item-icon">
+                                <div class="sa-symbol sa-symbol--shape--rounded sa-symbol--style--warning">
+                                    <div class="sa-symbol__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M8,6C4.7,6,2,4.7,2,3s2.7-3,6-3s6,1.3,6,3S11.3,6,8,6z M2,5L2,5L2,5C2,5,2,5,2,5z M8,8c3.3,0,6-1.3,6-3v3c0,1.7-2.7,3-6,3S2,9.7,2,8V5C2,6.7,4.7,8,8,8z M14,5L14,5C14,5,14,5,14,5L14,5z M2,10L2,10L2,10C2,10,2,10,2,10z M8,13c3.3,0,6-1.3,6-3v3c0,1.7-2.7,3-6,3s-6-1.3-6-3v-3C2,11.7,4.7,13,8,13z M14,10L14,10C14,10,14,10,14,10L14,10z"></path></svg></div>
+                                </div>
+                            </div>
+                            <div class="sa-notifications__item-body">
+                                <div class="sa-notifications__item-title sa-notifications__item-title--nowrap">Creating a backup in the process</div>
+                                <div class="sa-notifications__item-subtitle sa-notifications__item-subtitle--nowrap">Completed: 37% (23.05 MB)</div>
+                            </div>
+                        </a> -->
+                    </li>
+                    <li class="sa-notifications__item">
+                        <!-- <a href="#" class="sa-notifications__item-button">
+                            <div class="sa-notifications__item-icon">
+                                <div class="sa-symbol sa-symbol--shape--rounded sa-symbol--style--primary">
+                                    <div class="sa-symbol__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M14.2,10.3c-0.1,0.4-0.5,0.7-0.9,0.7H4.8c-0.5,0-0.9-0.3-1-0.8L2.2,4C2.1,3.4,1.6,3,1,3H0.4C0.2,3,0,2.8,0,2.6V1.4C0,1.2,0.2,1,0.4,1h1.4c1,0,1.9,0.7,2.1,1.7l1.5,6.1C5.5,8.9,5.7,9,5.8,9h6.5c0.1,0,0.2-0.1,0.3-0.2l1.1-3.4C13.8,5.2,13.7,5,13.5,5H7.4C7.2,5,7,4.8,7,4.6V3.4C7,3.2,7.2,3,7.4,3H15c0.6,0,1,0.4,1,1v1L14.2,10.3z M4.5,13C5.3,13,6,13.7,6,14.5C6,15.3,5.3,16,4.5,16S3,15.3,3,14.5C3,13.7,3.7,13,4.5,13z M11.5,13c0.8,0,1.5,0.7,1.5,1.5c0,0.8-0.7,1.5-1.5,1.5S10,15.3,10,14.5C10,13.7,10.7,13,11.5,13z"></path></svg></div>
+                                </div>
+                            </div>
+                            <div class="sa-notifications__item-body">
+                                <div class="sa-notifications__item-title sa-notifications__item-title--nowrap">Product added to cart</div>
+                                <div class="sa-notifications__item-subtitle sa-notifications__item-subtitle--nowrap">Drill Screwdriver Brandix ALX7054 200 Watts</div>
+                            </div>
+                        </a> -->
+                    </li>
+                    <li class="sa-notifications__item">
+                        <!-- <a href="#" class="sa-notifications__item-button">
+                            <div class="sa-notifications__item-icon">
+                                <div class="sa-symbol sa-symbol--shape--rounded sa-symbol--style--info">
+                                    <div class="sa-symbol__icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M8,10c-3.3,0-6,2.7-6,6H0c0-3.2,1.9-6,4.7-7.3C3.7,7.8,3,6.5,3,5c0-2.8,2.2-5,5-5s5,2.2,5,5c0,1.5-0.7,2.8-1.7,3.7c2.8,1.3,4.7,4,4.7,7.3h-2C14,12.7,11.3,10,8,10z M8,2C6.3,2,5,3.3,5,5s1.3,3,3,3s3-1.3,3-3S9.7,2,8,2z"></path></svg></div>
+                                </div>
+                            </div>
+                            <div class="sa-notifications__item-body">
+                                <div class="sa-notifications__item-title sa-notifications__item-title--nowrap">Customer Ryan Ford says</div>
+                                <div class="sa-notifications__item-subtitle sa-notifications__item-subtitle--nowrap">What is a screen dimension of Brandix Series B monitor?</div>
+                            </div>
+                        </a> -->
+                    </li>
+                </ul>
+                <div class="sa-notifications__footer"><a class="sa-notifications__footer-action" href="{% url 'franchise-notifications' %}">See all notifications</a></div>
+            </div>
+    </div>
+    </div>
+    <div class="dropdown sa-toolbar__item"><button class="sa-toolbar-user" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-offset="0,1" aria-expanded="false"><span class="sa-toolbar-user__avatar sa-symbol sa-symbol--shape--rounded">
+        <img src="{% static 'assets/images/pic.jpg' %}" width="64" height="64" alt=""/></span><span class="sa-toolbar-user__info"><span class="sa-toolbar-user__title">{{user.username}}</span><span class="sa-toolbar-user__subtitle">{{user.email}}</span></span></button>
+        <ul
+            class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'profile-page_franchise' %}">Franchise Profile</a></li>
+            
+            <li>
+                <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Sign Out</a></li>
+            </ul>
+    </div>
+    </div>
+    <div class="sa-toolbar__shadow"></div>
+    </div>
+    <!-- sa-app__toolbar / end -->
+    <main class="py-5 mt-4">
+        <div class="container mb-3">
+            {% if messages %}
+            <div class="row">
+                <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12" style="padding: 0;margin: 2rem 0rem 0rem 12rem;">
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.extra_tags %}{{ message.tags|replaceBlank:message.extra_tags|replaceBlank:' ' }}{% else %}{{ message.tags }}{% endif %} w-100 rounded-0 mb-2 redirect-msg">
+                        <div class="d-flex w-100">
+                            <div class="col-auto flex-shrink-1 flex-grow-1">{{ message|safe }}</div>
+                            <div class="col-auto text-center">
+                                <button class="btn-close btn-sm text-sm" type="button" onclick="$(this).closest('.alert').remove()"></button>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% if message.extra_tags != 'stay' %}
+                    <script>
+                        $(function() {
+                            if ($('.redirect-msg').length > 0) {
+                                setTimeout(() => {
+                                    $('.redirect-msg').hide('slideUp')
+                                    setTimeout(() => {
+                                        $('.redirect-msg').remove()
+                                    }, 500)
+                                }, 3500)
+                            }
+
+                        })
+                    </script>
+                    {% endif %} {% endfor %}
+                </div>
+            </div>{% endif %} {% block pageContent %} {% endblock pageContent %}
+
+        </div>
+    </main>
+    {% block ScriptBlock %} {% endblock ScriptBlock %}
+    <div class="modal fade" id="uni_modal" role='dialog'>
+        <div class="hello">
+            <div class="modal-content rounded-0">
+                <div class="modal-header" style="background-color: rgba(0,0,0,4);">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" style=" color: black;"  data-bs-dismiss="modal"></button>
+                    
+                </div>
+                <div class="modal-body">
+
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-sm btn-flat btn-primary rounded-0" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+                    <button type="button" class="btn btn-sm btn-flat btn-light border rounded-0" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm_modal" role='dialog'>
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="delete_content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-flat btn-primary rounded-0" id='confirm' onclick="">Continue</button>
+                    <button type="button" class="btn btn-sm btn-flat btn-light border rounded-0" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewer_modal" role='dialog'>
+        <div class="modal-dialog modal-fullscreen" role="document">
+            <div class="modal-content rounded-0 bg-transparent">
+                <div class="modal-body bg-transparent d-flex flex-column w-100 h-100 align-items-center justify-content-center">
+                    <div class="text-end w-100 px-5">
+                        <a class="text-decoration-none text-light" href="javascript:void(0)" data-bs-dismiss="modal"><i class="fa fa-times fs-3"></i></a>
+                    </div>
+                    <div id="img-viewer" class="w-75 h-75 bg-dark overflow-auto">
+                        <img src="" class="image-thumbnail" id="img-viewer-field" />
+                    </div>
+                    <div class="w-25 d-flex justify-content-center pt-3">
+                        <div class="input-group mb-3">
+                            <button class="btn btn-dark bg-gradient btn-sm text-light" type="button" id="zoom-minus"><i class="fa fa-minus"></i></button>
+                            <input type="text" id="zoom-value" class="form-control form-control-sm rounded-0 w-25 bg-dark bg-gradient border-dark text-light text-center" value="100" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly>
+                            <button class="btn btn-dark bg-gradient btn-sm text-light" type="button" id="zoom-plus"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        const loader = $('<div>')
+        loader.attr('id', 'pre-loader')
+        loader.html('<div class="lds-facebook"><div></div><div></div><div></div></div>')
+
+        window.start_loader = function() {
+            $('body').removeClass('loading')
+            if ($('#pre-loader').length > 0)
+                $('#pre-loader').remove();
+            $('body').append(loader)
+            $('body').addClass('loading')
+        }
+        window.end_loader = function() {
+            if ($('#pre-loader').length > 0)
+                $('#pre-loader').remove();
+            $('body').removeClass('loading')
+        }
+        window.uni_modal = function($title = '', $url = '', $size = "") {
+            start_loader()
+            $.ajax({
+                url: $url,
+                error: err => {
+                    console.log()
+                    alert("An error occured")
+                },
+                success: function(resp) {
+                    if (resp) {
+                        $('#uni_modal .modal-title').html($title)
+                        $('#uni_modal .modal-body').html(resp)
+                        if ($size != '') {
+                            $('#uni_modal .modal-dialog').addClass($size + '  modal-dialog-centered')
+                        } else {
+                            $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md modal-dialog-centered")
+                        }
+                        $('#uni_modal').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            focus: true
+                        })
+                        $('#uni_modal').modal('show')
+                        end_loader()
+                    }
+                }
+            })
+        }
+        window._conf = function($msg = '', $func = '', $params = []) {
+            $('#confirm_modal #confirm').attr('onclick', $func + "(" + $params.join(',') + ")")
+            $('#confirm_modal .modal-body').html($msg)
+            $('#confirm_modal').modal('show')
+        }
+
+        $(function() {
+            $('#viewer_modal').on('shown.modal.bs', function() {
+                $('#zoom-value').val(100)
+                $('#img-viewer img').css(
+                    'transform',
+                    'scale(1)'
+                )
+
+            })
+            $('#zoom-plus').click(function() {
+                var scale = parseFloat($('#zoom-value').val())
+                if (scale >= 200) return false;
+                scale += 10
+                $('#zoom-value').val(scale)
+                scale = scale / 100
+                $('#img-viewer img').css(
+                    'transform',
+                    'scale(' + (scale) + ')'
+                )
+            })
+            $('#zoom-minus').click(function() {
+                var scale = parseFloat($('#zoom-value').val())
+                if (scale <= 0) return false;
+                scale -= 10
+                $('#zoom-value').val(scale)
+                scale = scale / 100
+                $('#img-viewer img').css(
+                    'transform',
+                    'scale(' + (scale) + ')'
+                )
+            })
+
+        })
+    </script>
+    <!-- sa-app__body -->
+    <div id="top"  class="sa-app__body px-2 px-lg-4">
+        <div class="container">
+            
+            {% block content %}
+                
+            
+            {% endblock  %}
+    
+            <div class="scroll-buttons">
+                <button style="background-color: #51585e;border: #51585e;" class="btn btn-primary btn-scroll" data-scroll="up"><i class="fas fa-chevron-up"></i> </button>
+                <button style="background-color: #51585e;border: #51585e;" class="btn btn-primary btn-scroll" data-scroll="down"><i class="fas fa-chevron-down"></i> </button>
+            </div>
+    
+            
+        </div>
+    </div>
+
+
+    <script>
+    
+        // Scroll buttons
+            $('.btn-scroll').click(function () {
+                const scrollDirection = $(this).data('scroll');
+                const windowHeight = $(window).height();
+                const scrollAmount = scrollDirection === 'up' ? -windowHeight : windowHeight;
+    
+                $('html, body').animate({ scrollTop: $(window).scrollTop() + scrollAmount }, 500);
+            });
+       
+    </script>
+    <!-- sa-app / end -->
+    <!-- scripts -->
+    <!-- <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script> -->
+    <script src="{% static 'assets/vendor/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/fontawesome/js/all.min.js' %}" data-auto-replace-svg="" async=""></script>
+    <script src="{% static 'assets/vendor/nouislider/nouislider.min.js' %}"></script>
+    <script src="{% static 'assets/default/js/smiley.js' %}"></script>
+
+    
+    
+    
+</body>
+
+</html>

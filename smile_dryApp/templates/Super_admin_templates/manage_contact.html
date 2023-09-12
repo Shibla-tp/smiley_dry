@@ -1,0 +1,150 @@
+{% load static %}
+<style>
+    .errorlist {
+        color: var(--bs-danger);
+    }
+
+    .mdc-text-field {
+        width: 100%;
+    }
+
+    .mdc-text-field--outlined {
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .card {
+        border-radius: 0;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+
+</style>
+
+<div class="container-fluid">
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div> 
+    <form action="" id="user-form">
+        <input type="hidden" name="id" value="{{contact.id}}">
+        <input type="hidden" name="manage_contact" value="1">
+        <div class="mb-3">
+            <label for="Address" class="control-label"><i class="fa-solid fa-clipboard" style="padding-right:0.5rem;"></i>Address</label>
+            <textarea rows="3" id="Address" name="Address" class="form-control form-control-sm rounded-0" required>{% if form.data.email_1 %}{{ form.data.email_1 }}{% else %}{{ contact.Address }}{% endif %}</textarea>
+        </div>
+              
+        <div class="form-group mb-4">
+            <label for="email_1" class="control-label"><i class="fa-solid fa-envelope"style="padding-right:0.5rem;"></i>Mail ID</label>
+            <input type="email_1" class="form-control rounded-0" name="email_1" id="email_1" value="{% if form.data.email_1 %}{{ form.data.email_1 }}{% else %}{{ contact.email_1 }}{% endif %}" required="required">
+        </div>
+        <div class="form-group mb-4">
+            <label for="email_2" class="control-label"><i class="fa-solid fa-envelope"style="padding-right:0.5rem;"></i>CAREER MAIL ID</label>
+            <input type="email_2" class="form-control rounded-0" name="email_2" id="email_2" value="{% if form.data.email_2 %}{{ form.data.email_2 }}{% else %}{{ contact.email_1 }}{% endif %}" required="required">
+        </div>
+        <!-- <div class="form-group mb-4">
+            <label for="contact_person" class="control-label"><i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>Contact Person</label>
+            <input type="contact_person" class="form-control rounded-0" name="contact_person" id="contact_person" value="{% if form.data.contact_person %}{{ form.data.contact_person }}{% else %}{{ user.contact_person }}{% endif %}" required="required">
+        </div>  -->
+        <div class="form-group mb-4">
+            <label for="phone" class="control-label"><i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>Contact Number</label>
+            <input type="phone" class="form-control rounded-0" name="phone" id="phone" value="{% if form.data.phone %}{{ form.data.phone }}{% else %}{{ contact.phone }}{% endif %}" required="required">
+        </div> 
+        <div class="form-group mb-4">
+            <label for="alternative_phone" class="control-label"><i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>Alternative Contact Number</label>
+            <input type="alternative_phone" class="form-control rounded-0" name="alternative_phone" id="alternative_phone" value="{% if form.data.alternative_phone %}{{ form.data.alternative_phone }}{% else %}{{contact.alternative_phone }}{% endif %}" required="required">
+        </div>       
+         
+        
+    </form>
+</div>
+<script>
+    $(function() {
+        $('#user-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-contact' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

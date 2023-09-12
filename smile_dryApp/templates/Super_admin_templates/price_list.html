@@ -1,0 +1,366 @@
+
+{% load humanize %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="{% static 'assets/css/style9.css' %}"> -->
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<style>
+
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    
+    body {
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    
+    .table__header {
+        width: 100%;
+        height: 10%;
+        background-color: #fff4;
+        padding: .8rem 1rem;
+      
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .table__header .input-group {
+        width: 35%;
+        height: 100%;
+        background-color: #fff5;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+       
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+    }
+    
+    .table__header .input-group:hover {
+        width: 45%;
+        background-color: #fff8;
+        box-shadow: 0 .1rem .4rem #0002;
+    }
+    
+    .table__header .input-group img {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    
+    .table__header .input-group input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    .table__body {
+        width: 95%;
+        max-height: calc(89% - 1.6rem);
+        background-color: #fff;   
+        margin: .8rem auto;
+        border-radius: .6rem;    
+        overflow: auto;
+        overflow: overlay;
+    }
+    
+    .table__body::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+    
+    .table__body::-webkit-scrollbar-thumb{
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+    
+    .table__body:hover::-webkit-scrollbar-thumb{ 
+        visibility: visible;
+    }
+    
+    table {
+        width: 100%;
+    }
+    td img {
+        width: 50px;
+        height: 50px;
+        margin-right: .5rem;
+        border-radius: 50%;
+    
+        vertical-align: middle;
+    }
+    
+    table, th, td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d5d1defe;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+    
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+    
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+    
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td img {
+        transition: .2s ease-in-out;
+    }
+    
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    tbody tr.hide td img {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+    
+    thead th.active span.icon-arrow{
+        background-color: #6c00bd;
+        color: #fff;
+    }
+    
+    thead th.asc span.icon-arrow{
+        transform: rotate(180deg);
+    }
+    
+    thead th.active,tbody td.active {
+        color: #6c00bd;
+    }
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+      bottom: .5em;
+    }
+</style> 
+<body>
+<div class="container">
+      {% comment %} <h3 class="fw-bolder text-center">List of Categories</h3>
+        <center>
+            <hr class="bg-primary opacity-100" style="height:3px" width="5%">
+        </center> {% endcomment %}
+         <div class="card rounded-0 shadow">
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="text-end mb-3">
+                        <button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" type="button" id="create_new"><i class="fa fa-plus"></i> Add New</button>
+                    </div>   
+                    
+            
+                                 
+                     
+                    
+     <main class="table">
+        <section class="table__header">
+            <h3><strong> List of Categories</strong></h3>
+            
+        </section>
+        <section class="table__body">
+            <table id="selectedColumn">
+               
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Image</th>
+                        <th class="text-center">Product</th>
+                        <th class="text-center">Category </th>
+                        <th class="text-center">Sub Categories</th>
+                        <th class="text-center">Item</th>                                                              
+                        <th class="text-center">Price/kg.</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for price in prices %}
+                    <tr>
+                        <td class="text-center">{{ forloop.counter }}</td>
+                        <td><a href="{{ price.image}}" target="_blank">
+                            <img src="{{ price.image}}" width="100px" height="100px" alt="">
+                          </a></td>
+                        <td>{{price.category}}</td>
+                        <td>{{price.category_type}}</td>
+                        <td>{{price.user_type}}</td>
+                        <td>{{ price.laundry_type}}</td> 
+                        <td class="text-end">{{ price.price|floatformat:2|intcomma}}</td>
+                        
+                        <td class="text-center"><a class="dropdown-item update-status" href="javascript:void(0)" data-url="{% url 'update-status_prices' price.pk %}">
+                            {% if price.status == '1' %}
+                            <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span> {% else %}
+                            <span class="badge badge-danger bg-gradient bg-danger px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span> {% endif %}
+                        </a>
+                        </td>
+                        <td class="text-center">
+                            <div class="dropdown"><button class="btn btn-sa-muted btn-sm" type="button" id="product-context-menu-9" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More"><svg xmlns="http://www.w3.org/2000/svg" width="3" height="13" fill="currentColor"><path d="M1.5,8C0.7,8,0,7.3,0,6.5S0.7,5,1.5,5S3,5.7,3,6.5S2.3,8,1.5,8z M1.5,3C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0 S3,0.7,3,1.5S2.3,3,1.5,3z M1.5,10C2.3,10,3,10.7,3,11.5S2.3,13,1.5,13S0,12.3,0,11.5S0.7,10,1.5,10z"></path></svg></button>
+                                <ul
+                                    class="dropdown-menu dropdown-menu-end" aria-labelledby="product-context-menu-9">
+                                    <li><a class="dropdown-item" href="{% url 'view-price-pk' price.pk %}"><i class="fa fa-eye text-info"></i> View Info</a></li>
+                                    <li><a class="dropdown-item edit-data" href="javascript:void(0)" data-url="{% url 'manage-price-pk' price.pk %}"><i class="fas fa-edit text-primary"></i> Edit</a></li>
+    
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li><a class="dropdown-item text-danger delete-data" href="javascript:void(0)"  data-url="{% url 'delete-user' user.pk %}"><i class="fas fa-trash"></i> Delete</a></li>
+                                    </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+        
+        </section>
+    </main>
+                </div>
+            </div> 
+        </div>
+    </section>
+   
+    </div> 
+{% block ScriptBlock %}
+<script>
+    $(function() {
+        $('#create_new').click(function() {
+            uni_modal("<i class='fa fa-plus'></i> Add New Category Price", "{% url 'manage-price' %}")
+        })
+        $('.update-status').click(function() {
+            uni_modal("<i class='fa fa-edit'></i> Edit status Details", $(this).attr('data-url'))
+            })
+        $('.view-data').click(function() {
+            uni_modal("<i class='fa fa-th-list'></i> Price Details", $(this).attr('data-url'))
+        })
+        $('.edit-data').click(function() {
+            uni_modal("<i class='fa fa-edit'></i> Edit Price Details", $(this).attr('data-url'))
+        })
+        $('.view_image').click(function() {
+            var img = $(this).attr('data-img-url')
+            $('#viewer_modal #img-viewer-field').attr('src', img)
+            $('#viewer_modal').modal('show')
+        })
+        $('.delete-data').click(function() {
+            _conf("Are you sure to delete this Price?", 'delete_price', ["'" + $(this).attr('data-url') + "'"])
+        })
+        $('#price-tbl').find('td, th').addClass('px-2 py-1 align-middle')
+        $('#price-tbl').DataTable({
+            columnDefs: [{
+                orderable: false,
+                targets: [5]
+            }],
+            lengthMenu: [
+                [25, 50, 100, -1],
+                [25, 50, 100, "All"]
+            ]
+        })
+    })
+
+    function delete_price(url) {
+
+        var _this = $('#confirm_modal .modal-body')
+        $('.err-msg').remove();
+        var el = $('<div>')
+        el.addClass("alert alert-danger err-msg")
+        el.hide()
+        start_loader()
+        $.ajax({
+            headers: {
+                "X-CSRFToken": "{{csrf_token}}"
+            },
+            url: url,
+            dataType: 'JSON',
+            error: err => {
+                console.log(err)
+                alert("an error occurred.")
+                end_loader()
+            },
+            success: function(resp) {
+                if (resp.status == 'success') {
+                    location.reload()
+                } else if (!!resp.msg) {
+                    el.html(resp.msg)
+                    _this.prepend(el)
+                    el.show()
+                } else {
+                    el.html("An error occurred")
+                    _this.prepend(el)
+                    el.show()
+                }
+                end_loader()
+            }
+
+        })
+    }
+ $(document).ready(function () {
+        $('#selectedColumn').DataTable({
+          "aaSorting": [],
+          columnDefs: [{
+          orderable: false,
+          targets: 3
+          }]
+        });
+          $('.dataTables_length').addClass('bs-select');
+      });
+</script>
+</body>
+</html>
+{% endblock ScriptBlock %}

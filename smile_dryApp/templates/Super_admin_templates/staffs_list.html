@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="{% static 'assets/css/style9.css' %}"> -->
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<style>
+
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    
+    body {
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    
+    .table__header {
+        width: 100%;
+        height: 10%;
+        background-color: #fff4;
+        padding: .8rem 1rem;
+      
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .table__header .input-group {
+        width: 35%;
+        height: 100%;
+        background-color: #fff5;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+       
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+    }
+    
+    .table__header .input-group:hover {
+        width: 45%;
+        background-color: #fff8;
+        box-shadow: 0 .1rem .4rem #0002;
+    }
+    
+    .table__header .input-group img {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    
+    .table__header .input-group input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    .table__body {
+        width: 95%;
+        max-height: calc(89% - 1.6rem);
+        background-color: #fff;   
+        margin: .8rem auto;
+        border-radius: .6rem;    
+        overflow: auto;
+        overflow: overlay;
+    }
+    
+    .table__body::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+    
+    .table__body::-webkit-scrollbar-thumb{
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+    
+    .table__body:hover::-webkit-scrollbar-thumb{ 
+        visibility: visible;
+    }
+    
+    table {
+        width: 100%;
+    }
+    
+    td img {
+        width: 36px;
+        height: 36px;
+        margin-right: .5rem;
+        border-radius: 50%;
+    
+        vertical-align: middle;
+    }
+    
+    table, th, td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d5d1defe;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+    
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+    
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+    
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td img {
+        transition: .2s ease-in-out;
+    }
+    
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    tbody tr.hide td img {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+    
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+    
+    thead th.active span.icon-arrow{
+        background-color: #6c00bd;
+        color: #fff;
+    }
+    
+    thead th.asc span.icon-arrow{
+        transform: rotate(180deg);
+    }
+    
+    thead th.active,tbody td.active {
+        color: #6c00bd;
+    }
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+      bottom: .5em;
+    }
+</style> 
+<body>
+<div id="top">
+    <section class="py-4">
+        <div class="container">
+           
+          <!-- <h3 class="fw-bolder text-center">List of Users</h3> -->
+            <!-- <center>
+                <hr class="bg-primary opacity-100" style="height:3px" width="5%">
+            </center> -->
+            <div class="card rounded-0 shadow">
+                <div class="card-body">
+                   <div class="container-fluid">
+                    <div class="text-end mb-3">
+                        <!-- <button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" type="button"  id="create_attendance" ><i class="fa fa-plus"></i> Attendence</button> -->
+                        <button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" type="button" id="create_new" ><i class="fa fa-plus"></i> Add Staff</button>
+                    </div>
+                     
+                    </div>
+     <main class="table">
+        <section class="table__header">
+            <h3><strong>Staff List</strong></h3>
+           
+        </section>
+        <section class="table__body">
+            <table id="selectedColumn">
+              
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Staff Name</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Designation</th>
+                        <th class="text-center">Email Id</th>
+                        <th class="text-center">Address</th>
+                        <th class="text-center">Franchise Details</th>
+                        <!-- <th class="text-center">Vendor Details</th> -->
+                        <th class="text-center">Contact Number</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td class="text-center">{{ forloop.counter }}</td>
+                        <td>{{ user.first_name}} {{ user.last_name}}</td>
+                        <td>{{ user.username}}</td>
+                        <td>{{ user.designation}}</td>
+                        <td>{{ user.email}}</td>
+                        <td>
+                            <div>{{ user.location}}</div>
+                            <div>{{ user.city}}</div>
+                            <div>{{ user.district}}</div>
+                            
+
+                        </td>
+                        <td>{{ user.franchise_details}}</td>
+                        <!-- <td>{{ user.vendor_details}}</td> -->
+                        <td>{{ user.phone}}</td>
+                        <td class="text-center">
+                            <div class="dropdown"><button class="btn btn-sa-muted btn-sm" type="button" id="product-context-menu-9" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More"><svg xmlns="http://www.w3.org/2000/svg" width="3" height="13" fill="currentColor"><path d="M1.5,8C0.7,8,0,7.3,0,6.5S0.7,5,1.5,5S3,5.7,3,6.5S2.3,8,1.5,8z M1.5,3C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0 S3,0.7,3,1.5S2.3,3,1.5,3z M1.5,10C2.3,10,3,10.7,3,11.5S2.3,13,1.5,13S0,12.3,0,11.5S0.7,10,1.5,10z"></path></svg></button>
+                                <ul
+                                    class="dropdown-menu dropdown-menu-end" aria-labelledby="product-context-menu-9">
+                                    <li><a class="dropdown-item" href="{% url 'view-staffs-pk' user.pk %}"><i class="fa fa-eye text-info"></i> View Info</a></li>
+                                    
+                                    <li><a class="dropdown-item edit-data" href="javascript:void(0)" data-url="{% url 'manage-staffs-pk' user.pk %}"><i class="fa fa-edit text-primary"></i> Edit</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li><a class="dropdown-item delete-data text-danger" href="javascript:void(0)"  data-url="{% url 'delete-staffs' user.pk %}"><i class="fa fa-trash text-danger"></i> Delete</a></li>
+                                    </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <!--tablesnewstart-->
+                    
+                    
+                </tbody>
+            {% comment %} </table><nav aria-label="...">
+                        <ul class="pagination">
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                          </li>
+                          <li class="page-item"><a class="page-link" href="#">1</a></li>
+                          <li class="page-item active">
+                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                          </li>
+                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                          <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                          </li>
+                        </ul>
+                      </nav> {% endcomment %}
+        </section>
+    </main>
+                </div>
+            </div> 
+        </div>
+    </section>
+    </div>
+    
+    <script>
+        $(function() {
+            $('#create_new').click(function() {
+                uni_modal("<i class='fa fa-plus'></i> Add New Staff", "{% url 'manage-staffs' %}")
+            })
+            $('#create_attendance').click(function() {
+                uni_modal("<i class='fa fa-plus'></i> Add Attendance", "{% url 'attendance-class' %}")
+            })
+            $('.edit-data').click(function() {
+                uni_modal("<i class='fa fa-edit'></i> Edit Staff Details", $(this).attr('data-url'))
+            })
+            $('.view_image').click(function() {
+                var img = $(this).attr('data-img-url')
+                $('#viewer_modal #img-viewer-field').attr('src', img)
+                $('#viewer_modal').modal('show')
+            })
+            $('.delete-data').click(function() {
+                _conf("Are you sure to delete this User?", 'delete_staffs', ["'" + $(this).attr('data-url') + "'"])
+            })
+            $('#user-tbl').find('td, th').addClass('px-2 py-1 align-middle')
+            $('#user-tbl').DataTable({
+                columnDefs: [{
+                    orderable: false,
+                    targets: [3]
+                }],
+                lengthMenu: [
+                    [25, 50, 100, -1],
+                    [25, 50, 100, "All"]
+                ]
+            })
+        })
+    
+        function delete_staffs(url) {
+    
+            var _this = $('#confirm_modal .modal-body')
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            start_loader()
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": "{{csrf_token}}"
+                },
+                url: url,
+                dataType: 'JSON',
+                error: err => {
+                    console.log(err)
+                    alert("an error occurred.")
+                    end_loader()
+                },
+                success: function(resp) {
+                    if (resp.status == 'success') {
+                        location.reload()
+                    } else if (!!resp.msg) {
+                        el.html(resp.msg)
+                        _this.prepend(el)
+                        el.show()
+                    } else {
+                        el.html("An error occurred")
+                        _this.prepend(el)
+                        el.show()
+                    }
+                    end_loader()
+        }
+
+    })
+}
+$(document).ready(function () {
+    $('#selectedColumn').DataTable({
+      "aaSorting": [],
+      columnDefs: [{
+      orderable: false,
+      targets: 3
+      }]
+    });
+      $('.dataTables_length').addClass('bs-select');
+  });
+</script>
+</body>
+</html>
+

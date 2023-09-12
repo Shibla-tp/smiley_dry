@@ -1,0 +1,266 @@
+<div id="top">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script>
+    
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <style>
+        /* .navbar h3 {
+        color: #f5f5f5;
+        margin-top: 14px;
+    } */
+    .hljs-pre {
+        background: #f8f8f8;
+        padding: 3px;
+    }
+    .footer {
+        border-top: 1px solid #eee;
+        margin-top: 40px;
+        padding: 40px 0;
+    }
+    .input-group {
+        width: 110px;
+        margin-bottom: 10px;
+    }
+    /* .pull-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    @media (min-width: 768px) {
+      .container {
+        max-width: 730px;
+      }
+    }
+    @media (max-width: 767px) {
+      .pull-center {
+        float: right;
+      }
+    } */
+    
+    .input-group-addon {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group>.btn, .input-group-btn:last-child>.dropdown-toggle, .input-group-btn:first-child>.btn:not(:first-child), .input-group-btn:first-child>.btn-group:not(:first-child)>.btn {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+    }
+    
+    .fa {
+        position: relative;
+        top: 5px;
+        display: inline-block;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    input.form-control{
+      padding: 0;
+      text-align: center;
+    }
+    /* .page-container{
+        margin-top:100px;
+    } */
+    .btn-default{
+      background-color: #4BCBEB;
+      border: #4BCBEB;
+      color: black;
+    }
+    .btn-default:hover{
+      background-color: #ffd333;
+      /* color: white; */
+    }
+    
+    .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20rem; }
+      .toggle.ios .toggle-handle { border-radius: 20rem; }
+    
+    .details{
+      color: #949494;
+      font-weight: 400;
+    }
+    </style>
+    
+    <!-- ... Your existing HTML code ... -->
+    
+    <form id="timeslot-form">
+      {% csrf_token %}
+      <div class="container-fluid">
+          <div class="card">
+              <div class="card-body bg-light">
+                  <h1 class="mt-4 text-dark"><b>Timeslot</b></h1>
+                  <br>
+                  <div class="container-fluid">
+                      <div class="row">
+                          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                              <div class="clearfix">
+                                  <label for="opening-time">Opening Time</label>
+                                  <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
+                                      <input type="text" id="opening-time" class="form-control" value="09:00 AM">
+                                      <span class="input-group-addon">
+                                          <i class="fa-solid fa-clock"></i>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                              <div class="clearfix">
+                                  <label for="closing-time">Closing Time</label>
+                                  <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
+                                      <input type="text" id="closing-time" class="form-control" value="09:00 PM">
+                                      <span class="input-group-addon">
+                                          <i class="fa-solid fa-clock"></i>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                              <div class="clearfix">
+                                  <label for="week-off">Week Off</label>
+                                  <select class="form-control" id="week-off" name="week_off">
+                                      <option value="monday">Monday</option>
+                                      <option value="tuesday">Tuesday</option>
+                                      <option value="wednesday">Wednesday</option>
+                                      <option value="thursday">Thursday</option>
+                                      <option value="friday">Friday</option>
+                                      <option value="saturday">Saturday</option>
+                                      <option value="sunday">Sunday</option>
+                                  </select>
+                              </div>
+                          </div>
+    
+                          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+    
+                            <button type="submit" class="btn btn-default btn-sm mt-4">Generate Timeslots</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    
+    
+    </form>
+    
+    <!-- ... Your existing HTML code ... -->
+    <div class="container-fluid">
+      <div class="card">
+          <div class="card-body bg-light">
+              <div class="clearfix">
+                  <table id="timeslot-table" class="table table-bordered">
+                      <thead>
+                          <tr>
+                              <th>Timeslot</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <!-- Timeslots will be dynamically generated here -->
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    <script>
+      $(document).ready(function() {
+          $('.clockpicker').clockpicker({
+              twelvehour: true,
+          });
+    
+        
+    // Event listener for form submission
+    $('#timeslot-form').on('submit', function(e) {
+        e.preventDefault();
+        console.log("Form submitted"); // Add this line
+        generateTimeslots();
+    });
+    
+    function generateTimeslots() {
+            var openingTime = $('#opening-time').val();
+            var closingTime = $('#closing-time').val();
+            var selectedWeekOff = $('#week-off').val();
+    
+            // Fetch timeslots data from the server
+            $.ajax({
+                type: "GET",
+                url: "/get_timeslots_franchise/",
+                data: {
+                    opening_time: openingTime,
+                    closing_time: closingTime,
+                    selected_week_off: selectedWeekOff
+                },
+                success: function(response) {
+                    // Clear and populate the table rows
+                    var tbody = $('#timeslot-table tbody');
+                    tbody.empty();
+                    response.timeslots.forEach(function(timeslot) {
+                        var row = $('<tr>').append(
+                            $('<td>').text(timeslot.start_time + ' - ' + timeslot.end_time),
+                            $('<td>').html('<input type="checkbox"  data-toggle="toggle" data-style="ios">')
+                        );
+                        tbody.append(row);
+                    });
+    
+                    // Initialize the toggle buttons
+                    $('#timeslot-table input[type="checkbox"]').bootstrapToggle({
+                        style: 'ios'
+                    });
+                },
+                error: function(error) {
+                    console.error("Error fetching timeslots:", error);
+                }
+            });
+        
+    
+        // Send timeslots data to the server
+        saveTimeslotsToDatabase(timeslotsData);
+        
+    }
+    
+    function saveTimeslotsToDatabase(timeslotsData) {
+        const csrftoken = getCookie('csrftoken'); // Get the CSRF token
+    
+        $.ajax({
+            type: "POST",
+            url: "/save_timeslots_franchise/",  // Replace with the URL path from your urls.py
+            data: JSON.stringify(timeslotsData),
+            contentType: 'application/json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken); // Include the CSRF token in the request headers
+            },
+            success: function(response) {
+                console.log("Timeslots saved successfully:", response);
+            },
+            error: function(error) {
+                console.error("Error saving timeslots:", error);
+            }
+        });
+    }
+    
+    
+    
+      });
+    </script>
+    
+    
+    
+    
+    

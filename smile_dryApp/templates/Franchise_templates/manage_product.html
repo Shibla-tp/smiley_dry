@@ -1,0 +1,148 @@
+{% load static %}
+
+<style>
+     .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    }
+</style>
+<div class="container-fluid">
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div>
+    <form action="" id="productsfranchise-form">
+        <input type="hidden" name="id" value="{{productsfranchise.id}}">
+  
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <label for="product_details" class="control-label">Name</label>
+            <select id="product_details" name="name" class="form-control form-control-sm rounded-0">
+                <option value="" disabled selected></option>
+                {% for user in fusers %}
+                <option value="{{user.name}}" >{{user.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <label for="price" class="control-label">Price</label>
+            <input type="text" class="form-control form-control-sm rounded-0" name="price" id="price" value="{{productsfranchise.price}}">
+            <!-- <span id="contact-display"></span> Add this line -->
+        </div>
+        <div class="mb-3">
+            <label for="description" class="control-label"><i class="fa-solid fa-clipboard" style="padding-right:0.5rem;"></i>Description</label>
+            <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{{productsfranchise.description}}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="control-label"><i class="fa-solid fa-chart-simple" style="padding-right:0.5rem;"></i>Status</label>
+            <select type="text" id="status" name="status" class="form-select form-select-sm rounded-0" required>
+                {% if productsfranchise.status == '1' %}
+                <option value="1" selected>Active</option>
+                {% else %}
+                <option value="1">Active</option>
+                {% endif %}
+                {% if productsfranchise.status == '2' %}
+                <option value="2" selected>Inactive</option>
+                {% else %}
+                <option value="2">Inactive</option>
+                {% endif %}
+            </select>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        $('#product_details').change(function() {
+            var selectedUsername = $(this).val();
+            
+            // Make an AJAX request to fetch the contact number based on selectedUsername
+            $.ajax({
+                url: "{% url 'fetch-price_franchise' %}",
+                type: "GET",
+                data: { name: selectedUsername },
+                dataType: "json",
+                success: function(response) {
+                    if (response && response.price) {
+                        $('#price').val(response.price);
+                        $('#price-display').text('price Number: ' + response.price);
+                    } else {
+                        $('#price').val('');
+                        $('#price-display').text('');
+                    }
+                },
+                error: function() {
+                    $('#price').val('');
+                    $('#price-display').text('');
+                }
+            });
+        });
+        $('#productsfranchise-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-product_franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.href = ("{% url 'view-productsfranchise' %}/"+resp.id)
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

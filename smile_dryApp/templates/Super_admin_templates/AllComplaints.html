@@ -1,0 +1,157 @@
+{% extends "Super_admin_templates/admin_dashboard.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<style>
+td.color_1{ background-color: #4caf50; }
+td.color_2{ background-color: yellow; }
+td.color_3{ background-color: red; }
+  /* Custom styling for navigation buttons */
+  .nav-pills {
+        display: flex;
+        /* justify-content: space-between; */
+        align-items: stretch; /* Align items to have equal height */
+    }
+
+    .nav-link.btn-custom {
+        flex-grow: 1;
+        text-align: center;
+        background-color: #4BCBEB;
+        color: white;
+        border: none;
+        border-radius: 0;
+        min-width: 100px; /* Set a minimum width for uniformity */
+        height: 30px; /* Set the height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+    }
+    .nav-link.btn-custom:hover{
+      background-color: #ffd333;
+      color: black;
+    }
+
+    /* Adjust spacing */
+    .nav-item:not(:last-child) {
+        margin-right: 10px;
+    }
+    .nav-link.active {
+    background-color: #ffd333;
+    color: black;
+}
+
+</style>
+<body>
+  <div id="top" >
+    <section class="py-4">
+        <div class="container">
+              <div class="card rounded-0 shadow"
+                <div class="card-body">
+                   <div class="container-fluid">
+                        
+                    <main class="table">
+                      <section class="table__header">
+                          <h3><Strong>Tickets</Strong></h3>
+                          <div class="text-end mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a href="{% url 'allcomplaints' %}" class="nav-link btn-custom {% if request.resolver_match.url_name == 'allcomplaints' %}active{% endif %}" id="allLink">All</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'list' %}" class="nav-link btn-custom {% if request.resolver_match.url_name == 'list' %}active{% endif %}" id="newLink">NEW</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'plist' %}" class="nav-link btn-custom {% if request.resolver_match.url_name == 'plist' %}active{% endif %}" id="inProgressLink">IN-PROGRESS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'solved' %}" class="nav-link btn-custom {% if request.resolver_match.url_name == 'solved' %}active{% endif %}" id="solvedLink">SOLVED</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'tickets' %}" class="nav-link btn-custom" id="addticket"><i class="fa fa-plus"></i>ADD NEW</a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        
+                      </section>
+                      <section class="table__body">
+                          <table id="selectedColumn">
+                 
+                       
+                      <thead>
+                        <tr >
+                             <th >ID</th>
+                             <th >Customer ID</th>
+                             <th >Title</th>
+                             <th >Category</th>
+                             <th >Created At</th>
+                             <th >Description</th>
+                             <th >Franchise Details</th>
+                             <th >Image</th>
+                             <th >Status</th>
+                             <th >Actions</th>
+                             <th ></th>
+                           </tr>
+                   </thead>
+                   <tbody>
+                   {% for data in c %}
+                   <tr>
+                    
+                    <td class="counterCell bg-white"></td>
+
+                     <td >{{ data.Customer_ID }}</td>
+                     <td >{{ data.Title }}</td>
+                     <td >{{ data.get_Type_of_Tickets_display }}</td>
+                     <td >{{ data.Date_time }}</td>
+                     <td >{{ data.Description }}</td>
+                     <td >{{ data.Franchise_branch }}</td>
+                     <td >
+                       <a href="{{ data.image }}" target="_blank">
+                         <img src="{{ data.image }}" width="100px" height="100px" alt="">
+                       </a>
+                     </td>
+                     <td class="color_{{ data.status}}"></td>
+                     <form method="POST">
+                       {% csrf_token %}
+                       <td class="bg-white">{{ forms|crispy }}</td>
+                       <td class="bg-white">
+                         <input type='hidden' name="cid2" value={{ data.id }}>
+                         <input type="hidden" name="uid" value={{ data.user_id }}>
+                         <button type='submit' class="btnc">Submit</button>
+                       </td>
+                     
+                   </tr>
+                   {% endfor %}
+                 </tbody>
+              </table>
+              </section>
+              </main>
+            </div>
+            </div>
+            </div>
+           
+          
+      </section>
+  <script>
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+  $(document).ready(function () {
+    $('#selectedColumn').DataTable({
+      "aaSorting": [],
+      columnDefs: [{
+      orderable: false,
+      targets: 3
+      }]
+    });
+      $('.dataTables_length').addClass('bs-select');
+  });
+</script>
+
+
+
+
+{% endblock content %}

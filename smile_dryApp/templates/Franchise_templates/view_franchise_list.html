@@ -1,0 +1,142 @@
+<style>
+    /* Card styles */
+    .card {
+        border-radius: 0;
+        display: block;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+     /* List styles */
+     dl {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    dt {
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+
+    dd {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        white-space: nowrap;
+    }
+
+    .ps-4 {
+        padding-top: 0.5rem;
+        margin-right: 3rem;
+    }
+
+    /* Button styles */
+    .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    }
+
+    .btn-primary {
+        background-color: #ffd333;
+        border: none;
+        color: #000;
+    }
+
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+    }
+
+    /* Container styles */
+    .container {
+        padding: 1rem;
+    }
+
+    /* Additional styles for small screens */
+    @media (max-width: 576px) {
+        dl {
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+
+        dd {
+            white-space: nowrap;
+        }
+    }
+</style>
+
+<div id="top">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+                <div class="card shadow rounded-0">
+                    <div class="card-header">
+                        <div class="h5 card-title fw-bold">Franchise Info</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <dl>
+                                        <dt class="text-muted"><i class="fa-solid fa-id-card" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Full Name</dt>
+                                        <dd class="ps-4">{{ user.first_name }} {{ user.last_name }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-envelope" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Email</dt>
+                                        <dd class="ps-4">{{ user.email }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Username</dt>
+                                        <dd class="ps-4">{{ user.username }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Contact Person</dt>
+                                        <dd class="ps-4">{{ user.contact_person }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Phone Number</dt>
+                                        <dd class="ps-4">{{ user.phone }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Location</dt>
+                                        <dd class="ps-4">{{ user.location}}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>City</dt>
+                                        <dd class="ps-4">{{ user.city }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>District</dt>
+                                        <dd class="ps-4">{{ user.district }}</dd>
+                                        <dt class="text-muted"><i class="fa-solid fa-user" style="width: 1.5rem; height: 1.5rem; padding-right: 0.5rem;"></i>Pincode</dt>
+                                        <dd class="ps-4">{{ user.pincode }}</dd>
+                                        
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <div class="d-flex w-100 text-end justify-content-end">
+                            <a href="{% url 'update-password' %}" class="btn btn btn-light border btn-sm bg-gradient rounded-0 me-2">Update Password</a>
+                            <a href="{% url 'update-profile' %}" class="btn btn btn-primary btn-sm bg-gradient rounded-0">Update Profile</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

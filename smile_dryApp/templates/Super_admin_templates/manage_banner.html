@@ -1,0 +1,140 @@
+{% load static %}
+
+<style>
+     /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+</style>
+<div class="container-fluid">
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div> 
+    <form action="" id="banner-form">
+        <input type="hidden" name="id" value="{{banner.id}}">
+        <div class="mb-3">
+            <label for="banner_type" class="control-label"><i  class="fa-solid fa-box-open" style="padding-right:0.5rem;" ></i>Banner Type</label>
+            <select type="text" id="banner_type" name="banner_type" class="form-select form-select-sm rounded-0" required>
+                {% if banner.banner_type == 'Home Page Banner' %}
+                <option value="Home Page Banner" selected>Home Page Banner</option>
+                {% else %}
+                <option value="Home Page Banner">Home Page Banner</option>
+                {% endif %}
+                {% if banner.banner_type == 'Offer Banner' %}
+                <option value="Offer Banner" selected>Offer Banner</option>
+                {% else %}
+                <option value="Offer Banner">Offer Banner</option>
+                {% endif %}
+                {% if banner.banner_type == 'Website Offer Banner' %}
+                <option value="Website Offer Banner" selected>Website Offer Banner</option>
+                {% else %}
+                <option value="Website Offer Banner">Website Offer Banner</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="control-label"><i  class="fa-solid fa-box-open" style="padding-right:0.5rem;" ></i>Title</label>
+            <input type="text" id="title" name="title" class="form-control form-control-sm rounded-0" value="{% if form.data.title %}{{ form.data.title }}{% else %}{{banner.title}}{% endif %}" required>
+        </div>
+        <div class="form-group">
+            <label>Choose Image&nbsp;<i style='font-size:14px' class='fas'>&#xf023;</i></label>
+                                        <span style="color:#ff0000">*</span>
+            <input  type="file" name='image' class="form-control" value="{{banner.image}}" required > 
+        </div>
+        
+        <div class="mb-3">
+            <label for="description" class="control-label"><i class="fa-solid fa-clipboard" style="padding-right:0.5rem;"></i>Description</label>
+            <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{% if form.data.description %}{{ form.data.description }}{% else %}{{banner.description}}{% endif %}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="control-label"><i class="fa-solid fa-chart-simple" style="padding-right:0.5rem;"></i>Status</label>
+            <select type="text" id="status" name="status" class="form-select form-select-sm rounded-0" required>
+                {% if banner.status == '1' %}
+                <option value="1" selected>Active</option>
+                {% else %}
+                <option value="1">Active</option>
+                {% endif %}
+                {% if banner.status == '2' %}
+                <option value="2" selected>Inactive</option>
+                {% else %}
+                <option value="2">Inactive</option>
+                {% endif %}
+            </select>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        
+        $('#banner-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-banner' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

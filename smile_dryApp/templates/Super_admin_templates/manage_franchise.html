@@ -1,0 +1,271 @@
+{% load static %}
+
+<style>
+    .errorlist {
+        color: var(--bs-danger);
+    }
+
+    .mdc-text-field {
+        width: 100%;
+    }
+
+    .mdc-text-field--outlined {
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .card {
+        border-radius: x;
+    }
+
+    .card-header {
+        background-color: #ffd333;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* .btn {
+        border-radius: 0;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-primary {
+        background-color: #ffd333 ;
+        border: none;
+        color: #000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3d464d;
+        color: #fff;
+        
+    }
+    .btn-light {
+        border: 1px solid #dee2e6;
+        background-color:  #3d464d;
+        color: #fff;
+    }
+
+    .btn-light:hover {
+        border: 1px solid #dee2e6;
+        background-color: #ffd333;
+        color: #000;
+    } */
+    .form-control{
+        margin:10px;
+        padding:10px;
+        border-radius:10px;
+        
+
+    }
+
+.form-select{
+    margin:10px;
+    padding:10px;
+    border-radius:10px;
+}
+.actin{
+    height:100px;
+}
+</style>
+
+
+<body>
+    <div class="modal-dialog modal-dialog-centered">
+                    
+    </div>
+    <form class="from" action="" id="user-form" padding="10px">
+                                           
+        <input type="hidden" name="id" value="{{user.id}}">
+        <input type="hidden" name="manage_user" value="1">
+         <div class="row">
+            <div class="col">
+                <label for="first_name" class="control-label">    <i class="fa-solid fa-building fa-xl"></i>  <span class="sa-nav__title">Franchise First Name</label>
+            <input type="text" class="form-control rounded-0" name="first_name" id="first_name" value="{% if form.data.first_name %}{{ form.data.first_name }}{% else %}{{ user.first_name }}{% endif %}" required="required">
+            </div>
+            <div class="col">
+                <label for="last_name" class="control-label">  <i class="fa-solid fa-building fa-xl"></i> </i> <span class="sa-nav__title">Franchise Last Name</label>
+            <input type="text" class="form-control rounded-0" name="last_name" id="last_name" value="{% if form.data.last_name %}{{ form.data.last_name }}{% else %}{{ user.last_name }}{% endif %}" required="required">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col">
+               <label for="email" class="control-label"> <i class="fa-solid fa-envelope fa-xl"></i> <span class="sa-nav__title"></i>Email</label>
+            <input type="email" class="form-control rounded-0" name="email" id="email" value="{% if form.data.email %}{{ form.data.email }}{% else %}{{ user.email }}{% endif %}" required="required">
+           </div>
+            <div class="col">
+                 
+                  
+            <!-- <label for="person" class="control-label"><i class="fa-solid fa-mobile-retro" style="padding-right:0.5rem;"></i>Contact person</label>
+            <input type="text" class="form-control" name="person" id="person" value="{% if form.data.contact_person %}{{ form.data.contact_person }}{% else %}{{ user.contact_person}}{% endif %}" required="required"> -->
+     
+
+            <label for="contact_person" class="control-label"><i class="fa-solid fa-mobile-screen fa-xl"></i> <span class="sa-nav__title">Contact Person</label>
+            <input type="contact_person" class="form-control rounded-0" name="contact_person" id="contact_person" value="{% if form.data.contact_person %}{{ form.data.contact_person }}{% else %}{{ user.contact_person }}{% endif %}" required="required">
+       
+
+            
+                 </div>
+          </div>
+  
+          <div class="row">
+            <div class="col">
+               
+                <label for="phone" class="control-label" height="50" width="50"><i class="fa-solid fa-mobile-screen fa-xl"></i></svg> <span class="sa-nav__title">Contact Number</label>
+                <input type="phone" class="form-control" name="phone" id="phone" value="{% if form.data.phone %}{{ form.data.phone }}{% else %}{{ user.phone }}{% endif %}" required="required">
+            </div>
+            <div class="col">
+                <label for="location" class="control-label">  <i class="fa-solid fa-location-dot fa-xl"></i>  <path d="M168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2H168.3zM192 256C227.3 256 256 227.3 256 192C256 156.7 227.3 128 192 128C156.7 128 128 156.7 128 192C128 227.3 156.7 256 192 256z" id="mainIconPathAttribute" fill="#eb0a0a" stroke="#e40707"></path></svg> <span class="sa-nav__title">Location</label>
+                <input type="location" class="form-control" name="location" id="location" value="{% if form.data.location %}{{ form.data.location }}{% else %}{{ user.location }}{% endif %}" required="required">
+          
+            
+                 </div>
+          </div>
+  
+          <div class="row">
+            <div class="col">
+             <label for="city" class="control-label"><i class="fa-solid fa-city fa-xl"></i> <span class="sa-nav__title"> City</label>
+            <input type="city" class="form-control rounded-0" name="city" id="city" value="{% if form.data.city %}{{ form.data.city }}{% else %}{{ user.city }}{% endif %}" required="required">
+          </div>
+            <div class="col">
+                <label for="district" class="control-label"><i class="fa-solid fa-building-circle-arrow-right fa-xl"></i>    <span class="sa-nav__title">      District</label>
+            <input type="district" class="form-control rounded-0" name="district" id="district" value="{% if form.data.district %}{{ form.data.district }}{% else %}{{ user.district }}{% endif %}" required="required">
+          </div>
+          
+          </div>
+          <div class="row">
+            <div class="col">
+             <label for="pincode" class="control-label"><i class="fa-solid fa-location-crosshairs fa-xl"></i> <span class="sa-nav__title"> Pincode</label>
+            <input type="pincode" class="form-control rounded-0" name="pincode" id="pincode" value="{% if form.data.pincode %}{{ form.data.pincode }}{% else %}{{ user.pincode }}{% endif %}" required="required">
+          </div>
+          <div class="col">
+        
+            <label for="status" class="control-label"><i class="fa-solid fa-chart-line fa-xl"></i>
+                <path fill="#bae0bd" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#5e9c76" d="M20,2c9.9,0,18,8.1,18,18s-8.1,18-18,18S2,29.9,2,20S10.1,2,20,2 M20,1C9.5,1,1,9.5,1,20s8.5,19,19,19	s19-8.5,19-19S30.5,1,20,1L20,1z"></path><path fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3" d="M11.2,20.1l5.8,5.8l13.2-13.2"></path>
+                </svg> <span class="sa-nav__title">Status</label>
+            <select type="text" id="status" name="status" class="form-select" required="required" >
+              
+                {% if product.status == '1' %}
+                <option value="1" selected selected class="actin">Active</option>
+                {% else %}
+                <option value="1"selected class="actin">Active</option>
+                {% endif %}
+                {% if product.status == '2' %}
+                <option value="2" selected class="actin">Inactive</option>
+                {% else %}
+                <option value="2" selected class="actin">Inactive</option>
+                {% endif %}
+            </select>
+        </div>
+          </div>
+        <!-- <div class="form-group mb-4">
+            <label for="franchise_city" class="control-label"><i class="fa-solid fa-city" style="padding-right:0.5rem;"></i>City</label>
+            <input type="franchise_city" class="form-control rounded-0" name="franchise_city" id="franchise_city" value="{% if form.data.franchise_city %}{{ form.data.franchise_city }}{% else %}{{ user.franchise_city }}{% endif %}" required="required">
+        </div>  -->
+        <div class="form-group mb-4">
+            <label for="username" class="control-label"><i class="fa-solid fa-users-rectangle fa-xl"></i> <span class="sa-nav__title">Username</label>
+            <input type="text" class="form-control" name="username" id="username" value="{% if form.data.username %}{{ form.data.username }}{% else %}{{ user.username }}{% endif %}" required="required">
+        </div>
+        {% if not user.id %}
+        
+        <div class="row">
+            <div class="col">
+            <label for="password1" class="control-label"><i class="fa-solid fa-lock fa-xl"></i>
+                <path fill="#c48c00" d="M44,37H4v5c0,1.105,0.895,2,2,2h36c1.105,0,2-0.895,2-2V37z"></path><linearGradient id="mqGAn~AfKUNcLhPwXVdula_EHyUO6ZGSRkX_gr1" x1="24" x2="24" y1="15.647" y2="-.296" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#92a3b0"></stop><stop offset=".015" stop-color="#a3b5c4"></stop><stop offset=".032" stop-color="#aec2d1"></stop><stop offset=".046" stop-color="#b2c6d6"></stop></linearGradient><path fill="url(#mqGAn~AfKUNcLhPwXVdula_EHyUO6ZGSRkX_gr1)" d="M11,13v3h4v-3c0-4.971,4.029-9,9-9h0c4.971,0,9,4.029,9,9v3h4v-3c0-7.18-5.82-13-13-13h0	C16.82,0,11,5.82,11,13z"></path><path fill="#fad500" d="M44,23H4v-5c0-1.105,0.895-2,2-2h36c1.105,0,2,0.895,2,2V23z"></path><rect width="40" height="7" x="4" y="23" fill="#edbe00"></rect><rect width="40" height="7" x="4" y="30" fill="#e3a600"></rect><linearGradient id="mqGAn~AfKUNcLhPwXVdulb_EHyUO6ZGSRkX_gr2" x1="24" x2="24" y1="35.373" y2="27.155" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4b4b4b"></stop><stop offset="1" stop-color="#3b3b3b"></stop></linearGradient><path fill="url(#mqGAn~AfKUNcLhPwXVdulb_EHyUO6ZGSRkX_gr2)" d="M27,29c0-1.657-1.343-3-3-3s-3,1.343-3,3c0,1.304,0.837,2.403,2,2.816V35c0,0.552,0.448,1,1,1	s1-0.448,1-1v-3.184C26.163,31.403,27,30.304,27,29z"></path>
+                </svg><span class="sa-nav__title"> Enter Password</label>
+            <input type="password" class="form-control" name="password1" id="password1" required="required">
+            </div>
+            <div class="col">
+            <label for="password2" class="control-label"><i class="fa-solid fa-lock fa-xl"></i>
+                <path fill="#c48c00" d="M44,37H4v5c0,1.105,0.895,2,2,2h36c1.105,0,2-0.895,2-2V37z"></path><linearGradient id="mqGAn~AfKUNcLhPwXVdula_EHyUO6ZGSRkX_gr1" x1="24" x2="24" y1="15.647" y2="-.296" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#92a3b0"></stop><stop offset=".015" stop-color="#a3b5c4"></stop><stop offset=".032" stop-color="#aec2d1"></stop><stop offset=".046" stop-color="#b2c6d6"></stop></linearGradient><path fill="url(#mqGAn~AfKUNcLhPwXVdula_EHyUO6ZGSRkX_gr1)" d="M11,13v3h4v-3c0-4.971,4.029-9,9-9h0c4.971,0,9,4.029,9,9v3h4v-3c0-7.18-5.82-13-13-13h0	C16.82,0,11,5.82,11,13z"></path><path fill="#fad500" d="M44,23H4v-5c0-1.105,0.895-2,2-2h36c1.105,0,2,0.895,2,2V23z"></path><rect width="40" height="7" x="4" y="23" fill="#edbe00"></rect><rect width="40" height="7" x="4" y="30" fill="#e3a600"></rect><linearGradient id="mqGAn~AfKUNcLhPwXVdulb_EHyUO6ZGSRkX_gr2" x1="24" x2="24" y1="35.373" y2="27.155" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4b4b4b"></stop><stop offset="1" stop-color="#3b3b3b"></stop></linearGradient><path fill="url(#mqGAn~AfKUNcLhPwXVdulb_EHyUO6ZGSRkX_gr2)" d="M27,29c0-1.657-1.343-3-3-3s-3,1.343-3,3c0,1.304,0.837,2.403,2,2.816V35c0,0.552,0.448,1,1,1	s1-0.448,1-1v-3.184C26.163,31.403,27,30.304,27,29z"></path>
+                </svg><span class="sa-nav__title">Confirm Password</label>
+            <input type="password" class="form-control" name="password2" id="password2" required="required">
+        </div>
+    </div>
+        <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="is_franchise" id="is_franchise" value="1" >
+            <label class="form-check-label" for="is_franchise"><i class="fa-solid fa-shop" style="padding-right:0.5rem;"></i>Franchise</label>
+        </div> -->
+        <input type="hidden" name="is_franchise" value="1">
+        {% endif %}
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(function() {
+        $('#user-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save-franchise' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.text(resp.msg)
+                    } else {
+                        el.text("An error occured", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

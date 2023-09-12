@@ -1,0 +1,89 @@
+{% extends 'Franchise_templates/franchise_dashboard_list.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>B2c View Page</title>
+    <style>
+        .container {
+            padding-top: 2rem;
+        }
+
+        
+
+        .back-button {
+            padding: 10px 20px;
+            float: right;
+        }
+
+        .back-button a {
+            color: #fff;
+            background-color: #3d464d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        .card-title{
+  background-color: #ffd333;
+}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .delete-icon {
+            color: #3d464d;
+        }
+    </style>
+</head>
+<body>
+    <div id="top">
+        <div class="container">
+            <div class="card">
+              <h2 class="card-title">B2C Orders</h2>
+      
+              <div class="card-body">
+            <div class="back-button">
+                <a href="/b2c_form">Back</a>
+            </div>
+            <div class="card-body">
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Contact Number</th>
+                    <th>Service</th>
+                    <th>Delivery Date</th>
+                    <th>Delivery Time</th>
+                    <th>Coupon</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+                {% for i in data1 %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.customer_name }}</td>
+                    <td>{{ i.contact_number }}</td>
+                    <td>{{ i.service }}</td>
+                    <td>{{ i.delivery_date }}</td>
+                    <td>{{ i.delivery_time }}</td>
+                    <td>{{ i.Coupon_code }}</td>
+                    <td>{{ i.address }}</td>
+                    <td><a href="delete_B2c/{{ i.id }}"><i class="fa-solid fa-trash delete-icon"></i></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+{% endblock content %}
